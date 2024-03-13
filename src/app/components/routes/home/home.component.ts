@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { AuthService } from 'src/app/services/auth.service.service';
+import { Router } from '@angular/router';
 declare var google: any;
 
 @Component({
@@ -10,7 +12,7 @@ export class HomeComponent implements OnInit {
 
   googleUser: any;
   usuarios: any[] = [];
-  constructor() { }
+  constructor(private authService:AuthService, private router: Router) { }
 
   ngOnInit(): void {
    /* GET API */
@@ -31,7 +33,7 @@ export class HomeComponent implements OnInit {
   }, 1000)
 }
 
-handleCredentialResponse(response: any) {
+handleCredentialResponse = (response: any) => {
   response.credential;
 
   var base64Url = response.credential.split('.')[1];
@@ -45,6 +47,9 @@ handleCredentialResponse(response: any) {
   localStorage.setItem("email", this.googleUser.email);
   localStorage.setItem("profilePhoto", this.googleUser.picture)
   localStorage.setItem("name", this.googleUser.name)
-  document.location.href = "/cardSelection" 
+  this.authService.login();
+  this.router.navigate(['/cardSelection']);
 }
+
+
 }
