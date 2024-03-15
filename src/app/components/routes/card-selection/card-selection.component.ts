@@ -6,10 +6,13 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./card-selection.component.css']
 })
 export class CardSelectionComponent implements OnInit {
-
+  imagen = '';
   constructor() { }
 
   ngOnInit(): void {
+
+    const profilePhotoUrl = localStorage.getItem("profilePhoto");
+
   }
 
 }

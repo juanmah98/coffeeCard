@@ -1,6 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, NgZone, OnInit } from '@angular/core';
 import { AuthService } from 'src/app/services/auth.service.service';
 import { Router } from '@angular/router';
+import { SupabaseService } from 'src/app/services/supabase.service';
+import { Usuarios } from 'src/app/interfaces/usuarios';
+import { InternoService } from 'src/app/services/interno.service';
 declare var google: any;
 
 @Component({
@@ -11,12 +14,12 @@ declare var google: any;
 export class HomeComponent implements OnInit {
 
   googleUser: any;
-  usuarios: any[] = [];
-  constructor(private authService:AuthService, private router: Router) { }
+  logged:boolean = false;
+  usuarios: Usuarios[] = [];
+  constructor(private authService:AuthService, private router: Router, private _SupabaseService: SupabaseService, private ngZone: NgZone, private interno:  InternoService) { }
 
   ngOnInit(): void {
-   /* GET API */
-
+  
   
   setTimeout(() => {
     google.accounts.id.initialize({
@@ -34,6 +37,13 @@ export class HomeComponent implements OnInit {
 }
 
 handleCredentialResponse = (response: any) => {
+  console.log('Respuesta del servidor:', response);
+  this._SupabaseService.getUsers().subscribe((data: any) => {
+    this.usuarios = data.email;
+    console.log(data);
+  });
+
+  
   response.credential;
 
   var base64Url = response.credential.split('.')[1];
@@ -47,9 +57,101 @@ handleCredentialResponse = (response: any) => {
   localStorage.setItem("email", this.googleUser.email);
   localStorage.setItem("profilePhoto", this.googleUser.picture)
   localStorage.setItem("name", this.googleUser.name)
-  this.authService.login();
-  this.router.navigate(['/cardSelection']);
+
+  console.log("this.usuarios")
+  console.log(this.usuarios)
+
+  this._SupabaseService.getUsers().subscribe((data: any) => {
+    this.usuarios = data.email;
+    let logg = false;
+     if(data == ''){
+      this.crearUsuario(this.googleUser.email);
+    } 
+    console.log(data)
+    for (let i = 0; i < data.length; i++) {
+      const email = data[i].email;
+      if (data[i].email == this.googleUser.email) {
+          logg = true;    
+      }
+
+      if(logg){
+        this.interno.setUser(data)
+          console.log("Registrado")
+         this.authService.login();
+         this.ngZone.run(() => {
+          this.router.navigate(['/cardSelection']);
+        });   
+      }else{
+        this.interno.setLogged(true);
+        console.log("nuevo")
+        this.crearUsuario(this.googleUser.email);
+      }
+      // Realizar la verificación del email aquí
+  }
+  
+})
+
+  
+}
+
+async crearUsuario(email: any): Promise<void> {
+  console.log("Creando");
+  const dataUser = {
+    email: email,
+    contador_cafe_id: null
+  };
+  const dataCafe = {
+      contador: 0,
+        gratis: false,
+        opcion: 0,
+        cantidad_gratis: 0
+  };
+
+   this._SupabaseService.postCafes(dataCafe).subscribe(
+    (response) => {
+      console.log('cafe creado con éxito', response);
+      /* this.router.navigate(['/user']); */
+    },
+    (error) => {
+      console.error('Error al crear cafe', error);
+    }
+  );
+
+ 
+
+setTimeout(() => {
+  this._SupabaseService.getCafes().subscribe((data: any) => {
+    console.log(data[data.length -1]);
+    dataUser.contador_cafe_id = data[data.length -1].id; 
+    
+})
+
+setTimeout(() => {
+  console.log("dataUser");
+  console.log(dataUser);
+  this._SupabaseService.postUser(dataUser).subscribe(
+    (response) => {
+      console.log('Usuario creado con éxito', response);     
+      this.interno.setLogged(false); 
+      this.authService.login();
+      this.ngZone.run(() => {
+      this.router.navigate(['/cardSelection']);
+    }); 
+    },
+    (error) => {
+      console.error('Error al crear usuario', error);
+    }
+  );
+}, 2000)
+
+
+}, 2000)
+  
 }
 
 
+
+
 }
+
+
