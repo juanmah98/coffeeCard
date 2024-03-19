@@ -61,4 +61,16 @@ export class SupabaseService {
 
     return this.http.patch(this.apiUrlCafes, updateData, { headers, params: queryParams });
   }
+
+  postContador(someValue: string, otherValue: number): Observable<any> {
+    const headers = this.getHeaders();
+
+    const updateData = {
+      contador: otherValue,
+    };
+
+    const queryParams = new HttpParams().set('id', `eq.${someValue}`);
+
+    return this.http.patch(this.apiUrlCafes, updateData, { headers, params: queryParams });
+  }
 }

@@ -54,7 +54,7 @@ export class CardSelectionComponent implements OnInit {
   op1(){
     this._SupabaseService.postOpcion(this.dataUser.contador_cafe_id,1).subscribe(
       (response) => {
-        console.log('cafe creado con éxito', response);
+        console.log('opcion 1', response);
         /* this.router.navigate(['/user']); */
       },
       (error) => {
@@ -68,7 +68,7 @@ export class CardSelectionComponent implements OnInit {
   op2(){
     this._SupabaseService.postOpcion(this.dataUser.contador_cafe_id,2).subscribe(
       (response) => {
-        console.log('cafe creado con éxito', response);
+        console.log('opcion 2', response);
         /* this.router.navigate(['/user']); */
       },
       (error) => {
@@ -83,7 +83,7 @@ export class CardSelectionComponent implements OnInit {
   op3(){
     this._SupabaseService.postOpcion(this.dataUser.contador_cafe_id,3).subscribe(
       (response) => {
-        console.log('cafe creado con éxito', response);
+        console.log('opcion 3', response);
         /* this.router.navigate(['/user']); */
       },
       (error) => {
@@ -92,6 +92,48 @@ export class CardSelectionComponent implements OnInit {
     );
 
     this.ngOnInit();
+
+  }
+
+  sumar(){
+    if(this.data_cafe.contador==10){
+
+      this.data_cafe.contador=0;
+      this.data_cafe.opcion=0;
+      this._SupabaseService.postOpcion(this.dataUser.contador_cafe_id,0).subscribe(
+        (response) => {
+          console.log('suma opcion recet', response);
+          /* this.router.navigate(['/user']); */
+        },
+        (error) => {
+          console.error('Error al crear cafe', error);
+        }
+      );
+
+      this._SupabaseService.postContador(this.dataUser.contador_cafe_id,0).subscribe(
+        (response) => {
+          console.log('suma contador con recet', response);
+          /* this.router.navigate(['/user']); */
+        },
+        (error) => {
+          console.error('Error al crear cafe', error);
+        }
+      );
+      this.ngOnInit();
+    }else{      
+      this._SupabaseService.postContador(this.dataUser.contador_cafe_id,this.data_cafe.contador+1).subscribe(
+        (response) => {
+          console.log('contador aumentado', response);
+          /* this.router.navigate(['/user']); */
+        },
+        (error) => {
+          console.error('Error al crear cafe', error);
+        }
+      );
+      this.ngOnInit();
+    }
+
+   
 
   }
 
