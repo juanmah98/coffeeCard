@@ -55,7 +55,7 @@ handleCredentialResponse = (response: any) => {
 
   this.googleUser = JSON.parse(jsonPayload);
   localStorage.setItem("email", this.googleUser.email);
-  localStorage.setItem("profilePhoto", this.googleUser.picture)
+  localStorage.setItem("photo", this.googleUser.picture)
   localStorage.setItem("name", this.googleUser.name)
 
   console.log("this.usuarios")
@@ -72,22 +72,25 @@ handleCredentialResponse = (response: any) => {
       const email = data[i].email;
       if (data[i].email == this.googleUser.email) {
           logg = true;    
+          this.interno.setUser(data[i]);
       }
 
-      if(logg){
-        this.interno.setUser(data)
-          console.log("Registrado")
-         this.authService.login();
-         this.ngZone.run(() => {
-          this.router.navigate(['/cardSelection']);
-        });   
-      }else{
-        this.interno.setLogged(true);
-        console.log("nuevo")
-        this.crearUsuario(this.googleUser.email);
-      }
+     
       // Realizar la verificación del email aquí
   }
+  if(logg){
+        
+    console.log("Registrado")
+    console.log("navegando")
+   this.authService.login();
+   this.ngZone.run(() => {
+    this.router.navigate(['/cardSelection']);
+  });
+}else{
+  this.interno.setLogged(true);
+  console.log("nuevo")
+  this.crearUsuario(this.googleUser.email);
+}
   
 })
 
@@ -96,7 +99,7 @@ handleCredentialResponse = (response: any) => {
 
 async crearUsuario(email: any): Promise<void> {
   console.log("Creando");
-  const dataUser = {
+  const dataUser:any = {
     email: email,
     contador_cafe_id: null
   };
@@ -133,6 +136,7 @@ setTimeout(() => {
     (response) => {
       console.log('Usuario creado con éxito', response);     
       this.interno.setLogged(false); 
+      this.interno.setUser(dataUser);
       this.authService.login();
       this.ngZone.run(() => {
       this.router.navigate(['/cardSelection']);
