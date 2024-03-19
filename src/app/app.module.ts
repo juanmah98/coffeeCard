@@ -7,6 +7,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { RoutesModule } from './components/routes/routes.module';
+import { QRCodeModule } from 'angularx-qrcode';
 
 @NgModule({
   declarations: [
@@ -18,7 +19,8 @@ import { RoutesModule } from './components/routes/routes.module';
     HttpClientModule,
     RouterModule,
     RoutesModule,
-    CommonModule
+    CommonModule,
+    QRCodeModule
   ],
   providers: [],
   bootstrap: [AppComponent]

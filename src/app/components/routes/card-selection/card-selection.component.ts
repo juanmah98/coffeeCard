@@ -32,6 +32,7 @@ export class CardSelectionComponent implements OnInit {
       opcion: 0,
       cantidad_gratis: 0
   }
+  qrData: string = '';
   constructor(private _SupabaseService:SupabaseService, private _dataInterna: InternoService) { }
 
   ngOnInit(): void {
