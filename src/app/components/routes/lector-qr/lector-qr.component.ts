@@ -28,14 +28,7 @@ export class LectorQrComponent implements OnInit {
   constructor(private _SupabaseService:SupabaseService,) { }
 
   ngOnInit(): void {
-    this.data_cafe = 
-    {
-      id: "",
-      contador: 0,
-      gratis: false,
-      opcion: 0,
-      cantidad_gratis: 0
-  }
+   
   }
 
   ngAfterViewInit(): void {
@@ -113,6 +106,15 @@ async sumar(){
         console.error('Error al crear cafe', error);
       }
     );
+
+    this.data_cafe = 
+    {
+      id: "",
+      contador: 0,
+      gratis: false,
+      opcion: 0,
+      cantidad_gratis: 0
+  }
     this.ngOnInit();
   }else{      
     await this._SupabaseService.postContador(this.data_cafe.id,this.data_cafe.contador+1).subscribe(
@@ -124,6 +126,14 @@ async sumar(){
         console.error('Error al crear cafe', error);
       }
     );
+    this.data_cafe = 
+    {
+      id: "",
+      contador: 0,
+      gratis: false,
+      opcion: 0,
+      cantidad_gratis: 0
+  }
    await this.ngOnInit();
   }
 
