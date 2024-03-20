@@ -23,6 +23,7 @@ export class CardSelectionComponent implements OnInit {
       id: "",
       email: '',
       contador_cafe_id: '',
+      admin: false
   };
 
   data_cafe:CafeData = 
@@ -142,6 +143,10 @@ export class CardSelectionComponent implements OnInit {
 
    
 
+  }
+
+  reload(){
+    this.ngOnInit();
   }
 
   cifrado(){

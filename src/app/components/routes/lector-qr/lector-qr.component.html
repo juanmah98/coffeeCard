@@ -1,0 +1,70 @@
+
+<body class="d-flex align-items-center">
+    <div class="container-fluid">
+        <div class="row justify-content-center">
+            <div class="col pb-5  d-flex justify-content-center align-items-center">
+                
+                <div class="text-light">
+                      <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                          Escanear qr
+                        </button>
+
+                        <div *ngIf="data_cafe.id!=''" class="pt-5 text-start">
+                            <h2>Datos</h2>
+                            <p>Opcion {{data_cafe.opcion}}</p>
+                            <p>Contador {{data_cafe.contador}}</p>
+                            <p>Gratis {{data_cafe.gratis}}</p>
+                            <p>Cantidad gratis {{data_cafe.cantidad_gratis}}</p>
+
+                            <button type="button" class="btn btn-light" (click)="sumar()">
+                                Sumar +1
+                              </button>
+                        </div>
+                   
+
+                  </div>
+                    <!-- <div class="justify-content-center text-center">
+                        <div class="text-center">
+                            <video #video autoplay></video>
+                            <canvas #canvas style="display: none;"></canvas>
+         
+                        </div>
+                      
+                            <button class="btn btn-light" (click)="scanQRCode()">Escanear QR</button>
+                       
+                    </div> -->
+              
+            </div>
+        </div>
+    </div>
+
+    <!-- Button trigger modal -->
+
+  
+  <!-- Modal -->
+  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <div class="justify-content-center text-center">
+                <div class="text-center">
+                    <video #video autoplay></video>
+                    <canvas #canvas style="display: none;"></canvas>
+ 
+                </div>
+              
+                    <button class="btn btn-dark" (click)="scanQRCode()">Escanear QR</button>
+               
+            </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>

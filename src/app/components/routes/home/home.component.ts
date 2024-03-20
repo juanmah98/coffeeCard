@@ -83,9 +83,17 @@ handleCredentialResponse = (response: any) => {
     console.log("Registrado")
     console.log("navegando")
    this.authService.login();
-   this.ngZone.run(() => {
-    this.router.navigate(['/cardSelection']);
-  });
+   const dataUs=this.interno.getUser();
+   if(dataUs.admin==true){
+    this.ngZone.run(() => {
+      this.router.navigate(['/qrscan']);
+    });
+   }else{
+    this.ngZone.run(() => {
+      this.router.navigate(['/cardSelection']);
+    });
+   }
+   
 }else{
   this.interno.setLogged(true);
   console.log("nuevo")
