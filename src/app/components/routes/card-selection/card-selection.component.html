@@ -111,7 +111,7 @@
                             <img src="../../../../assets/imagenes/cards/breackfast.png" width="70px" class="mr-3" alt="">
                         </div>
                         <p class="text-center fs-5 pt-3 mb-1">Cafes <b>{{data_cafe.contador}}</b></p>
-                          <button class="btn btn-light mt-2">SUMAR</button>
+                          <button class="btn btn-light mt-2" data-bs-toggle="modal" data-bs-target="#staticBackdrop">SUMAR</button>
                         </div>
                   
                       </div>
@@ -145,7 +145,7 @@
                             <img src="../../../../assets/imagenes/cards/menu.png" width="70px" class="mr-3" alt="">
                         </div>
                         <p class="text-center fs-5 pt-3 mb-1">Cafes <b>{{data_cafe.contador}}</b></p>
-                          <button class="btn btn-light mt-2">SUMAR</button>
+                          <button class="btn btn-light mt-2" data-bs-toggle="modal" data-bs-target="#staticBackdrop">SUMAR</button>
                         </div>
                   
                       </div>
@@ -162,15 +162,15 @@
           <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
             <div class="modal-dialog">
               <div class="modal-content">
-                <div class="modal-header">
-                  <h1 class="modal-title fs-5 text-center" id="staticBackdropLabel">Sumar consumicion</h1>
-                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <div class="modal-header text-center justify-content-center">
+                  <h1 class="modal-title fs-5" id="staticBackdropLabel">Sumar consumición</h1>
+                 <!--  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button> -->
                 </div>
                 <div class="modal-body text-center">
-                  <qrcode [qrdata]="data_cafe.id" [width]="256" [errorCorrectionLevel]="'M'"></qrcode>
+                  <qrcode [qrdata]="uuidCifrado" [width]="256" [errorCorrectionLevel]="'M'"></qrcode>
                 </div>
                 <div class="modal-footer">
-                  <button type="button" class="btn btn-dark" data-bs-dismiss="modal">Close</button>
+                  <button type="button" class="btn btn-dark" (click)="sumar()" data-bs-dismiss="modal">Close</button>
                 </div>
               </div>
             </div>
