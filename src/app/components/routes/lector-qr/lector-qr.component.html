@@ -1,72 +1,31 @@
-
-<body class="d-flex align-items-start">
-    <div class="container-fluid">
-        <div class="row justify-content-center">
-            <div class="col pb-5 pt-3  d-flex justify-content-center align-items-center">
-                
-                <div  *ngIf="data_cafe.id!=''" class="text-light">                     
-
-                        <div class="pt-4 text-start">
-                            <h2>Datos de tarjeta</h2>
-                            <p>Opcion card <b>{{data_cafe.opcion}}</b></p>
-                            <p>Contador <b>{{data_cafe.contador}}</b></p>
-                            <p>Cantidad de tarjetas gratis <b>{{data_cafe.cantidad_gratis}}</b></p>
-                            
-                            <p *ngIf="data_cafe.gratis==true">Gratis</p>
-                            <button *ngIf="data_cafe.gratis==false && data_cafe.contador<10" type="button" class="btn btn-warning" (click)="sumar()">
-                                Sumar +1
-                              </button>
-                            <button *ngIf="data_cafe.gratis==true || data_cafe.contador==10" type="button" class="btn btn-danger" (click)="sumar()">
-                                Canje gratis
-                              </button>
-                        </div>
-                  </div>
-                   <div  *ngIf="data_cafe.id==''" class="justify-content-center text-center">
-                        <div class="text-center">
-                            <video #video autoplay></video>
-                            <canvas #canvas style="display: none;"></canvas>
-         
-                        </div>
-
-                        <h3 class="text-light">ESCANEANDO QR</h3>
-                      
-                           <!--  <button class="btn btn-light" (click)="scanQRCode()">Escanear QR</button> -->
-                       
-                    </div> 
-              
-            </div>
-        </div>
-    </div>
-
-    <!-- Button trigger modal -->
-
-  
-  <!-- Modal -->
-  <!-- <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h1 class="modal-title fs-5" id="exampleModalLabel">LECTOR QR</h1>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-            <div class="justify-content-center text-center">
-                <div class="text-center">
-                    <video #video autoplay></video>
-                    <canvas #canvas style="display: none;"></canvas>
- 
-                </div>
-              
-                    <button class="btn btn-dark" (click)="scanQRCode()">Escanear QR</button>
-               
-            </div>
-        </div>
-        <div *ngIf="data_cafe.id!=''" class="modal-footer text-center justify-content-center">          
-            <p class="fs-4 fw-bold">QR LEIDO</p>
-            <br>          
-          <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cerrar</button>
+<body class="text-center"> <!-- Clase text-center aplicada al body para centrar todo el contenido -->
+  <div class="container-fluid">
+    <div class="row justify-content-center">
+      <div class="col-12 pb-2 pt-3 text-light ">
+        <div class="">
+          <video #video autoplay></video>
+          <canvas #canvas style="display: none;"></canvas>
+          <h3 *ngIf="continueScanning==true" class="text-light">ESCANEANDO QR</h3>
+          <h3 *ngIf="continueScanning==false" class="text-warning">ESCANEO CORRECTO</h3>
+        </div> 
+      </div>
+      <div class="col-12 pb-4 justify-content-center align-items-center">
+        <div  *ngIf="continueScanning==false" class="text-light">                     
+          <div class="pt-2">
+            <h2>Datos de tarjeta</h2>
+            <p>Opcion card <b>{{data_cafe.opcion}}</b></p>
+            <p>Contador <b>{{data_cafe.contador}}</b></p>
+            <p>Cantidad de tarjetas gratis <b>{{data_cafe.cantidad_gratis}}</b></p>
+            <p *ngIf="data_cafe.gratis==true">Gratis</p>
+            <button *ngIf="data_cafe.gratis==false && data_cafe.contador<10" type="button" class="btn btn-warning" (click)="sumar()">
+              Sumar +1
+            </button>
+            <button *ngIf="data_cafe.gratis==true || data_cafe.contador==10" type="button" class="btn btn-danger" (click)="sumar()">
+              Canje gratis
+            </button>
+          </div>
         </div>
       </div>
     </div>
-  </div> -->
+  </div>
 </body>
