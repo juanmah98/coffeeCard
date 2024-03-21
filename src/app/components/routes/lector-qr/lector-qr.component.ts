@@ -3,6 +3,8 @@ import jsQR from 'jsqr';
 import * as CryptoJS from 'crypto-js';
 import { SupabaseService } from 'src/app/services/supabase.service';
 import { CafeData } from 'src/app/interfaces/cafes_data';
+import { Subscription, interval } from 'rxjs';
+import { takeWhile } from 'rxjs/operators';
 
 @Component({
   selector: 'app-lector-qr',
@@ -25,14 +27,32 @@ export class LectorQrComponent implements OnInit {
 
 // Clave para cifrar/descifrar
   clave = 'piazzetta';
+  private scanSubscription: Subscription = new Subscription();
+  private continueScanning = true;
   constructor(private _SupabaseService:SupabaseService,) { }
 
   ngOnInit(): void {
-   
+
+    this.startCamera(); // Inicia la cámara al iniciar el componente
+
+    // Establece un intervalo para llamar a la función cada x segundos
+    this.scanSubscription = interval(1000) // Cambia el valor según sea necesario (en milisegundos)
+      .pipe(
+        // Detiene el intervalo cuando continueScanning se vuelve false
+        takeWhile(() => this.continueScanning)
+      )
+      .subscribe(() => {
+        this.scanQRCode();
+      });
+
+      
   }
 
-  ngAfterViewInit(): void {
-    this.startCamera();
+  ngOnDestroy(): void {
+    // Desuscribe la suscripción al destruir el componente para evitar fugas de memoria
+    if (this.scanSubscription) {
+      this.scanSubscription.unsubscribe();
+    }
   }
 
   startCamera() {
@@ -70,6 +90,11 @@ export class LectorQrComponent implements OnInit {
     } else {
       console.error('No se pudo detectar ningún código QR.');
     }
+  }
+
+  // Función para detener el escaneo cuando sea necesario
+  detenerEscaneo(): void {
+    this.continueScanning = false;
   }
 
   decifrado(){
