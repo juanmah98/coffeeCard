@@ -8,7 +8,7 @@ import { LectorQrComponent } from './components/routes/lector-qr/lector-qr.compo
 const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' }, // Redirigir a '/home' en la ruta raíz
   { path: 'home', component: HomeComponent },
-  { path: 'qrscan', component: LectorQrComponent },
+  { path: 'qrscan', component: LectorQrComponent, canActivate: [AuthGuard]},
   { path: 'cardSelection', component: CardSelectionComponent, canActivate: [AuthGuard] },
 ];
 
