@@ -10,14 +10,17 @@
                         </button>
 
                         <div *ngIf="data_cafe.id!=''" class="pt-5 text-start">
-                            <h2>Datos</h2>
-                            <p>Opcion {{data_cafe.opcion}}</p>
-                            <p>Contador {{data_cafe.contador}}</p>
-                            <p>Gratis {{data_cafe.gratis}}</p>
-                            <p>Cantidad gratis {{data_cafe.cantidad_gratis}}</p>
-
-                            <button type="button" class="btn btn-light" (click)="sumar()">
+                            <h2>Datos de tarjeta</h2>
+                            <p>Opcion card <b>{{data_cafe.opcion}}</b></p>
+                            <p>Contador <b>{{data_cafe.contador}}</b></p>
+                            <p>Cantidad de tarjetas gratis <b>{{data_cafe.cantidad_gratis}}</b></p>
+                            
+                            <p *ngIf="data_cafe.gratis==true">Gratis</p>
+                            <button *ngIf="data_cafe.gratis==false" type="button" class="btn btn-light" (click)="sumar()">
                                 Sumar +1
+                              </button>
+                            <button *ngIf="data_cafe.gratis==true" type="button" class="btn btn-danger" (click)="sumar()">
+                                Canje gratis
                               </button>
                         </div>
                    
@@ -46,7 +49,7 @@
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
-          <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
+          <h1 class="modal-title fs-5" id="exampleModalLabel">LECTOR QR</h1>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
@@ -61,8 +64,10 @@
                
             </div>
         </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <div *ngIf="data_cafe.id!=''" class="modal-footer text-center justify-content-center">          
+            <p class="fs-4 fw-bold">QR LEIDO</p>
+            <br>          
+          <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cerrar</button>
         </div>
       </div>
     </div>

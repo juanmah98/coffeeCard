@@ -1,16 +1,18 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { CafeData } from 'src/app/interfaces/cafes_data';
 import { Usuarios } from 'src/app/interfaces/usuarios';
 import { InternoService } from 'src/app/services/interno.service';
 import { SupabaseService } from 'src/app/services/supabase.service';
 import * as CryptoJS from 'crypto-js';
+import { Subscription, interval } from 'rxjs';
+import { switchMap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-card-selection',
   templateUrl: './card-selection.component.html',
   styleUrls: ['./card-selection.component.css']
 })
-export class CardSelectionComponent implements OnInit {
+export class CardSelectionComponent implements OnInit, OnDestroy  {
   imagen = '';
   
 
@@ -40,22 +42,50 @@ export class CardSelectionComponent implements OnInit {
 
 // Clave para cifrar/descifrar
   clave = 'piazzetta';
+  private dataSubscription: Subscription = new Subscription();
   constructor(private _SupabaseService:SupabaseService, private _dataInterna: InternoService) { }
 
   ngOnInit(): void {
     this.dataUser = this._dataInterna.getUser();
     this.nombre = localStorage.getItem("name");
     this.foto = localStorage.getItem("photo");
+    this.actualizarDatos();
+
+    // Establece un intervalo para actualizar los datos cada x segundos
+    this.dataSubscription = interval(1500) // Cambia el valor según sea necesario (en milisegundos)
+      .pipe(
+        switchMap(() => this._SupabaseService.getDataCard(this.dataUser.contador_cafe_id))
+      )
+      .subscribe((data: any) => {
+        // Actualiza los datos recibidos
+        this.data_cafe = data[0];
+        console.log(data[0]);
+        if(data[0]!='')
+      {
+        this.upload = true;
+      }
+      });
+      
+      
+    /* setTimeout(() => {
+      
+      this.cifrado();
+    }, 2000) */
+
+  }
+
+  ngOnDestroy(): void {
+    // Desuscribe la suscripción al destruir el componente para evitar fugas de memoria
+    if (this.dataSubscription) {
+      this.dataSubscription.unsubscribe();
+    }
+  }
+
+  actualizarDatos(): void {
     this._SupabaseService.getDataCard(this.dataUser.contador_cafe_id).subscribe((data: any) => {
-      this.data_cafe = data[0]; 
+      this.data_cafe = data[0];
       console.log(data[0]);
     });
-
-    setTimeout(() => {
-      this.upload = true;
-      this.cifrado();
-    }, 2000)
-
   }
 
   op1(){
@@ -69,7 +99,7 @@ export class CardSelectionComponent implements OnInit {
       }
     );
 
-    this.ngOnInit();
+    /* this.ngOnInit(); */
   }
 
   op2(){
@@ -83,7 +113,7 @@ export class CardSelectionComponent implements OnInit {
       }
     );
 
-    this.ngOnInit();
+   /*  this.ngOnInit(); */
 
   }
 
@@ -98,7 +128,7 @@ export class CardSelectionComponent implements OnInit {
       }
     );
 
-    this.ngOnInit();
+   /*  this.ngOnInit(); */
 
   }
 
@@ -126,7 +156,7 @@ export class CardSelectionComponent implements OnInit {
           console.error('Error al crear cafe', error);
         }
       );
-      this.ngOnInit();
+      /* this.ngOnInit(); */
     }else{      
       await this._SupabaseService.postContador(this.dataUser.contador_cafe_id,this.data_cafe.contador+1).subscribe(
         (response) => {
@@ -138,7 +168,7 @@ export class CardSelectionComponent implements OnInit {
         }
       );
      await this.decifrado();
-     await this.ngOnInit();
+     /* await this.ngOnInit(); */
     }
 
    
@@ -146,7 +176,7 @@ export class CardSelectionComponent implements OnInit {
   }
 
   reload(){
-    this.ngOnInit();
+    /* this.ngOnInit(); */
   }
 
   cifrado(){
