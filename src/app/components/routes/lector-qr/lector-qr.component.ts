@@ -167,6 +167,7 @@ export class LectorQrComponent implements OnInit {
     if (this.data_cafe.contador === 10) {
       this.data_cafe.contador = 0;
       this.data_cafe.opcion = 0;
+      this.data_cafe.cantidad_gratis=this.data_cafe.cantidad_gratis+1;
 
       try {
         await this._SupabaseService.postOpcion(this.data_cafe.id, 0).toPromise();
@@ -184,4 +185,5 @@ export class LectorQrComponent implements OnInit {
       }
     }
   }
+
 }

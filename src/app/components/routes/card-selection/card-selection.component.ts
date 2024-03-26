@@ -89,6 +89,7 @@ export class CardSelectionComponent implements OnInit, OnDestroy  {
   }
 
   op1(){
+    this.upload = false;
     this._SupabaseService.postOpcion(this.dataUser.contador_cafe_id,1).subscribe(
       (response) => {
         console.log('opcion 1', response);
@@ -99,10 +100,16 @@ export class CardSelectionComponent implements OnInit, OnDestroy  {
       }
     );
 
+     setTimeout(() => {
+      
+      this.upload = true;
+    }, 1000) 
+
     /* this.ngOnInit(); */
   }
 
   op2(){
+    this.upload = false;
     this._SupabaseService.postOpcion(this.dataUser.contador_cafe_id,2).subscribe(
       (response) => {
         console.log('opcion 2', response);
@@ -113,11 +120,16 @@ export class CardSelectionComponent implements OnInit, OnDestroy  {
       }
     );
 
+    setTimeout(() => {
+      
+      this.upload = true;
+    }, 1000) 
    /*  this.ngOnInit(); */
 
   }
 
   op3(){
+    this.upload = false;
     this._SupabaseService.postOpcion(this.dataUser.contador_cafe_id,3).subscribe(
       (response) => {
         console.log('opcion 3', response);
@@ -127,6 +139,11 @@ export class CardSelectionComponent implements OnInit, OnDestroy  {
         console.error('Error al crear cafe', error);
       }
     );
+
+    setTimeout(() => {
+      
+      this.upload = true;
+    }, 1000) 
 
    /*  this.ngOnInit(); */
 
