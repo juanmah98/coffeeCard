@@ -4,6 +4,7 @@ import { HomeComponent } from './home/home.component';
 import { CardSelectionComponent } from './card-selection/card-selection.component';
 import { QRCodeModule } from 'angularx-qrcode';
 import { LectorQrComponent } from './lector-qr/lector-qr.component';
+import { PrincipalComponent } from './principal/principal.component';
 
 
 
@@ -11,7 +12,9 @@ import { LectorQrComponent } from './lector-qr/lector-qr.component';
   declarations: [
     HomeComponent,
     CardSelectionComponent,
-    LectorQrComponent
+    LectorQrComponent,
+    PrincipalComponent
+    
   ],
   imports: [
     CommonModule,
