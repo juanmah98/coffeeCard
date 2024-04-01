@@ -73,4 +73,16 @@ export class SupabaseService {
 
     return this.http.patch(this.apiUrlCafes, updateData, { headers, params: queryParams });
   }
+
+  postGratis(someValue: string, otherValue: number): Observable<any> {
+    const headers = this.getHeaders();
+
+    const updateData = {
+      cantidad_gratis: otherValue,
+    };
+
+    const queryParams = new HttpParams().set('id', `eq.${someValue}`);
+
+    return this.http.patch(this.apiUrlCafes, updateData, { headers, params: queryParams });
+  }
 }

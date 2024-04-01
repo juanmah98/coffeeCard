@@ -19,23 +19,26 @@ body{
 
 .card-w{
     border-radius: 25px;
-    border: 2px solid white;
+    border: 2px solid rgba(255, 255, 255, 0.175);
     margin: 1rem 1rem 1rem 1rem;
     height: 12rem;
+    background-color: #00000066;
 }
 
 .card-wc{
     border-radius: 25px;
-    border: 2px solid white;
+    /* border: 2px solid white; */
     margin: 1rem 1rem 1rem 1rem;
+    background-color: #00000066;
     /* height: 12rem; */
 }
 
 .card-ww{
     border-radius: 25px;
-    border: 2px solid #FFB64A;
+    border: 2px solid #ffb74a3d;
     margin: 1rem 1rem 1rem 1rem;
     height: 12rem;
+    background-color: #00000066;
 }
 
 .card-w-in{
