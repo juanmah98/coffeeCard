@@ -65,7 +65,7 @@ handleCredentialResponse = (response: any) => {
     this.usuarios = data.email;
     let logg = false;
      if(data == ''){
-      this.crearUsuario(this.googleUser.email);
+      this.crearUsuario(this.googleUser.email, this.googleUser.name);
     } 
     console.log(data)
     for (let i = 0; i < data.length; i++) {
@@ -97,7 +97,7 @@ handleCredentialResponse = (response: any) => {
 }else{
   this.interno.setLogged(true);
   console.log("nuevo")
-  this.crearUsuario(this.googleUser.email);
+  this.crearUsuario(this.googleUser.email, this.googleUser.name);
 }
   
 })
@@ -105,11 +105,28 @@ handleCredentialResponse = (response: any) => {
   
 }
 
-async crearUsuario(email: any): Promise<void> {
+async createCafe(dataCafe:any) {
+  try {
+    const response = await this._SupabaseService.postCafes(dataCafe).toPromise();
+    console.log('Café creado con éxito', response);
+    // Continúa aquí con lo que necesites hacer con la respuesta
+    return response; // Retorna la respuesta si es necesario
+  } catch (error) {
+    console.error('Error al crear café', error);
+    throw error; // Propaga el error si es necesario
+  }
+}
+
+// Llamada a la función asincrónica
+
+
+
+async crearUsuario(email: any, name:any): Promise<void> {
   console.log("Creando");
   const dataUser:any = {
     email: email,
-    contador_cafe_id: null
+    contador_cafe_id: null,
+    name: name
   };
   const dataCafe = {
       contador: 0,
@@ -117,21 +134,32 @@ async crearUsuario(email: any): Promise<void> {
         opcion: 0,
         cantidad_gratis: 0
   };
-
-   this._SupabaseService.postCafes(dataCafe).subscribe(
+  
+  console.log("dataCafe")
+  console.log(dataCafe)
+   /* this._SupabaseService.postCafes(dataCafe).subscribe(
     (response) => {
       console.log('cafe creado con éxito', response);
-      /* this.router.navigate(['/user']); */
+     
     },
     (error) => {
       console.error('Error al crear cafe', error);
     }
-  );
+  ); */
+
+  this.createCafe(dataCafe)
+  .then((response) => {
+    console.log('cafe creado con éxito', response);
+  })
+  .catch((error) => {
+    console.error('Error al crear cafe', error);
+  });
 
  
 
 setTimeout(() => {
   this._SupabaseService.getCafes().subscribe((data: any) => {
+    console.log("CafeID");
     console.log(data[data.length -1]);
     dataUser.contador_cafe_id = data[data.length -1].id; 
     
@@ -160,6 +188,8 @@ setTimeout(() => {
 }, 2000)
   
 }
+
+
 
 
 

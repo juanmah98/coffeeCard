@@ -25,7 +25,8 @@ export class CardSelectionComponent implements OnInit, OnDestroy  {
       id: "",
       email: '',
       contador_cafe_id: '',
-      admin: false
+      admin: false,
+      name: ''
   };
 
   data_cafe:CafeData = 

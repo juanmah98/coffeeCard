@@ -13,7 +13,8 @@ export class InternoService {
       "id": "",
       "email": "",
       "contador_cafe_id": "",
-      "admin": false
+      "admin": false,
+      "name":""
     }
   );
 
