@@ -1,7 +1,11 @@
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable, Subject  } from 'rxjs';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { createClient, SupabaseClient } from '@supabase/supabase-js';
+
+export const USERS_TABLE = "usuarios";
+export const CONTADOR_CAFES = "contador_cafe";
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +16,19 @@ export class SupabaseService {
   private apiUrlCafes = 'https://rwttebejxwncpurszzld.supabase.co/rest/v1/contador_cafe';
   private apiKey = environment.supabaseKey;
 
-  constructor(private http: HttpClient) { }
+
+  private supabase: SupabaseClient;
+
+
+ 
+  /* private messageSubject: Subject<any> = new Subject<any>(); */
+
+  constructor(private http: HttpClient) { 
+    
+    
+   
+    this.supabase = createClient('https://rwttebejxwncpurszzld.supabase.co', environment.supabaseKey)
+  }
 
   private getHeaders(): HttpHeaders {
     return new HttpHeaders({
@@ -21,6 +37,20 @@ export class SupabaseService {
       'Authorization': 'Bearer ' + this.apiKey,
       'Prefer': 'return=minimal',
     });
+  }
+
+
+  async getUs(){
+    const user = await this.supabase.from(USERS_TABLE).select('*');
+    return user.data || [];
+  }
+
+  async getCofess(cafe: string){
+    return await this.supabase
+    .from(CONTADOR_CAFES)
+    .select('*')
+    .match({id: cafe})
+    .single()
   }
 
   getUsers(): Observable<any> {
@@ -85,4 +115,19 @@ export class SupabaseService {
 
     return this.http.patch(this.apiUrlCafes, updateData, { headers, params: queryParams });
   }
+
+  getTablaCafesRealtime(id:string){
+    console.log('getTablaCafesRealtime')
+    const changes = new Subject();
+
+    this.supabase.channel('room1').on('postgres_changes', { event: '*', schema: 'public', table: 'contador_cafe', filter: `id=eq.${id}` }, payload => {
+      console.log('Change received!', payload)
+      changes.next(payload);
+    })
+    .subscribe()
+
+    return changes.asObservable();
+  }
+
+ 
 }

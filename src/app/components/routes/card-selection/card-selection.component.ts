@@ -43,17 +43,30 @@ export class CardSelectionComponent implements OnInit, OnDestroy  {
 
 // Clave para cifrar/descifrar
   clave = 'piazzetta';
+  users: any[] = [];
+  coffes: any[] = [];
   private dataSubscription: Subscription = new Subscription();
   constructor(private _SupabaseService:SupabaseService, private _dataInterna: InternoService) { }
 
-  ngOnInit(): void {
+  async ngOnInit(): Promise<void> {
+
+    /* this._SupabaseService.getUserss().subscribe(message => {
+      // Actualiza la lista de usuarios cuando se recibe un mensaje
+      console.log("REALTIME")
+      console.log(message.payload)
+      this.users = message.payload;
+    }); */
+
+    this.users = await this._SupabaseService.getUs()
+    console.log("USUARIOS US:", this.users);
+
     this.dataUser = this._dataInterna.getUser();
     this.nombre = localStorage.getItem("name");
     this.foto = localStorage.getItem("photo");
     this.actualizarDatos();
 
     // Establece un intervalo para actualizar los datos cada x segundos
-    this.dataSubscription = interval(1500) // Cambia el valor según sea necesario (en milisegundos)
+    /* this.dataSubscription = interval(1500) // Cambia el valor según sea necesario (en milisegundos)
       .pipe(
         switchMap(() => this._SupabaseService.getDataCard(this.dataUser.contador_cafe_id))
       )
@@ -65,7 +78,11 @@ export class CardSelectionComponent implements OnInit, OnDestroy  {
       {
         this.upload = true;
       }
-      });
+      }); */
+
+      console.log();
+      this.coffes = (await this._SupabaseService.getCofess(this.dataUser.contador_cafe_id)).data
+      console.log("DATA CAFE NUEVA: ",this.coffes);
       
       
     /* setTimeout(() => {
@@ -73,6 +90,7 @@ export class CardSelectionComponent implements OnInit, OnDestroy  {
       this.cifrado();
     }, 2000) */
 
+    this.handleRealTimeUpdate();
   }
 
   ngOnDestroy(): void {
@@ -82,10 +100,27 @@ export class CardSelectionComponent implements OnInit, OnDestroy  {
     }
   }
 
-  actualizarDatos(): void {
-    this._SupabaseService.getDataCard(this.dataUser.contador_cafe_id).subscribe((data: any) => {
+  handleRealTimeUpdate(){
+    console.log("ESTAMSO EN REALTIME")
+    this._SupabaseService.getTablaCafesRealtime(this.dataUser.contador_cafe_id).subscribe(update => {
+      const data:any = update;
+      console.log('UPDATE:', data);
+      if(data.new.id == this.data_cafe.id){
+        console.log('UPDATE == A USUARIO');
+        this.data_cafe.contador = data.new.contador
+        this.data_cafe.cantidad_gratis = data.new.cantidad_gratis
+        this.data_cafe.gratis = data.new.gratis
+      }
+    })
+  }
+
+ async actualizarDatos(): Promise<void> {
+  await  this._SupabaseService.getDataCard(this.dataUser.contador_cafe_id).subscribe((data: any) => {
       this.data_cafe = data[0];
       console.log(data[0]);
+      {
+        this.upload = true;
+      }
     });
   }
 

@@ -9,6 +9,7 @@ export interface Usuarios {
     email:            string;
     contador_cafe_id: string;
     admin: boolean;
+    name: string;
 }
 
 // Converts JSON strings to/from your types
