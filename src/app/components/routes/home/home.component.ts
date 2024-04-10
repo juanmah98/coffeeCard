@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { SupabaseService } from 'src/app/services/supabase.service';
 import { Usuarios } from 'src/app/interfaces/usuarios';
 import { InternoService } from 'src/app/services/interno.service';
+import { CafeData } from 'src/app/interfaces/cafes_data';
 declare var google: any;
 
 @Component({
@@ -105,6 +106,11 @@ handleCredentialResponse = (response: any) => {
   
 }
 
+
+async crearCafeRealtime(){
+
+}
+
 async createCafe(dataCafe:any) {
   try {
     const response = await this._SupabaseService.postCafes(dataCafe).toPromise();
@@ -126,9 +132,12 @@ async crearUsuario(email: any, name:any): Promise<void> {
   const dataUser:any = {
     email: email,
     contador_cafe_id: null,
-    name: name
+    name: name,
+    entidad_id: "e4180b6c-a43e-4157-86c1-3c134ede2bb8",
+    admin: false
   };
-  const dataCafe = {
+  const dataCafe:any = {
+       
       contador: 0,
         gratis: false,
         opcion: 0,
@@ -137,27 +146,58 @@ async crearUsuario(email: any, name:any): Promise<void> {
   
   console.log("dataCafe")
   console.log(dataCafe)
-   /* this._SupabaseService.postCafes(dataCafe).subscribe(
+
+   
+  const response:any = (await this._SupabaseService.postNewCoffe(dataCafe)).data;
+console.log("Contador_cafe CREADO", response);
+if (response && response.length > 0) {
+    dataUser.contador_cafe_id = response[0].id;
+    console.log("contador_cafe_id", dataUser.contador_cafe_id);
+} else {
+    console.error("Error al obtener la respuesta del contador_cafe");
+    // Manejar el error adecuadamente
+}
+
+const responseUser:any = (await this._SupabaseService.postNewUser(dataUser)).data;
+console.log("Usuario CREADO", responseUser);
+
+      
+      this.interno.setLogged(false); 
+      this.interno.setUser(responseUser[0]);
+      console.log("DATA PARA SET INTERNO",responseUser[0])
+       this.authService.login();
+      this.ngZone.run(() => {
+      this.router.navigate(['/cardSelection']);
+    }); 
+
+   
+
+  /*  this._SupabaseService.postUser(dataUser).subscribe(
     (response) => {
-      console.log('cafe creado con éxito', response);
-     
+      console.log('Usuario creado con éxito', response);     
+      this.interno.setLogged(false); 
+      this.interno.setUser(dataUser);
+      this.authService.login();
+      this.ngZone.run(() => {
+      this.router.navigate(['/cardSelection']);
+    }); 
     },
     (error) => {
-      console.error('Error al crear cafe', error);
+      console.error('Error al crear usuario', error);
     }
   ); */
-
-  this.createCafe(dataCafe)
+  
+ /*  this.createCafe(dataCafe)
   .then((response) => {
     console.log('cafe creado con éxito', response);
   })
   .catch((error) => {
     console.error('Error al crear cafe', error);
-  });
+  }); */
 
  
 
-setTimeout(() => {
+/* setTimeout(() => {
   this._SupabaseService.getCafes().subscribe((data: any) => {
     console.log("CafeID");
     console.log(data[data.length -1]);
@@ -185,7 +225,7 @@ setTimeout(() => {
 }, 2000)
 
 
-}, 2000)
+}, 2000) */
   
 }
 

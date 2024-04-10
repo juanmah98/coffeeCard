@@ -3,9 +3,10 @@ import { environment } from 'src/environments/environment';
 import { BehaviorSubject, Observable, Subject  } from 'rxjs';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { createClient, SupabaseClient } from '@supabase/supabase-js';
+import { CafeData } from '../interfaces/cafes_data';
 
 export const USERS_TABLE = "usuarios";
-export const CONTADOR_CAFES = "contador_cafe";
+export const CONTADOR_TABLE = "contador_cafe";
 
 @Injectable({
   providedIn: 'root'
@@ -47,11 +48,47 @@ export class SupabaseService {
 
   async getCofess(cafe: string){
     return await this.supabase
-    .from(CONTADOR_CAFES)
+    .from(CONTADOR_TABLE)
     .select('*')
     .match({id: cafe})
     .single()
   }
+  async postNewCoffe(data: any) {
+    return await this.supabase
+      .from("contador_cafe")
+      .insert(data)
+      .select();
+}
+
+async postNewUser(data: any) {
+  return await this.supabase
+      .from("usuarios")
+      .insert(data)
+      .select();
+}
+
+async updateOpcion(id: string, opcion: number) {
+  return await this.supabase
+  .from(CONTADOR_TABLE)
+  .update({ opcion: opcion })
+  .eq('id', id)
+  .select()
+}
+
+async updateContador(id: string, contador: number) {
+  return await this.supabase
+  .from(CONTADOR_TABLE)
+  .update({ contador: contador })
+  .eq('id', id)
+  .select()
+}
+async updateContadorGratis(id: string, cantidad_gratis: number) {
+  return await this.supabase
+  .from(CONTADOR_TABLE)
+  .update({ cantidad_gratis: cantidad_gratis })
+  .eq('id', id)
+  .select()
+}
 
   getUsers(): Observable<any> {
     const headers = this.getHeaders();
@@ -91,6 +128,7 @@ export class SupabaseService {
 
     return this.http.patch(this.apiUrlCafes, updateData, { headers, params: queryParams });
   }
+  
 
   postContador(someValue: string, otherValue: number): Observable<any> {
     const headers = this.getHeaders();

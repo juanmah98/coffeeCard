@@ -14,7 +14,8 @@ export class InternoService {
       "email": "",
       "contador_cafe_id": "",
       "admin": false,
-      "name":""
+      "name":"",
+      "entidad_id":"e4180b6c-a43e-4157-86c1-3c134ede2bb8"
     }
   );
 

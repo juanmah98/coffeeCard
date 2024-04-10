@@ -5,7 +5,7 @@ import { InternoService } from 'src/app/services/interno.service';
 import { SupabaseService } from 'src/app/services/supabase.service';
 import * as CryptoJS from 'crypto-js';
 import { Subscription, interval } from 'rxjs';
-import { switchMap } from 'rxjs/operators';
+
 
 @Component({
   selector: 'app-card-selection',
@@ -22,11 +22,12 @@ export class CardSelectionComponent implements OnInit, OnDestroy  {
   contadorArray: number[] = Array(10).fill(0).map((x, i) => i);
 
   dataUser:Usuarios = {
-      id: "",
-      email: '',
-      contador_cafe_id: '',
-      admin: false,
-      name: ''
+    id: "",
+    email: "",
+    contador_cafe_id: "",
+    admin: false,
+    name: "",
+    entidad_id: "e4180b6c-a43e-4157-86c1-3c134ede2bb8"
   };
 
   data_cafe:CafeData = 
@@ -57,8 +58,8 @@ export class CardSelectionComponent implements OnInit, OnDestroy  {
       this.users = message.payload;
     }); */
 
-    this.users = await this._SupabaseService.getUs()
-    console.log("USUARIOS US:", this.users);
+    /* this.users = await this._SupabaseService.getUs()
+    console.log("USUARIOS US:", this.users); */
 
     this.dataUser = this._dataInterna.getUser();
     this.nombre = localStorage.getItem("name");
@@ -81,8 +82,8 @@ export class CardSelectionComponent implements OnInit, OnDestroy  {
       }); */
 
       console.log();
-      this.coffes = (await this._SupabaseService.getCofess(this.dataUser.contador_cafe_id)).data
-      console.log("DATA CAFE NUEVA: ",this.coffes);
+      this.data_cafe = (await this._SupabaseService.getCofess(this.dataUser.contador_cafe_id)).data
+      console.log("DATA CAFE NUEVA: ",this.data_cafe);
       
       
     /* setTimeout(() => {
@@ -124,65 +125,30 @@ export class CardSelectionComponent implements OnInit, OnDestroy  {
     });
   }
 
-  op1(){
+ async op1(){
     this.upload = false;
-    this._SupabaseService.postOpcion(this.dataUser.contador_cafe_id,1).subscribe(
-      (response) => {
-        console.log('opcion 1', response);
-        /* this.router.navigate(['/user']); */
-      },
-      (error) => {
-        console.error('Error al crear cafe', error);
-      }
-    );
-
-     setTimeout(() => {
-      
-      this.upload = true;
-    }, 1000) 
-
-    /* this.ngOnInit(); */
+    const response:any = (await this._SupabaseService.updateOpcion(this.dataUser.contador_cafe_id,1)).data;
+    console.log("Opcion 1 actualizada", response);
+    this.data_cafe.opcion = response[0].opcion        
+    this.upload = true;
+    
   }
 
-  op2(){
+  async op2(){
     this.upload = false;
-    this._SupabaseService.postOpcion(this.dataUser.contador_cafe_id,2).subscribe(
-      (response) => {
-        console.log('opcion 2', response);
-        /* this.router.navigate(['/user']); */
-      },
-      (error) => {
-        console.error('Error al crear cafe', error);
-      }
-    );
-
-    setTimeout(() => {
-      
-      this.upload = true;
-    }, 1000) 
-   /*  this.ngOnInit(); */
-
+    const response:any = (await this._SupabaseService.updateOpcion(this.dataUser.contador_cafe_id,2)).data;
+    console.log("Opcion 2 actualizada", response);
+    this.data_cafe.opcion = response[0].opcion      
+    this.upload = true;
+   
   }
 
-  op3(){
+  async op3(){
     this.upload = false;
-    this._SupabaseService.postOpcion(this.dataUser.contador_cafe_id,3).subscribe(
-      (response) => {
-        console.log('opcion 3', response);
-        /* this.router.navigate(['/user']); */
-      },
-      (error) => {
-        console.error('Error al crear cafe', error);
-      }
-    );
-
-    setTimeout(() => {
-      
-      this.upload = true;
-    }, 1000) 
-
-   /*  this.ngOnInit(); */
-
+    const response:any = (await this._SupabaseService.updateOpcion(this.dataUser.contador_cafe_id,3)).data;
+    console.log("Opcion 3 actualizada", response);
+    this.data_cafe.opcion = response[0].opcion    
+    this.upload = true;
   }
 
   async sumar(){
@@ -190,36 +156,46 @@ export class CardSelectionComponent implements OnInit, OnDestroy  {
 
       this.data_cafe.contador=0;
       this.data_cafe.opcion=0;
-     await this._SupabaseService.postOpcion(this.dataUser.contador_cafe_id,0).subscribe(
+
+      const responseOpcion:any = (await this._SupabaseService.updateOpcion(this.dataUser.contador_cafe_id,0)).data;
+      console.log("Opcion set 0", responseOpcion);
+
+      const responseContador:any = (await this._SupabaseService.updateContador(this.dataUser.contador_cafe_id,0)).data;
+      console.log("Opcion set 0", responseContador);
+    /*  await this._SupabaseService.postOpcion(this.dataUser.contador_cafe_id,0).subscribe(
         (response) => {
           console.log('suma opcion recet', response);
-          /* this.router.navigate(['/user']); */
+         
         },
         (error) => {
           console.error('Error al crear cafe', error);
         }
-      );
+      ); */
 
-      await this._SupabaseService.postContador(this.dataUser.contador_cafe_id,0).subscribe(
+     /*  await this._SupabaseService.postContador(this.dataUser.contador_cafe_id,0).subscribe(
         (response) => {
           console.log('suma contador con recet', response);
-          /* this.router.navigate(['/user']); */
+          
         },
         (error) => {
           console.error('Error al crear cafe', error);
         }
-      );
+      ); */
       /* this.ngOnInit(); */
     }else{      
-      await this._SupabaseService.postContador(this.dataUser.contador_cafe_id,this.data_cafe.contador+1).subscribe(
+      const responseContador:any = (await this._SupabaseService.updateContador(this.dataUser.contador_cafe_id,this.data_cafe.contador+1)).data;
+      console.log("Opcion set 0", responseContador);
+
+      /* await this._SupabaseService.postContador(this.dataUser.contador_cafe_id,this.data_cafe.contador+1).subscribe(
         (response) => {
           console.log('contador aumentado', response);
-          /* this.router.navigate(['/user']); */
+         
         },
         (error) => {
           console.error('Error al crear cafe', error);
         }
-      );
+      ); */
+
      await this.decifrado();
      /* await this.ngOnInit(); */
     }
@@ -227,6 +203,8 @@ export class CardSelectionComponent implements OnInit, OnDestroy  {
    
 
   }
+
+  
 
   reload(){
     /* this.ngOnInit(); */

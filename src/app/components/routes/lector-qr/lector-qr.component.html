@@ -3,7 +3,7 @@
     <div class="row justify-content-center">
       <div class="col-12 pb-2 pt-3 text-light ">
         <div class="">
-          <video #video autoplay></video>
+          <video [ngClass]="{'video':video1,'video2':video2}" #video autoplay></video>
           <canvas #canvas style="display: none;"></canvas>
           <h3 *ngIf="continueScanning==true" class="text-light">ESCANEANDO QR</h3>
           <h3 *ngIf="continueScanning==false" class="text-warning">ESCANEO CORRECTO</h3>
@@ -13,17 +13,16 @@
         <div  *ngIf="continueScanning==false" class="text-light">                     
           <div class="pt-2">
             <h2>TARJETA</h2>
-            <p>Opcion N°<b>{{data_cafe.opcion}}</b></p>
-            <p>Contador <b>{{data_cafe.contador}}</b></p>
-            <p>Cantidad de tarjetas gratis <b>{{data_cafe.cantidad_gratis}}</b></p>
+            <div class="d-flex justify-content-center align-items-center">
+                <p class="fs-5 me-3">Opcion N°<b>{{data_cafe.opcion}}</b></p>
+                <p class="fs-5">Contador <b>{{data_cafe.contador}}</b></p>
+            </div>
+            <!-- <p>Cantidad de tarjetas gratis <b>{{data_cafe.cantidad_gratis}}</b></p> -->
             <p *ngIf="data_cafe.gratis==true">Gratis</p>
-            <button *ngIf="data_cafe.gratis==false && data_cafe.contador<10" type="button" class="btn btn-warning" (click)="sumar()">
-              Sumar +1
-            </button>
-            <button *ngIf="data_cafe.gratis==true || data_cafe.contador==10" type="button" class="btn btn-danger" (click)="sumar()">
-              Canje gratis
-            </button>
-          </div>
+            <button *ngIf="data_cafe.gratis==false && data_cafe.contador<10" type="button" class="btn btn-warning" (click)="sumar()">Sumar +1</button>
+            <button *ngIf="data_cafe.gratis==true || data_cafe.contador==10" type="button" class="btn btn-danger" (click)="sumar()">Canje gratis</button>
+        </div>
+        
         </div>
       </div>
     </div>

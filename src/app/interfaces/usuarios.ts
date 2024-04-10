@@ -10,6 +10,7 @@ export interface Usuarios {
     contador_cafe_id: string;
     admin: boolean;
     name: string;
+    entidad_id:       string;
 }
 
 // Converts JSON strings to/from your types

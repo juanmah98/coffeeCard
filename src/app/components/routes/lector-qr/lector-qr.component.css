@@ -12,9 +12,16 @@ body{
 
 }
 
-video {
+.video {
     width: 100%; /* Establece el ancho del video al 100% del contenedor */
     max-width: 600px; /* Establece el ancho máximo del video */
     height: auto; /* Permite que la altura se ajuste automáticamente según el ancho */
     border: 2px solid white; /* Puedes agregar un borde alrededor del video para visualizar el área de escaneo */
-  }
+}
+.video2 {
+    width: 100%; /* Establece el ancho del video al 100% del contenedor */
+    max-width: 450px; /* Establece el ancho máximo del video */
+    height: auto; /* Permite que la altura se ajuste automáticamente según el ancho */
+    border: 2px solid white; /* Puedes agregar un borde alrededor del video para visualizar el área de escaneo */
+}
+

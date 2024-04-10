@@ -15,6 +15,8 @@ export class LectorQrComponent implements OnInit {
   @ViewChild('video') videoElement!: ElementRef;
   @ViewChild('canvas') canvasElement!: ElementRef;
 
+  video1:boolean = true
+  video2:boolean = false
   uuidCifrado: string = '';
   data_cafe: CafeData = {
     id: "",
@@ -151,10 +153,14 @@ export class LectorQrComponent implements OnInit {
 
   detenerEscaneo(): void {
     this.continueScanning = false;
+    this.video1=false
+    this.video2=true
   }
 
   reiniciarEscaneo(): void {
     this.continueScanning = true;
+    this.video1=true
+    this.video2=false
     this.initScanInterval();
   }
 
@@ -170,16 +176,28 @@ export class LectorQrComponent implements OnInit {
       this.data_cafe.cantidad_gratis = this.data_cafe.cantidad_gratis + 1;
 
       try {
-        await this._SupabaseService.postOpcion(this.data_cafe.id, 0).toPromise();
+
+      const responseOpcion:any = (await this._SupabaseService.updateOpcion(this.data_cafe.id, 0)).data;
+      console.log("Opcion set 0", responseOpcion);
+
+      const responseContador:any = (await this._SupabaseService.updateContador(this.data_cafe.id, 0)).data;
+      console.log("Contador set 0", responseContador);
+
+      const responseContadorGratis:any = (await this._SupabaseService.updateContadorGratis(this.data_cafe.id, this.data_cafe.cantidad_gratis)).data;
+      console.log("Contador Gratis +1", responseContadorGratis);
+
+       /*  await this._SupabaseService.postOpcion(this.data_cafe.id, 0).toPromise();
         await this._SupabaseService.postContador(this.data_cafe.id, 0).toPromise();
-        await this._SupabaseService.postGratis(this.data_cafe.id, this.data_cafe.cantidad_gratis).toPromise();
+        await this._SupabaseService.postGratis(this.data_cafe.id, this.data_cafe.cantidad_gratis).toPromise(); */
         this.reiniciarEscaneo();
       } catch (error) {
         console.error('Error al crear cafe', error);
       }
     } else {
       try {
-        await this._SupabaseService.postContador(this.data_cafe.id, this.data_cafe.contador + 1).toPromise();
+        const responseContador:any = (await this._SupabaseService.updateContador(this.data_cafe.id, this.data_cafe.contador + 1)).data;
+        console.log("Contador +1 ", responseContador);
+       /*  await this._SupabaseService.postContador(this.data_cafe.id, this.data_cafe.contador + 1).toPromise(); */
         this.reiniciarEscaneo();
       } catch (error) {
         console.error('Error al crear cafe', error);
