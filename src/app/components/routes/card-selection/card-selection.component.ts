@@ -15,7 +15,7 @@ import { Subscription, interval } from 'rxjs';
 export class CardSelectionComponent implements OnInit, OnDestroy  {
   imagen = '';
   
-
+  gratis:boolean=false;
   upload:boolean = false;
   nombre:any = '';
   foto:any='';

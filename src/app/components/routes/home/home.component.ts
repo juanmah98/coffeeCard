@@ -14,12 +14,14 @@ declare var google: any;
 })
 export class HomeComponent implements OnInit {
 
+  loading:boolean = false;
   googleUser: any;
   logged:boolean = false;
   usuarios: Usuarios[] = [];
   constructor(private authService:AuthService, private router: Router, private _SupabaseService: SupabaseService, private ngZone: NgZone, private interno:  InternoService) { }
 
   ngOnInit(): void {
+    this.loading = false;
   
   
   setTimeout(() => {
@@ -61,7 +63,7 @@ handleCredentialResponse = (response: any) => {
 
   console.log("this.usuarios")
   console.log(this.usuarios)
-
+  this.loading = true;
   this._SupabaseService.getUsers().subscribe((data: any) => {
     this.usuarios = data.email;
     let logg = false;
@@ -87,10 +89,12 @@ handleCredentialResponse = (response: any) => {
    const dataUs=this.interno.getUser();
    if(dataUs.admin==true){
     this.ngZone.run(() => {
+      this.loading = false;
       this.router.navigate(['/qrscan']);
     });
    }else{
     this.ngZone.run(() => {
+      this.loading = false;
       this.router.navigate(['/cardSelection']);
     });
    }
@@ -167,6 +171,7 @@ console.log("Usuario CREADO", responseUser);
       console.log("DATA PARA SET INTERNO",responseUser[0])
        this.authService.login();
       this.ngZone.run(() => {
+      this.loading = false;
       this.router.navigate(['/cardSelection']);
     }); 
 
