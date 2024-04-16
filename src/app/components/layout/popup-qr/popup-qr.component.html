@@ -2,15 +2,12 @@
     <div class="container__card">
       <div class="container__title">Sumar <img src="../../../../assets/imagenes/cards/cardqr.png" width="35px" alt=""></div>
       <!-- <div class="container__subtitle">Cv750,03509 Finestrat España</div> -->
-      <div class="container__description">
+      <!-- <div class="container__description">
         <div class="container__description-text">{{data}}</div>
-      </div>
-      <!-- <div class="container__scheduler">
-        <span class="container__description-text-bold">Llegada:</span>
-        <span class="container__description-text">Jueves 24 - 16:00h</span>
-        <span class="container__description-text-bold">Salida:</span>
-        <span class="container__description-text">Domingo 27 - 10:00h</span>
       </div> -->
+       <div class="container__maps">
+        <qrcode [qrdata]="qrdata" [width]="300" [errorCorrectionLevel]="'M'"></qrcode>
+      </div> 
      <!--  -->
     </div>
   
@@ -20,6 +17,6 @@
           fill="#222222" />
       </svg>
       &nbsp;Cerrar</div> <!-- En vez de la "X" deberiamos poner el icono de la cruz -->
-    <!-- <div class="background" (click)="onBackgroundTouched()"></div> -->
+    <div class="background" (click)="onBackgroundTouched()"></div>
   </div>
   

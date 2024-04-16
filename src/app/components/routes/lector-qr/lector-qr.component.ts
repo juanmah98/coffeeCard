@@ -203,6 +203,7 @@ export class LectorQrComponent implements OnInit {
         console.error('Error al crear cafe', error);
       }
     }
+    this.continueScanning = true;
   }
 
 }

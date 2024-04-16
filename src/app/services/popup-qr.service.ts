@@ -6,7 +6,7 @@ import { BehaviorSubject } from 'rxjs';
 })
 export class PopupQrService {
 
-  private dataSubject = new BehaviorSubject<string | null>(null); // Aquí guardamos el string
+  private dataSubject = new BehaviorSubject<string | null>('null'); // Aquí guardamos el string
   data$ = this.dataSubject.asObservable();
   mostrar: boolean = false;
 

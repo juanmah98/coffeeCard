@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { CafeData } from 'src/app/interfaces/cafes_data';
 import { Usuarios } from 'src/app/interfaces/usuarios';
 import { InternoService } from 'src/app/services/interno.service';
@@ -6,6 +6,7 @@ import { SupabaseService } from 'src/app/services/supabase.service';
 import * as CryptoJS from 'crypto-js';
 import { Subscription, interval } from 'rxjs';
 import { PopupQrService } from 'src/app/services/popup-qr.service';
+import { ToastComponent } from '../../layout/toast/toast.component';
 
 
 @Component({
@@ -21,6 +22,7 @@ export class CardSelectionComponent implements OnInit, OnDestroy  {
   nombre:any = '';
   foto:any='';
   contadorArray: number[] = Array(10).fill(0).map((x, i) => i);
+  @ViewChild('toast') toast!: ToastComponent; // ViewChild está aquí
 
   dataUser:Usuarios = {
     id: "",
@@ -84,6 +86,7 @@ export class CardSelectionComponent implements OnInit, OnDestroy  {
 
       console.log();
       this.data_cafe = (await this._SupabaseService.getCofess(this.dataUser.contador_cafe_id)).data
+    
       console.log("DATA CAFE NUEVA: ",this.data_cafe);
       
       
@@ -109,11 +112,19 @@ export class CardSelectionComponent implements OnInit, OnDestroy  {
       console.log('UPDATE:', data);
       if(data.new.id == this.data_cafe.id){
         console.log('UPDATE == A USUARIO');
+        this.data_cafe.opcion = data.new.opcion
         this.data_cafe.contador = data.new.contador
         this.data_cafe.cantidad_gratis = data.new.cantidad_gratis
         this.data_cafe.gratis = data.new.gratis
+        this.popupService.actualizarMostrar(false);
+        this.showToast();
+
       }
     })
+  }
+
+  showToast(): void {
+    this.toast.showMessage('¡QR leido con éxito!');
   }
 
  async actualizarDatos(): Promise<void> {
@@ -163,6 +174,8 @@ export class CardSelectionComponent implements OnInit, OnDestroy  {
 
       const responseContador:any = (await this._SupabaseService.updateContador(this.dataUser.contador_cafe_id,0)).data;
       console.log("Opcion set 0", responseContador);
+
+      
     /*  await this._SupabaseService.postOpcion(this.dataUser.contador_cafe_id,0).subscribe(
         (response) => {
           console.log('suma opcion recet', response);
@@ -214,6 +227,7 @@ export class CardSelectionComponent implements OnInit, OnDestroy  {
   cifrado(){
     this.uuidCifrado = this.cifrarUUID(this.data_cafe.id, this.clave);
     console.log('UUID cifrado:', this.uuidCifrado);
+    this.onInfoTouch()
   }
 
   decifrado(){
@@ -234,7 +248,7 @@ descifrarUUID(uuidCifrado: string, clave: string): string {
 }
 
 onInfoTouch() {
-  this.popupService.setData("Enviando data");
+  this.popupService.setData(this.uuidCifrado);
   this.popupService.actualizarMostrar(true)
 }
 
