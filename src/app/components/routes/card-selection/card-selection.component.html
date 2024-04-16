@@ -1,3 +1,4 @@
+<app-popup-qr *ngIf="popupService.mostrar"></app-popup-qr>
 <body class="d-flex align-items-center">
     <div *ngIf="upload == false" class="container-fluid d-flex justify-content-center align-items-center vh-100">
         <div class="spinner-border text-light" role="status">
@@ -76,8 +77,9 @@
                             <img src="../../../../assets/imagenes/cards/cafe.png" width="70px" class="mr-3" alt="">
                         </div>
                         <p class="text-center fs-5 pt-3 mb-1">Cafes <b>{{data_cafe.contador}}</b></p>
-                        <button *ngIf="data_cafe.contador!=10" class="btn btn-light mt-2" data-bs-toggle="modal" data-bs-target="#staticBackdrop" (click)="cifrado()"><img src="../../../../assets/imagenes/cards/ticketmas.png" width="28px" alt=""></button>
-                        <button *ngIf="data_cafe.contador==10" class="btn btn-light mt-2" data-bs-toggle="modal" data-bs-target="#staticBackdrop" (click)="cifrado()"><img src="../../../../assets/imagenes/cards/free.png" width="30px" alt=""></button>
+                       <!--  <button *ngIf="data_cafe.contador!=10" class="btn btn-light mt-2" data-bs-toggle="modal" data-bs-target="#staticBackdrop" (click)="cifrado()"><img src="../../../../assets/imagenes/cards/ticketmas.png" width="28px" alt=""></button>
+                        <button *ngIf="data_cafe.contador==10" class="btn btn-light mt-2" data-bs-toggle="modal" data-bs-target="#staticBackdrop" (click)="cifrado()"><img src="../../../../assets/imagenes/cards/free.png" width="30px" alt=""></button> -->
+                        <button class="btn btn-light mt-2"  (click)="onInfoTouch()"><img src="../../../../assets/imagenes/cards/free.png" width="30px" alt=""></button>
                         </div>
                   
                       </div>

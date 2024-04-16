@@ -5,6 +5,7 @@ import { InternoService } from 'src/app/services/interno.service';
 import { SupabaseService } from 'src/app/services/supabase.service';
 import * as CryptoJS from 'crypto-js';
 import { Subscription, interval } from 'rxjs';
+import { PopupQrService } from 'src/app/services/popup-qr.service';
 
 
 @Component({
@@ -47,7 +48,7 @@ export class CardSelectionComponent implements OnInit, OnDestroy  {
   users: any[] = [];
   coffes: any[] = [];
   private dataSubscription: Subscription = new Subscription();
-  constructor(private _SupabaseService:SupabaseService, private _dataInterna: InternoService) { }
+  constructor(private _SupabaseService:SupabaseService, private _dataInterna: InternoService, public popupService: PopupQrService) { }
 
   async ngOnInit(): Promise<void> {
 
@@ -231,6 +232,15 @@ descifrarUUID(uuidCifrado: string, clave: string): string {
     const bytes = CryptoJS.AES.decrypt(uuidCifrado, clave);
     return bytes.toString(CryptoJS.enc.Utf8);
 }
+
+onInfoTouch() {
+  this.popupService.setData("Enviando data");
+  this.popupService.actualizarMostrar(true)
+}
+
+/* onInfoTouch() {
+  this.popupService.actualizarMostrar(true)
+} */
 
 // UUID original
 

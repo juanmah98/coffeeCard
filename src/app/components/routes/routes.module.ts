@@ -5,6 +5,8 @@ import { CardSelectionComponent } from './card-selection/card-selection.componen
 import { QRCodeModule } from 'angularx-qrcode';
 import { LectorQrComponent } from './lector-qr/lector-qr.component';
 import { PrincipalComponent } from './principal/principal.component';
+import { PopupQrComponent } from '../layout/popup-qr/popup-qr.component';
+import { LayoutModule } from '../layout/layout.module';
 
 
 
@@ -13,12 +15,14 @@ import { PrincipalComponent } from './principal/principal.component';
     HomeComponent,
     CardSelectionComponent,
     LectorQrComponent,
-    PrincipalComponent
+    PrincipalComponent,
+   
     
   ],
   imports: [
     CommonModule,
-    QRCodeModule
+    QRCodeModule,
+    LayoutModule
   ],
   exports:[
     HomeComponent,
