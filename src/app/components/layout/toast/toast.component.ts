@@ -4,7 +4,7 @@ import { Component, ViewChild, ElementRef } from '@angular/core';
   selector: 'app-toast',
   template: `
     <div #toastElement class="toast" [style.display]="isVisible ? 'block' : 'none'">
-      {{ message }}
+      {{message}} <img src="../../../../assets/imagenes/cards/icons8-cuenta-verificada-48.png" width="30px" alt="">
     </div>
   `,
   styles: [`

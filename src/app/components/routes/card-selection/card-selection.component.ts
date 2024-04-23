@@ -117,14 +117,16 @@ export class CardSelectionComponent implements OnInit, OnDestroy  {
         this.data_cafe.cantidad_gratis = data.new.cantidad_gratis
         this.data_cafe.gratis = data.new.gratis
         this.popupService.actualizarMostrar(false);
-        this.showToast();
+        if(this.data_cafe.contador!=0){
+          this.showToast();
+        }
 
       }
     })
   }
 
   showToast(): void {
-    this.toast.showMessage('¡QR leido con éxito!');
+    this.toast.showMessage('¡QR leido!');
   }
 
  async actualizarDatos(): Promise<void> {

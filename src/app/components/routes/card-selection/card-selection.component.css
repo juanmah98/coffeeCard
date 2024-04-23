@@ -13,6 +13,10 @@ body{
 
 }
 
+h2{
+    font-family: "Sil";
+}
+
 .upload{
     height: 100vh;
 }
