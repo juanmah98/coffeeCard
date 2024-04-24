@@ -3,18 +3,21 @@ import { CommonModule } from '@angular/common';
 import { PopupQrComponent } from './popup-qr/popup-qr.component';
 import { QRCodeModule } from 'angularx-qrcode';
 import { ToastComponent } from './toast/toast.component';
+import { InfoComponent } from './info/info.component';
 
 
 
 @NgModule({
   declarations: [
     PopupQrComponent,
-    ToastComponent
+    ToastComponent,
+    InfoComponent
   ],
   
   exports: [
     PopupQrComponent,
-    ToastComponent
+    ToastComponent,
+    InfoComponent
   ],
   
   imports: [

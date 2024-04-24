@@ -18,4 +18,8 @@ export class PopupQrService {
   setData(data: string): void {
     this.dataSubject.next(data);
   }
+
+  setInfo(data: string): void {
+    this.dataSubject.next(data);
+  }
 }

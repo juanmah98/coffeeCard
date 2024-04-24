@@ -59,9 +59,14 @@ export class LectorQrComponent implements OnInit {
       navigator.mediaDevices.getUserMedia(constraints)
         .then(stream => {
           const video: HTMLVideoElement = this.videoElement.nativeElement;
-          video.setAttribute('playsinline', '');
+          /*  video.setAttribute('playsinline', ''); */
+          video.setAttribute('playsinline', 'true');
           video.setAttribute('webkit-playsinline', '');
-          video.setAttribute('muted', '');
+          video.setAttribute('muted', 'true');
+          /* video.setAttribute('width', '100%');
+          video.setAttribute('height', '100%'); */
+         /*  video.setAttribute('muted', ''); */
+          video.setAttribute('autoplay', 'true');
           video.srcObject = new MediaStream();
           video.srcObject!.addTrack(stream.getVideoTracks()[0].clone());
           video.play()
