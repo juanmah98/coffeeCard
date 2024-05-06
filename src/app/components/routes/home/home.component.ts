@@ -234,7 +234,9 @@ setTimeout(() => {
   
 }
 
-
+menu(){
+  this.router.navigate(['/menu'])
+}
 
 
 
