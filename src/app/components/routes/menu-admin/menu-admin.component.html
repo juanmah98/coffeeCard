@@ -1,1 +1,61 @@
-<p>menu-admin works!</p>
+<body>
+    <div class="background">
+
+<div class="container">
+    <div class="row justify-content-center">
+        <h2 class="text-center">CAFES</h2>
+      <div class="col-md-8 col-10">
+        <div class="cafe">
+          <div *ngFor="let item of cafes" class="menu-item">
+            <span class="item-name">{{item.nombre}}</span>
+
+            <div class="d-flex" *ngIf="item.precio_m == null || '' ">
+                <input [(ngModel)]=item.precio (ngModelChange)="inputChanged(item)" (keyup.enter)="inputChanged(item)" class="form-control" />
+                <span class="mx-1">€</span>
+            </div>
+
+            <div class="d-flex fs-4 p" *ngIf="item.precio_m != null || '' ">
+                <input [(ngModel)]=item.precio (ngModelChange)="inputChanged(item)" class="form-control" />
+                <span class="mx-1">€</span>
+                <input [(ngModel)]=item.precio_m (ngModelChange)="inputChanged(item)" class="form-control" />
+                <span class="mx-1">€</span>
+                <input [(ngModel)]=item.precio_g (ngModelChange)="inputChanged(item)" class="form-control" />
+                <span class="mx-1">€</span>
+            </div>
+
+           <!--  <span *ngIf="item.precio_m == null || '' " class="item-price">{{item.precio}}€</span>
+            <span *ngIf="item.precio_m != null || '' " class="item-price2"><b>{{item.precio}}</b>€ / M <b>{{item.precio_m}}</b>€ / G <b>{{item.precio_g}}</b>€</span> -->
+          </div>         
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+    <div class="container mt-4">
+        <div class="row justify-content-center">
+          <div class="col-md-8 col-10 mt-3 ">
+            <h2 class="text-center ">MENUS</h2>
+          
+
+            <div class="menus">
+                <div *ngFor="let item of menus" class="menu-item d-flex">
+                   
+                      <!-- <span class="item-name">{{item.menu}}</span> -->
+                      <input [(ngModel)]=item.menu (ngModelChange)="inputChangedMenu(item)" (keyup.enter)="inputChangedMenu(item)" class="form-control" />
+                      <button class="btn btn-danger" (click)="borrarMenu(item)">X</button>
+                   
+                </div>
+
+            <div class="text-center agregar pt-1">
+                <h5>Agregar</h5>
+                <input [(ngModel)]="nuevoMenu" (ngModelChange)="menuCambios()" class="form-control" />
+                <button class="btn btn-success" (click)="newMenu(nuevoMenu)">SUMAR</button>
+            </div>
+            </div>
+        </div>
+
+        </div>
+      </div>
+    </div>
+</body>

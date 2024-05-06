@@ -9,6 +9,7 @@ import { CommonModule } from '@angular/common';
 import { RoutesModule } from './components/routes/routes.module';
 import { QRCodeModule } from 'angularx-qrcode';
 import { LayoutModule } from './components/layout/layout.module';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -22,7 +23,8 @@ import { LayoutModule } from './components/layout/layout.module';
     RoutesModule,
     LayoutModule,
     CommonModule,
-    QRCodeModule
+    QRCodeModule,
+    FormsModule  
   ],
   providers: [],
   bootstrap: [AppComponent]

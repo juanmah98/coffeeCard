@@ -9,6 +9,7 @@ import { PopupQrComponent } from '../layout/popup-qr/popup-qr.component';
 import { LayoutModule } from '../layout/layout.module';
 import { MenuComponent } from './menu/menu.component';
 import { MenuAdminComponent } from './menu-admin/menu-admin.component';
+import { FormsModule } from '@angular/forms';
 
 
 
@@ -26,7 +27,8 @@ import { MenuAdminComponent } from './menu-admin/menu-admin.component';
   imports: [
     CommonModule,
     QRCodeModule,
-    LayoutModule
+    LayoutModule,
+    FormsModule
   ],
   exports:[
     HomeComponent,
