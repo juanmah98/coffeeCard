@@ -7,6 +7,7 @@ import * as CryptoJS from 'crypto-js';
 import { Subscription, interval } from 'rxjs';
 import { PopupQrService } from 'src/app/services/popup-qr.service';
 import { ToastComponent } from '../../layout/toast/toast.component';
+import { PopupInfoService } from 'src/app/services/popup-info.service';
 
 
 @Component({
@@ -50,7 +51,7 @@ export class CardSelectionComponent implements OnInit, OnDestroy  {
   users: any[] = [];
   coffes: any[] = [];
   private dataSubscription: Subscription = new Subscription();
-  constructor(private _SupabaseService:SupabaseService, private _dataInterna: InternoService, public popupService: PopupQrService) { }
+  constructor(private _SupabaseService:SupabaseService, private _dataInterna: InternoService, public popupService: PopupQrService, public infopopupService: PopupInfoService) { }
 
   async ngOnInit(): Promise<void> {
 
@@ -229,7 +230,7 @@ export class CardSelectionComponent implements OnInit, OnDestroy  {
   cifrado(){
     this.uuidCifrado = this.cifrarUUID(this.data_cafe.id, this.clave);
     console.log('UUID cifrado:', this.uuidCifrado);
-    this.onInfoTouch()
+    this.onPopupTouch()
   }
 
   decifrado(){
@@ -249,12 +250,18 @@ descifrarUUID(uuidCifrado: string, clave: string): string {
     return bytes.toString(CryptoJS.enc.Utf8);
 }
 
-onInfoTouch() {
+onPopupTouch() {
   this.popupService.setData(this.uuidCifrado);
   this.popupService.actualizarMostrar(true)
 }
 
-/* onInfoTouch() {
+onInfoTouch() {
+  this.infopopupService.setDataOpcion("Cafe");
+  this.infopopupService.setData("Con la compra de 10 cafes, tienes gratis un cafe expresso, cortado o con leche (tamaño regular)");
+  this.infopopupService.actualizarMostrar(true)
+}
+
+/* onPopupTouch() {
   this.popupService.actualizarMostrar(true)
 } */
 

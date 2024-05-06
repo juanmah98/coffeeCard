@@ -4,10 +4,12 @@ import { BehaviorSubject } from 'rxjs';
 @Injectable({
   providedIn: 'root'
 })
-export class PopupQrService {
+export class PopupInfoService {
 
   private dataSubject = new BehaviorSubject<string | null>('null'); // Aquí guardamos el string
+  private dataSubjectOpcion = new BehaviorSubject<string | null>('null'); // Aquí guardamos el string
   data$ = this.dataSubject.asObservable();
+  dataOpcion$ = this.dataSubjectOpcion.asObservable();
   mostrar: boolean = false;
 
   actualizarMostrar(valor: boolean) {
@@ -17,5 +19,8 @@ export class PopupQrService {
 
   setData(data: string): void {
     this.dataSubject.next(data);
+  }
+  setDataOpcion(data: string): void {
+    this.dataSubjectOpcion.next(data);
   }
 }

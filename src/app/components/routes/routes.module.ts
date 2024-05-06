@@ -7,6 +7,7 @@ import { LectorQrComponent } from './lector-qr/lector-qr.component';
 import { PrincipalComponent } from './principal/principal.component';
 import { PopupQrComponent } from '../layout/popup-qr/popup-qr.component';
 import { LayoutModule } from '../layout/layout.module';
+import { MenuComponent } from './menu/menu.component';
 
 
 
@@ -16,6 +17,7 @@ import { LayoutModule } from '../layout/layout.module';
     CardSelectionComponent,
     LectorQrComponent,
     PrincipalComponent,
+    MenuComponent,
    
     
   ],
