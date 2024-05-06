@@ -1,1 +1,84 @@
-<p>menu works!</p>
+<body>
+    <div class="background">
+    
+    <img src="../../../../assets/imagenes/menus/saco.png" width="100px" class="image-1">
+    <img src="../../../../assets/imagenes/menus/pipa.png" width="110px" class="image-2">
+
+<div class="container ">
+    <div class="row">
+      <div class="col text-center p-2">
+        <img src="../../../../assets/imagenes/menus/coffe.png" width="35%" alt="">
+      </div>
+    </div>
+    <div class="row justify-content-center">
+      <div class="col-md-8 col-10">
+        <div class="cafe">
+          <div *ngFor="let item of cafes" class="menu-item">
+            <span class="item-name">{{item.nombre}}</span>
+            <span *ngIf="item.precio_m == null || '' " class="item-price">{{item.precio}}€</span>
+            <span *ngIf="item.precio_m != null || '' " class="item-price2"><b>{{item.precio}}</b>€ / M <b>{{item.precio_m}}</b>€ / G <b>{{item.precio_g}}</b>€</span>
+          </div>         
+        </div>
+      </div>
+      <div class="col-md-5 col-10">
+         <div class="text-center extras">
+            <p>Descafeinado + <b>0,10€</b></p>
+            <p>Leche Avena / Soja / Sin lactosa + <b>0,20€</b></p>
+          </div>
+
+          <div class="text-center pt-3">
+              <img src="../../../../assets/imagenes/menus/vaso.png" width="70px">
+          </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="background-menu">
+
+    <div class="container mt-4">
+        <div class="row justify-content-end">
+          <div class="col-10 text-center mt-3 ">
+            <p class="menu">MENU</p>
+          </div>
+
+          <div class="col-10 text-center ">
+            <h2 class="fw-bold menu-2">PLATO DE COMIDA + BEBIDA + POSTRE</h2>
+            <span class="menu-precio">7,90€</span>            
+          </div>
+
+        </div>
+        <div class="row justify-content-end">
+          <div class="col-md-8 col-10">
+            <div class="menus">
+                <ul *ngFor="let item of menus" class="menu-item">
+                    <li>
+                      <span class="item-name">{{item.menu}}</span>
+                    </li>
+                  </ul>
+                        
+            </div>
+          </div>
+          <div class="col-md-5 col-10">
+             <div class="text-center extras-menu">
+                <span>CALDITO + <b>1,40€</b></span><br>
+                <span>GAZPACHO + <b>1,40€</b></span>
+              </div>
+             
+          </div>
+
+          <div class="col-md-5 col-10">
+            <div class="text-center ensalada">
+               <span>ENSALADA PEQUEÑA + <b>3,5€</b></span><br>
+               <span>ENSALADA GRANDE + <b>6,20€</b></span>
+             </div>
+            <div class="text-center ensaladas">
+               <span>POLLO / GRIEGA / ATUN / <br>QUESO DE CABRA</span>               
+             </div>
+            
+         </div>
+        </div>
+      </div>
+
+</div>
+</body>

@@ -5,6 +5,7 @@ import { CardSelectionComponent } from './components/routes/card-selection/card-
 import { AuthGuard } from './auth.guard';
 import { LectorQrComponent } from './components/routes/lector-qr/lector-qr.component';
 import { PrincipalComponent } from './components/routes/principal/principal.component';
+import { MenuComponent } from './components/routes/menu/menu.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' }, // Redirigir a '/home' en la ruta raíz
@@ -12,6 +13,7 @@ const routes: Routes = [
   { path: 'principal', component: PrincipalComponent },
   { path: 'qrscan', component: LectorQrComponent, canActivate: [AuthGuard]},
   { path: 'cardSelection', component: CardSelectionComponent, canActivate: [AuthGuard] },
+  { path: 'menu', component: MenuComponent },
 ];
 
 @NgModule({
