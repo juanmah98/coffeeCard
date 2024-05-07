@@ -120,11 +120,12 @@ body{
 
   .bebida{
     font-family: "Sil";
-    color: #ff7700;
+    color: #ff9900;
+    filter: drop-shadow(1px 1px 1px #636363aa);
   }
 
   .bebida-item {
-    margin-bottom: 10px;
+    margin-bottom: 8px;
     font-family: "Sil";
   }
   

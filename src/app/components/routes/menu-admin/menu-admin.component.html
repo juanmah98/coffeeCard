@@ -1,7 +1,7 @@
 <body>
     <div class="background">
 
-    <div class="container mt-2">
+    <div class="container-fluid mt-2">
         <div class="row justify-content-center">
           <div class="col-md-8 col-10 mt-1 ">
             <h2 class="text-center text-light">MENUS</h2>
@@ -28,7 +28,7 @@
       </div>
     </div>
 
-    <div class="container row justify-content-center">
+    <div class="container-fluid row justify-content-center">
       <div class="col text-center">
         <button class="btn btn-light mx-2" (click)="cafeTrue()">CAFES</button>
         <button class="btn btn-primary" (click)="bebidaTrue()">BEBIDAS</button>
@@ -39,7 +39,7 @@
       </div>
     </div>
 
-    <div *ngIf="vistaCafe" class="container pb-5 pt-3">
+    <div *ngIf="vistaCafe" class="container-fluid pb-5 pt-3">
       <div class="row justify-content-center">
           <h2 class="text-center text-light">CAFES</h2>
         <div class="col-md-8 col-10">
@@ -70,7 +70,7 @@
     </div>
 
 
-    <div *ngIf="vistaBebida" class="container pb-5 pt-3">
+    <div *ngIf="vistaBebida" class="container-fluid pb-5 pt-3">
       <div class="row justify-content-center">
           <h2 class="text-center text-light">BEBIDAS</h2>
         <div class="col-md-8 col-10">
@@ -78,7 +78,7 @@
             <div *ngFor="let item of bebidas" class="menu-item">
               <span class="item-name">{{item.bebida}}</span>
   
-              <div class="d-flex">
+              <div class="d-flex">                
                   <input [(ngModel)]=item.bebida (ngModelChange)="inputChangedBebida(item)" (keyup.enter)="inputChangedBebida(item)" class="form-control mx-1" />
                   <input [(ngModel)]=item.precio (ngModelChange)="inputChangedBebida(item)" (keyup.enter)="inputChangedBebida(item)" class="form-control" />
                   <span class="mx-1">€</span>
@@ -88,7 +88,7 @@
 
             <div class="text-center agregar pt-1">
               <h5 class="text-light">Agregar</h5>
-              <div class="d-flex">
+              <div class="d-flex">               
               <input [(ngModel)]="nuevaBebida" [placeholder]="'bebida nueva'" (ngModelChange)="bebidaCambios()" class="form-control mx-1" />
               <input [(ngModel)]="nuevaBebidaPrecio" [placeholder]="'precio'" (ngModelChange)="bebidaCambios()" class="form-control" />
               </div>
