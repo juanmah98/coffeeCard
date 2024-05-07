@@ -81,4 +81,26 @@
       </div>
 
 </div>
+
+<div class="background-bebidas">
+    
+<div class="container ">
+  <div class="row">
+    <div class="col text-center p-2">
+      <h1 class="fw-bold bebida">BEBIDAS</h1>
+    </div>
+  </div>
+  <div class="row justify-content-center">
+    <div class="col-md-8 col-10">
+      <div class="cafe">
+        <div *ngFor="let item of bebidas" class="bebida-item">
+          <span class="item-name">{{item.bebida}}</span>
+          <span class="item-price">{{item.precio}}€</span>
+         
+        </div>         
+      </div>
+    </div>
+  </div>
+</div>
+</div>
 </body>

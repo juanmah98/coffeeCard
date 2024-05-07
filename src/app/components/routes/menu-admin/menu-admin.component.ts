@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Bebidas } from 'src/app/interfaces/bebidas';
 import { CafeMenus } from 'src/app/interfaces/cafe_menus';
 import { Menu } from 'src/app/interfaces/menu';
 import { MenuService } from 'src/app/services/menu.service';
@@ -13,8 +14,12 @@ export class MenuAdminComponent implements OnInit {
   cafes:CafeMenus[]=[]
   cafesUpdate:CafeMenus[]=[]
   menus:Menu[]=[]
-
   nuevoMenu: string = ""; 
+  bebidas:Bebidas[]=[]
+  nuevaBebida: string = ""; 
+  nuevaBebidaPrecio: string = ""; 
+  vistaBebida:boolean=false
+  vistaCafe:boolean=false
   constructor(private _SupabasMenuServices: MenuService) { }
 
   async ngOnInit(): Promise<void> {
@@ -26,6 +31,10 @@ export class MenuAdminComponent implements OnInit {
     this.menus = await this._SupabasMenuServices.getMenu()
     console.log("cafes: ", this.menus)
     this.menus.sort((a, b) => a.id - b.id);
+
+    this.bebidas = await this._SupabasMenuServices.getBebidas()
+    console.log("bebidas: ", this.bebidas)
+    this.bebidas.sort((a, b) => a.id - b.id);
     
 
   }
@@ -75,6 +84,48 @@ export class MenuAdminComponent implements OnInit {
     console.log("Creando menu");
     console.log("menu:" ,this.nuevoMenu)
   }
+
+
+
+  async inputChangedBebida(item:Bebidas) {
+    console.log("Se ha detectado un cambio en un input", item);
+
+    const responseOpcion:any = (await this._SupabasMenuServices.upDateBebidas(item.id, item.precio, item.bebida)).data;
+    console.log("Cambio efectuado", responseOpcion);
+
+  }
+
+  async borrarBebida(item:Bebidas){
+    const responseOpcion:any = (await this._SupabasMenuServices.DeletedBebidas(item.id)).data;
+    console.log("Bebida borrado", responseOpcion);
+    this.ngOnInit();
+  }
+
+  async newBebida(nuevabebida:string, precio:string){
+    const dataBebida:any = {       
+      bebida:nuevabebida,
+      precio:precio
+  };
+
+    const response:any = (await this._SupabasMenuServices.postBebidas(dataBebida));
+    console.log("Bebida creado", response);
+    this.ngOnInit();
+  }
+
+  bebidaCambios(){
+    console.log("Creando bebida");
+    console.log("bebida:" ,this.nuevaBebida, this.nuevaBebidaPrecio)
+  }
+
+  cafeTrue(){
+    this.vistaCafe = !this.vistaCafe
+  }
+
+  bebidaTrue(){
+    this.vistaBebida = !this.vistaBebida
+  }
+
+  
 
 
 }

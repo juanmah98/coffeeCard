@@ -80,4 +80,34 @@ export class MenuService {
     .insert(data)
     .select()
   }
+
+  async getBebidas(){
+    const cafe = await this.supabase
+    .from('bebidas').
+    select('*');
+    return cafe.data || [];
+  }
+
+  async upDateBebidas(id: number, precio: string, bebida: string) {
+    return await this.supabase
+    .from("bebidas")
+    .update({ precio: precio, bebida: bebida })
+    .eq('id', id)
+    .select()
+  }
+
+  async DeletedBebidas(id: number) {
+    return await this.supabase
+    .from("bebidas")
+    .delete()
+    .eq('id', id)
+    .select()
+  }
+
+  async postBebidas(data: any) {
+    return await this.supabase
+    .from("bebidas")
+    .insert(data)
+    .select()
+  }
 }

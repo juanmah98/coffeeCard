@@ -1,41 +1,10 @@
 <body>
     <div class="background">
 
-<div class="container">
-    <div class="row justify-content-center">
-        <h2 class="text-center">CAFES</h2>
-      <div class="col-md-8 col-10">
-        <div class="cafe">
-          <div *ngFor="let item of cafes" class="menu-item">
-            <span class="item-name">{{item.nombre}}</span>
-
-            <div class="d-flex" *ngIf="item.precio_m == null || '' ">
-                <input [(ngModel)]=item.precio (ngModelChange)="inputChanged(item)" (keyup.enter)="inputChanged(item)" class="form-control" />
-                <span class="mx-1">€</span>
-            </div>
-
-            <div class="d-flex fs-4 p" *ngIf="item.precio_m != null || '' ">
-                <input [(ngModel)]=item.precio (ngModelChange)="inputChanged(item)" class="form-control" />
-                <span class="mx-1">€</span>
-                <input [(ngModel)]=item.precio_m (ngModelChange)="inputChanged(item)" class="form-control" />
-                <span class="mx-1">€</span>
-                <input [(ngModel)]=item.precio_g (ngModelChange)="inputChanged(item)" class="form-control" />
-                <span class="mx-1">€</span>
-            </div>
-
-           <!--  <span *ngIf="item.precio_m == null || '' " class="item-price">{{item.precio}}€</span>
-            <span *ngIf="item.precio_m != null || '' " class="item-price2"><b>{{item.precio}}</b>€ / M <b>{{item.precio_m}}</b>€ / G <b>{{item.precio_g}}</b>€</span> -->
-          </div>         
-        </div>
-      </div>
-    </div>
-  </div>
-
-
-    <div class="container mt-4">
+    <div class="container mt-2">
         <div class="row justify-content-center">
-          <div class="col-md-8 col-10 mt-3 ">
-            <h2 class="text-center ">MENUS</h2>
+          <div class="col-md-8 col-10 mt-1 ">
+            <h2 class="text-center text-light">MENUS</h2>
           
 
             <div class="menus">
@@ -55,6 +24,78 @@
             </div>
         </div>
 
+        </div>
+      </div>
+    </div>
+
+    <div class="container row justify-content-center">
+      <div class="col text-center">
+        <button class="btn btn-light mx-2" (click)="cafeTrue()">CAFES</button>
+        <button class="btn btn-primary" (click)="bebidaTrue()">BEBIDAS</button>
+      </div>
+
+      <div *ngIf="vistaCafe == false && vistaBebida==false" class="relleno">
+
+      </div>
+    </div>
+
+    <div *ngIf="vistaCafe" class="container pb-5 pt-3">
+      <div class="row justify-content-center">
+          <h2 class="text-center text-light">CAFES</h2>
+        <div class="col-md-8 col-10">
+          <div class="cafe">
+            <div *ngFor="let item of cafes" class="menu-item">
+              <span class="item-name">{{item.nombre}}</span>
+  
+              <div class="d-flex" *ngIf="item.precio_m == null || '' ">
+                  <input [(ngModel)]=item.precio (ngModelChange)="inputChanged(item)" (keyup.enter)="inputChanged(item)" class="form-control" />
+                  <span class="mx-1">€</span>
+              </div>
+  
+              <div class="d-flex fs-4 p" *ngIf="item.precio_m != null || '' ">
+                  <input [(ngModel)]=item.precio (ngModelChange)="inputChanged(item)" class="form-control" />
+                  <span class="mx-1">€</span>
+                  <input [(ngModel)]=item.precio_m (ngModelChange)="inputChanged(item)" class="form-control" />
+                  <span class="mx-1">€</span>
+                  <input [(ngModel)]=item.precio_g (ngModelChange)="inputChanged(item)" class="form-control" />
+                  <span class="mx-1">€</span>
+              </div>
+  
+             <!--  <span *ngIf="item.precio_m == null || '' " class="item-price">{{item.precio}}€</span>
+              <span *ngIf="item.precio_m != null || '' " class="item-price2"><b>{{item.precio}}</b>€ / M <b>{{item.precio_m}}</b>€ / G <b>{{item.precio_g}}</b>€</span> -->
+            </div>         
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <div *ngIf="vistaBebida" class="container pb-5 pt-3">
+      <div class="row justify-content-center">
+          <h2 class="text-center text-light">BEBIDAS</h2>
+        <div class="col-md-8 col-10">
+          <div class="cafe">
+            <div *ngFor="let item of bebidas" class="menu-item">
+              <span class="item-name">{{item.bebida}}</span>
+  
+              <div class="d-flex">
+                  <input [(ngModel)]=item.bebida (ngModelChange)="inputChangedBebida(item)" (keyup.enter)="inputChangedBebida(item)" class="form-control mx-1" />
+                  <input [(ngModel)]=item.precio (ngModelChange)="inputChangedBebida(item)" (keyup.enter)="inputChangedBebida(item)" class="form-control" />
+                  <span class="mx-1">€</span>
+                  <button class="btn btn-danger" (click)="borrarBebida(item)">X</button>
+              </div>
+            </div>  
+
+            <div class="text-center agregar pt-1">
+              <h5 class="text-light">Agregar</h5>
+              <div class="d-flex">
+              <input [(ngModel)]="nuevaBebida" [placeholder]="'bebida nueva'" (ngModelChange)="bebidaCambios()" class="form-control mx-1" />
+              <input [(ngModel)]="nuevaBebidaPrecio" [placeholder]="'precio'" (ngModelChange)="bebidaCambios()" class="form-control" />
+              </div>
+              <button class="btn btn-success" (click)="newBebida(nuevaBebida, nuevaBebidaPrecio)">SUMAR</button>
+          </div>
+
+          </div>
         </div>
       </div>
     </div>

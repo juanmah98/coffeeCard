@@ -16,6 +16,15 @@ body{
     background-position: center; /* Centra la imagen en el contenedor */
 }
 
+.background-bebidas{
+  background-image: linear-gradient(rgba(255, 255, 255, 0.749), rgba(223, 223, 223, 0.771)), url("../../../../assets/imagenes/backGrounds/ambar.jpg");
+  padding-top: 2rem;
+  height: 100vh;
+  background-repeat: no-repeat; /* Evita que la imagen se repita */
+  background-size: cover; /* Cubre todo el espacio disponible */
+  background-position: center; /* Centra la imagen en el contenedor */
+}
+
 .image-1 {
     position: absolute; /* Posición absoluta */
     top: 13%; /* Distancia desde arriba */
@@ -109,4 +118,13 @@ body{
     color: #594A47;  
   }
 
+  .bebida{
+    font-family: "Sil";
+    color: #ff7700;
+  }
+
+  .bebida-item {
+    margin-bottom: 10px;
+    font-family: "Sil";
+  }
   
