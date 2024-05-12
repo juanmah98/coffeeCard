@@ -1,12 +1,14 @@
 <div class="container">
-    <div class="container__card">
-      <div class="container__title">Sumar <img src="../../../../assets/imagenes/cards/cardqr.png" width="35px" alt=""></div>
+    <div class="container__card" [ngClass]="{'gratisNo': !gratis, 'gratisSi': gratis}">
+      <div *ngIf="gratis==false" class="container__title">Sumar <img src="../../../../assets/imagenes/cards/cardqr.png" width="35px" alt=""></div>
+      <div *ngIf="gratis==true" class="container__title fw-bold">Gratis <img src="../../../../assets/imagenes/cards/free.png" width="35px" alt=""></div>
       <!-- <div class="container__subtitle">Cv750,03509 Finestrat España</div> -->
       <!-- <div class="container__description">
         <div class="container__description-text">{{data}}</div>
       </div> -->
        <div class="container__maps">
-        <qrcode [qrdata]="qrdata" [width]="300" [errorCorrectionLevel]="'M'"></qrcode>
+        <qrcode *ngIf="gratis==false" [qrdata]="qrdata" [width]="300" [errorCorrectionLevel]="'M'"></qrcode>
+        <qrcode *ngIf="gratis==true" [qrdata]="qrdata" [colorDark]="'#512e00'" [width]="300" [errorCorrectionLevel]="'M'"></qrcode>
       </div> 
      <!--  -->
     </div>

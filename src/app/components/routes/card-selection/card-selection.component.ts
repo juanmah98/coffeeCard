@@ -251,8 +251,14 @@ descifrarUUID(uuidCifrado: string, clave: string): string {
 }
 
 onPopupTouch() {
+
   this.popupService.setData(this.uuidCifrado);
   this.popupService.actualizarMostrar(true)
+  if(this.data_cafe.contador==10){
+    this.popupService.setGratis(true)
+  }else{
+    this.popupService.setGratis(false)
+  }
 }
 
 onInfoTouch() {

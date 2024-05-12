@@ -11,7 +11,15 @@
     background-color: rgb(0, 0, 0);
     opacity: 70%;
   }
-  
+
+  .gratisNo{
+    background-color: white;
+  }
+
+  .gratisSi{
+    background-color: #ffffff;
+  }
+
   .container {
      position: fixed;
   top: 50%;
@@ -35,7 +43,7 @@
       height: 36.5rem;
       width: 19.5rem;
       border-radius: 1.5rem;
-      background-color: white;
+      
       padding: 1.5rem;
   
       z-index: 11;

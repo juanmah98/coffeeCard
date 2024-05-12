@@ -10,9 +10,27 @@ export class PopupQrService {
   data$ = this.dataSubject.asObservable();
   mostrar: boolean = false;
 
+  private gratis = new BehaviorSubject<boolean>(false);
+  gratis$ = this.gratis.asObservable();
+ /*  gratis:boolean=false; */
+
   actualizarMostrar(valor: boolean) {
     this.mostrar = valor;
     console.log("valor: ", valor)
+  }
+
+ /*  actualizarGratis(valor: boolean) {
+    this.gratis = valor;
+    console.log("valor: ", valor)
+  } */
+
+  getGratis(): boolean {
+    return this.gratis.value;
+  }
+
+  setGratis(valor: boolean): void {
+    this.gratis.next(valor);
+    localStorage.setItem('logged', JSON.stringify(valor));
   }
 
   setData(data: string): void {
