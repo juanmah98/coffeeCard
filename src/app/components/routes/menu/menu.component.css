@@ -25,6 +25,17 @@ body{
   background-position: center; /* Centra la imagen en el contenedor */
 }
 
+.background-promos{
+  background-image: linear-gradient(rgba(38, 38, 38, 0.656), rgba(12, 12, 12, 0.793)), url("../../../../assets/imagenes/backGrounds/doodleblack.jpg");
+  padding-top: 2rem;
+ /*  height: 100vh; */
+ padding-bottom: 5rem;
+ padding-top: 3rem;
+  
+  
+  background-position: center; /* Centra la imagen en el contenedor */
+}
+
 .image-1 {
     position: absolute; /* Posición absoluta */
     top: 13%; /* Distancia desde arriba */
@@ -124,6 +135,11 @@ body{
     color: #ff9900;
     filter: drop-shadow(1px 1px 1px #636363aa);
   }
+  .promos{
+    font-family: "Sil";
+    color: #ffffff;
+    filter: drop-shadow(1px 1px 1px #020202aa);
+  }
 
   .bebida-item {
     margin-bottom: 8px;
@@ -132,6 +148,11 @@ body{
 
   .menulogo{
     width: 16%;
+  }
+
+  .promo-img{
+    width: 100%;
+    align-content: center;
   }
 
   @media (max-width: 500px) { 
@@ -149,6 +170,31 @@ body{
 
     height: 101vh;
 
+}
+   
+  }
+
+
+  @media (max-width: 700px) { 
+    
+    .menulogo{
+      width: 35%;
+    }
+
+    .background-cafe{
+      padding-top: 1.5rem;
+      height: 100vh;
+  }
+
+  .background-menu{
+
+    height: 102vh;
+
+}
+
+.promo-img{
+  width: 100%;
+  align-content: center;
 }
    
   }
