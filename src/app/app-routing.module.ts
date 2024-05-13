@@ -15,7 +15,7 @@ const routes: Routes = [
   { path: 'qrscan', component: LectorQrComponent, canActivate: [AuthGuard]},
   { path: 'cardSelection', component: CardSelectionComponent, canActivate: [AuthGuard] },
   { path: 'menu', component: MenuComponent },
-  { path: 'menu-admin', component: MenuAdminComponent },
+  { path: 'menu-admin', component: MenuAdminComponent, canActivate: [AuthGuard] },
 ];
 
 @NgModule({

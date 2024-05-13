@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { Bebidas } from 'src/app/interfaces/bebidas';
 import { CafeMenus } from 'src/app/interfaces/cafe_menus';
 import { Extras } from 'src/app/interfaces/extras';
@@ -27,7 +28,7 @@ export class MenuAdminComponent implements OnInit {
   savedData: any;
 
   extras:Extras[]=[]
-  constructor(private _SupabasMenuServices: MenuService) { }
+  constructor(private _SupabasMenuServices: MenuService, private router: Router) { }
 
   async ngOnInit(): Promise<void> {
     this.cafes = await this._SupabasMenuServices.getCafes()
@@ -137,12 +138,15 @@ export class MenuAdminComponent implements OnInit {
 
   async onCheckboxChange(item:Extras) {
       console.log("Se ha detectado un cambio en un input", item);
-
       const responseOpcion:any = (await this._SupabasMenuServices.upDateExtras(item.id, item.estado)).data;
       console.log("Cambio efectuado", responseOpcion);
       // Limpiar la variable cuando el checkbox está desmarcado
       
     
+  }
+
+  qrscaner(){
+    this.router.navigate(['/qrscan'])
   }
 
   

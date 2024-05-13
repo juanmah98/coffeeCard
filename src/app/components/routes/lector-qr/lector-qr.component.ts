@@ -5,6 +5,7 @@ import { SupabaseService } from 'src/app/services/supabase.service';
 import { CafeData } from 'src/app/interfaces/cafes_data';
 import { Subscription, interval } from 'rxjs';
 import { takeWhile } from 'rxjs/operators';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-lector-qr',
@@ -31,7 +32,7 @@ export class LectorQrComponent implements OnInit {
   private scanSubscription: Subscription = new Subscription();
  continueScanning = true;
 
-  constructor(private _SupabaseService: SupabaseService) { }
+  constructor(private _SupabaseService: SupabaseService, private router: Router) { }
 
   ngOnInit(): void {
     this.startCamera();
@@ -209,6 +210,10 @@ export class LectorQrComponent implements OnInit {
       }
     }
     this.continueScanning = true;
+  }
+
+  menu(){
+    this.router.navigate(['/menu-admin'])
   }
 
 }
