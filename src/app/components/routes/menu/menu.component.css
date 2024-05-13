@@ -3,14 +3,14 @@ body{
     font-family: "OpenSans";
 }
 
-.background{
-    padding-top: 2rem;
-    height: 100vh;
+.background-cafe{
+    padding-top: 1rem;
+    height: 110vh;
 }
 .background-menu{
     background-image: url("../../../../assets/imagenes/menus/menus.jpg");
     padding-top: 2rem;
-    height: 100vh;
+    height: 105vh;
     background-repeat: no-repeat; /* Evita que la imagen se repita */
     background-size: cover; /* Cubre todo el espacio disponible */
     background-position: center; /* Centra la imagen en el contenedor */
@@ -101,6 +101,7 @@ body{
     margin: 1rem;
     border: 3px dotted #625143; /* ancho y estilo de borde punteado */
     padding: 10px; /* espacio interno para mejor visualización */
+    text-transform: uppercase;
   }
   
   .extras-menu p{
@@ -127,5 +128,28 @@ body{
   .bebida-item {
     margin-bottom: 8px;
     font-family: "Sil";
+  }
+
+  .menulogo{
+    width: 16%;
+  }
+
+  @media (max-width: 500px) { 
+    
+    .menulogo{
+      width: 35%;
+    }
+
+    .background-cafe{
+      padding-top: 1.5rem;
+      height: 100vh;
+  }
+
+  .background-menu{
+
+    height: 101vh;
+
+}
+   
   }
   

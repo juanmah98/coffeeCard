@@ -1,13 +1,14 @@
 <body>
-    <div class="background">
+  <div class="background-cafe">
+    <div class=" container-fluid ">
     
     <img src="../../../../assets/imagenes/menus/saco.png" width="100px" class="image-1">
     <img src="../../../../assets/imagenes/menus/pipa.png" width="110px" class="image-2">
 
-<div class="container-fluid ">
+    
     <div class="row">
       <div class="col text-center p-2">
-        <img src="../../../../assets/imagenes/menus/coffe.png" width="35%" alt="">
+        <img src="../../../../assets/imagenes/menus/coffe.png" class="menulogo" alt="">
       </div>
     </div>
     <div class="row justify-content-center">
@@ -58,25 +59,30 @@
                   </ul>
                         
             </div>
-          </div>
-          <div class="col-md-5 col-10">
-             <div class="text-center extras-menu">
-                <span>CALDITO + <b>1,40€</b></span><br>
-                <span>GAZPACHO + <b>1,40€</b></span>
-              </div>
-             
-          </div>
 
-          <div class="col-md-5 col-10">
-            <div class="text-center ensalada">
-               <span>ENSALADA PEQUEÑA + <b>3,5€</b></span><br>
-               <span>ENSALADA GRANDE + <b>6,20€</b></span>
+            <div class="row justify-content-center">
+              <div class="col-md-8 col-10">
+                <div class="text-center extras-menu">
+                  <div *ngFor="let item of extras">
+                    <span *ngIf="item.estado">{{item.nombre}} + <b>{{item.precio}}€</b></span> 
+                  </div>
+                 </div>
+                
              </div>
-            <div class="text-center ensaladas">
-               <span>POLLO / GRIEGA / ATUN / <br>QUESO DE CABRA</span>               
-             </div>
-            
-         </div>
+   
+             <div class="col-md-8 col-12">
+               <div class="text-center ensalada">
+                  <span>ENSALADA PEQUEÑA + <b>3,5€</b></span><br>
+                  <span>ENSALADA GRANDE + <b>6,20€</b></span>
+                </div>
+               <div class="text-center ensaladas">
+                  <span>POLLO / GRIEGA / ATUN / <br>QUESO DE CABRA</span>               
+                </div>
+               
+            </div>
+            </div>
+          </div>
+          
         </div>
       </div>
 

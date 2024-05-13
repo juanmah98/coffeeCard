@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Bebidas } from 'src/app/interfaces/bebidas';
 import { CafeMenus } from 'src/app/interfaces/cafe_menus';
+import { Extras } from 'src/app/interfaces/extras';
 import { Menu } from 'src/app/interfaces/menu';
 import { MenuService } from 'src/app/services/menu.service';
 
@@ -20,6 +21,12 @@ export class MenuAdminComponent implements OnInit {
   nuevaBebidaPrecio: string = ""; 
   vistaBebida:boolean=false
   vistaCafe:boolean=false
+
+  caldito: boolean = false;
+  gazpacho: boolean = false;
+  savedData: any;
+
+  extras:Extras[]=[]
   constructor(private _SupabasMenuServices: MenuService) { }
 
   async ngOnInit(): Promise<void> {
@@ -36,6 +43,9 @@ export class MenuAdminComponent implements OnInit {
     console.log("bebidas: ", this.bebidas)
     this.bebidas.sort((a, b) => a.id - b.id);
     
+    this.extras = await this._SupabasMenuServices.getExtras()
+    console.log("extras: ", this.extras)
+    this.extras.sort((a, b) => a.id - b.id);
 
   }
 
@@ -123,6 +133,16 @@ export class MenuAdminComponent implements OnInit {
 
   bebidaTrue(){
     this.vistaBebida = !this.vistaBebida
+  }
+
+  async onCheckboxChange(item:Extras) {
+      console.log("Se ha detectado un cambio en un input", item);
+
+      const responseOpcion:any = (await this._SupabasMenuServices.upDateExtras(item.id, item.estado)).data;
+      console.log("Cambio efectuado", responseOpcion);
+      // Limpiar la variable cuando el checkbox está desmarcado
+      
+    
   }
 
   

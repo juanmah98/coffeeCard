@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { SupabaseClient, createClient } from '@supabase/supabase-js';
 import { environment } from 'src/environments/environment';
 import { Menu } from '../interfaces/menu';
+import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -14,6 +15,13 @@ export class MenuService {
   private apiKey = environment.supabaseKey;
   private supabase: SupabaseClient;
   
+
+  private caldito = new BehaviorSubject<boolean>(false);
+  caldito$ = this.caldito.asObservable();
+
+  private gazpacho = new BehaviorSubject<boolean>(false);
+  gazpacho$ = this.gazpacho.asObservable();
+
   constructor() { 
     this.supabase = createClient('https://rwttebejxwncpurszzld.supabase.co', environment.supabaseKey)
     
@@ -109,5 +117,37 @@ export class MenuService {
     .from("bebidas")
     .insert(data)
     .select()
+  }
+
+  async getExtras(){
+    const extras = await this.supabase
+    .from('extras').
+    select('*');
+    return extras.data || [];
+  }
+
+  async upDateExtras(id: number, estado: boolean) {
+    return await this.supabase
+    .from("extras")
+    .update({ estado: estado })
+    .eq('id', id)
+    .select()
+  }
+
+  getCaldito(): boolean {
+    return this.caldito.value;
+  }
+
+  setCaldito(valor: boolean): void {
+    this.caldito.next(valor);
+    localStorage.setItem('caldito', JSON.stringify(valor));
+  }
+  getGazpacho(): boolean {
+    return this.gazpacho.value;
+  }
+
+  setGazpacho(valor: boolean): void {
+    this.gazpacho.next(valor);
+    localStorage.setItem('gazpacho', JSON.stringify(valor));
   }
 }

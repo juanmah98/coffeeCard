@@ -12,6 +12,8 @@ export class PopupQrService {
 
   private gratis = new BehaviorSubject<boolean>(false);
   gratis$ = this.gratis.asObservable();
+
+  
  /*  gratis:boolean=false; */
 
   actualizarMostrar(valor: boolean) {
@@ -30,7 +32,7 @@ export class PopupQrService {
 
   setGratis(valor: boolean): void {
     this.gratis.next(valor);
-    localStorage.setItem('logged', JSON.stringify(valor));
+    localStorage.setItem('gratis', JSON.stringify(valor));
   }
 
   setData(data: string): void {

@@ -21,6 +21,25 @@
                 <input [(ngModel)]="nuevoMenu" (ngModelChange)="menuCambios()" class="form-control" />
                 <button class="btn btn-success" (click)="newMenu(nuevoMenu)">SUMAR</button>
             </div>
+
+            <div class="text-light pb-4" >
+              <h5 class="text-center">Extras</h5>
+              <div class="form-check d-flex" *ngFor="let item of extras">
+                <div class="">
+
+                  <input class="form-check-input" type="checkbox" [checked]="item.estado" [(ngModel)]=item.estado (change)="onCheckboxChange(item)">
+                  <label class="form-check-label">
+                    {{item.nombre}}
+                  </label>
+                </div>
+                  <div class="extrass d-flex">
+                    <input [(ngModel)]=item.precio (ngModelChange)="onCheckboxChange(item)" (keyup.enter)="onCheckboxChange(item)" class="form-control" />
+                    <span class="mx-1">€</span>
+                  </div>
+              </div>
+            </div>
+            
+
             </div>
         </div>
 

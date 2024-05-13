@@ -73,8 +73,15 @@ body{
   .cafe input{
     width: 45%;
   }
+
+  .extrass input{
+   
+    margin-left: 0.5rem;
+    margin-bottom: 1rem;
+    width: 45%;
+  }
   
-  .menus input{
+  .menu-item input{
       width: 80%;
       margin-right: 0.5rem;
     }
