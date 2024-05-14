@@ -6,13 +6,14 @@
   <div class="background-cafe">
     <div class=" container-fluid ">
     
-    <img src="../../../../assets/imagenes/menus/saco.png" width="100px" class="image-1">
-    <img src="../../../../assets/imagenes/menus/pipa.png" width="110px" class="image-2">
+    <!-- <img src="../../../../assets/imagenes/menus/saco.png" width="100px" class="image-1">
+    <img src="../../../../assets/imagenes/menus/pipa.png" width="110px" class="image-2"> -->
 
     
     <div class="row">
       <div class="col text-center p-2">
-        <img src="../../../../assets/imagenes/menus/coffe.png" class="menulogo" alt="">
+        <!-- <img src="../../../../assets/imagenes/menus/coffe.png" class="menulogo" alt=""> -->
+        <p class="fs-1 cofe-titel">CO:FF:EE</p>
       </div>
     </div>
     <div class="row justify-content-center">
@@ -29,11 +30,12 @@
          <div class="text-center extras">
             <p>Descafeinado + <b>0,10€</b></p>
             <p>Leche Avena / Soja / Sin lactosa + <b>0,20€</b></p>
+            <p>Del tiempo + <b>0,20€</b></p>
           </div>
 
-          <div class="text-center pt-3">
+          <!-- <div class="text-center pt-3">
               <img src="../../../../assets/imagenes/menus/vaso.png" width="70px">
-          </div>
+          </div> -->
       </div>
     </div>
   </div>
@@ -58,7 +60,7 @@
             <div class="menus">
                 <ul *ngFor="let item of menus" class="menu-item">
                     <li>
-                      <span class="item-name">{{item.menu}}</span>
+                      <span class="item-name-menu">{{item.menu}}</span>
                     </li>
                   </ul>
                         
@@ -76,7 +78,7 @@
    
              <div class="col-md-8 col-12">
                <div class="text-center ensalada">
-                  <span>ENSALADA PEQUEÑA + <b>3,5€</b></span><br>
+                  <span>ENSALADA PEQUEÑA + <b>3,90€</b></span><br>
                   <span>ENSALADA GRANDE + <b>6,20€</b></span>
                 </div>
                <div class="text-center ensaladas">
@@ -104,8 +106,8 @@
     <div class="col-md-8 col-10">
       <div class="cafe">
         <div *ngFor="let item of bebidas" class="bebida-item">
-          <span class="item-name">{{item.bebida}}</span>
-          <span class="item-price">{{item.precio}}€</span>
+          <span class="item-name-bebida">{{item.bebida}}</span>
+          <span class="item-price-bebida">{{item.precio}}€</span>
          
         </div>         
       </div>

@@ -4,8 +4,15 @@ body{
 }
 
 .background-cafe{
-    padding-top: 1rem;
+    padding-top: 0.5rem;
     height: 110vh;
+
+    background-image: linear-gradient(rgba(22, 22, 22, 0.775), rgba(28, 28, 28, 0.803)), url("../../../../assets/imagenes/backGrounds/piazzetta/opcion3.jpg");
+    padding-top: 2rem;
+    background-repeat: no-repeat; /* Evita que la imagen se repita */
+    background-size: cover; /* Cubre todo el espacio disponible */
+    background-position: center; /* Centra la imagen en el contenedor */
+    color: white;
 }
 .background-menu{
     background-image: url("../../../../assets/imagenes/menus/menus.jpg");
@@ -36,6 +43,10 @@ body{
   background-position: center; /* Centra la imagen en el contenedor */
 }
 
+.cofe-titel{
+  font-family: 'Digi';
+}
+
 .image-1 {
     position: absolute; /* Posición absoluta */
     top: 13%; /* Distancia desde arriba */
@@ -62,16 +73,32 @@ body{
   .item-name {
     text-transform: capitalize;
   }
+
+  .item-name-menu {
+    text-transform: uppercase;
+  }
+
   
   .item-price {
     margin-left: 5px;
-    color: #000000;
+    color: #ffffff;
     font-weight: bold;    
   }
 
   .item-price2 {
     margin-left: 5px;
-    color: #000000; 
+    color: #ffffff; 
+  }
+
+  .item-name-bebida {
+    text-transform: capitalize;
+    color: #000000;
+  }
+
+  .item-price-bebida {
+    margin-left: 5px;
+    color: #000000;
+    font-weight: bold;    
   }
 
   .extras{

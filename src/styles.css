@@ -6,3 +6,8 @@
     font-family: 'Sil';
     src: url("../src/assets/fonts/Abyssinica_SIL/AbyssinicaSIL-Regular.ttf");
 }
+
+@font-face {
+    font-family: 'Digi';
+    src: url("../src/assets/fonts/ds_digital/DS-DIGIT.TTF");
+}
