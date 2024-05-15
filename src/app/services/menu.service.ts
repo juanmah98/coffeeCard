@@ -66,10 +66,10 @@ export class MenuService {
     return cafe.data || [];
   }
 
-  async upDateMenu(id: number, menu: string) {
+  async upDateMenu(id: number, menu: string, fecha: Date) {
     return await this.supabase
     .from("menu")
-    .update({ menu: menu })
+    .update({ menu: menu, fecha: fecha})
     .eq('id', id)
     .select()
   }

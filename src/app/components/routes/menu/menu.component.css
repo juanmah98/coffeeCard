@@ -65,6 +65,8 @@ body{
 .cafe {
     text-align: left;
   }
+
+
   
   .menu-item {
     margin-top: 6px;
@@ -122,6 +124,13 @@ body{
     font-family: "Sil";
     font-size: 50px;
     font-weight: bold; 
+  }
+  
+  .fecha{
+   font-family: "Digi";
+   /* padding-top: 3rem; */
+   font-size: 18px;
+   color: black;
   }
 
   .menu-2{
@@ -238,12 +247,12 @@ body{
 
     .background-cafe{
       padding-top: 1.5rem;
-      height: 100vh;
+      height: 108vh;
   }
 
   .background-menu{
 
-    height: 102vh;
+    height: 110vh;
 
 }
 

@@ -7,6 +7,7 @@
 export interface Menu {
     id:   number;
     menu: string;
+    fecha: Date;
 }
 
 // Converts JSON strings to/from your types

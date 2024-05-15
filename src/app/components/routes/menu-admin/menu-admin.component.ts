@@ -69,8 +69,9 @@ export class MenuAdminComponent implements OnInit {
 
   async inputChangedMenu(item:Menu) {
     console.log("Se ha detectado un cambio en un input", item);
+    const fechaActual: Date = this.obtenerFechaActual();
 
-    const responseOpcion:any = (await this._SupabasMenuServices.upDateMenu(item.id, item.menu)).data;
+    const responseOpcion:any = (await this._SupabasMenuServices.upDateMenu(item.id, item.menu, fechaActual)).data;
     console.log("Cambio efectuado", responseOpcion);
 
   }
@@ -149,7 +150,9 @@ export class MenuAdminComponent implements OnInit {
     this.router.navigate(['/qrscan'])
   }
 
-  
+  obtenerFechaActual(): Date {
+    return new Date();
+  }
 
 
 }
