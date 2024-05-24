@@ -39,9 +39,6 @@ export class MenuComponent implements OnInit {
     console.log("extras: ", this.extras)
     this.extras.sort((a, b) => a.id - b.id);
 
-    this.subscriptions.add(this._SupabasMenuServices.caldito$.subscribe(data => {
-      this.caldito = data;
-    }));
 
     this.subscriptions.add(this._SupabasMenuServices.gazpacho$.subscribe(data => {
       this.gazpacho = data;
