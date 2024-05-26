@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { CafeData } from 'src/app/interfaces/cafes_data';
 import { Usuarios } from 'src/app/interfaces/usuarios';
 import { InternoService } from 'src/app/services/interno.service';
@@ -50,8 +50,10 @@ export class CardSelectionComponent implements OnInit, OnDestroy  {
   clave = 'piazzetta';
   users: any[] = [];
   coffes: any[] = [];
+  bgClass:string='bg-0';
+  entidad:string='';
   private dataSubscription: Subscription = new Subscription();
-  constructor(private _SupabaseService:SupabaseService, private _dataInterna: InternoService, public popupService: PopupQrService, public infopopupService: PopupInfoService) { }
+  constructor(private cdr: ChangeDetectorRef, private _SupabaseService:SupabaseService, private _dataInterna: InternoService, public popupService: PopupQrService, public infopopupService: PopupInfoService) { }
 
   async ngOnInit(): Promise<void> {
 
@@ -64,7 +66,10 @@ export class CardSelectionComponent implements OnInit, OnDestroy  {
 
     /* this.users = await this._SupabaseService.getUs()
     console.log("USUARIOS US:", this.users); */
-
+    this.entidad= this._dataInterna.getEntidad()
+    this.bgClass = `bg-${this._dataInterna.getEntidad()}-card`;
+    console.log('background: ', this.bgClass);
+    this.cdr.detectChanges();
     this.dataUser = this._dataInterna.getUser();
     this.nombre = localStorage.getItem("name");
     this.foto = localStorage.getItem("photo");
@@ -97,6 +102,11 @@ export class CardSelectionComponent implements OnInit, OnDestroy  {
     }, 2000) */
 
     this.handleRealTimeUpdate();
+  }
+
+  cambiarBg(valor: string): void {
+    this.bgClass = valor;
+    this.cdr.detectChanges(); // Forzar la detección de cambios si es necesario
   }
 
   ngOnDestroy(): void {

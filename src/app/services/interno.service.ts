@@ -18,14 +18,18 @@ export class InternoService {
       "entidad_id":"e4180b6c-a43e-4157-86c1-3c134ede2bb8"
     }
   );
+  
+  private entidad = new BehaviorSubject<string>('');
 
   miControl$ = this.logged.asObservable();
   miUser$ = this.user.asObservable();
+  miEntidad$ = this.entidad.asObservable();
 
   constructor() {
     // Recuperar datos del localStorage al iniciar el servicio
     const userString = localStorage.getItem('user');
     const loggedString = localStorage.getItem('logged');
+    const entidadString = localStorage.getItem('entidad');
 
     if (userString) {
       const user = JSON.parse(userString);
@@ -35,6 +39,11 @@ export class InternoService {
     if (loggedString) {
       const logged = JSON.parse(loggedString);
       this.logged.next(logged);
+    }
+
+    if (entidadString) {
+      const entidad = JSON.parse(entidadString);
+      this.entidad.next(entidad);
     }
   }
 
@@ -54,5 +63,14 @@ export class InternoService {
   setUser(valor: Usuarios): void {
     this.user.next(valor);
     localStorage.setItem('user', JSON.stringify(valor));
+  }
+
+  getEntidad(): string {
+    return this.entidad.value;
+  }
+
+  setEntidad(valor: string): void {
+    this.entidad.next(valor);
+    localStorage.setItem('entidad', JSON.stringify(valor));
   }
 }

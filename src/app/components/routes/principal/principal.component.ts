@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { PopupQrService } from 'src/app/services/popup-qr.service';
+import { Router } from '@angular/router';
+import { InternoService } from 'src/app/services/interno.service';
+
 
 @Component({
   selector: 'app-principal',
@@ -8,14 +10,15 @@ import { PopupQrService } from 'src/app/services/popup-qr.service';
 })
 export class PrincipalComponent implements OnInit {
 
-  constructor(public popupService: PopupQrService) { }
+  constructor(public _interno: InternoService, private router: Router) { }
 
   ngOnInit(): void {
   }
 
-  onInfoTouch() {
-    this.popupService.setData("Enviando data");
-    this.popupService.actualizarMostrar(true)
+  run(valor:string){
+    this._interno.setEntidad(valor);
+
+    this.router.navigate(['/home']);
   }
 
 }

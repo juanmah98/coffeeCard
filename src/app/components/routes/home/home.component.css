@@ -1,17 +1,31 @@
 body{
-    background-color: #AB835D;
-    background-image:   url("../../../../assets/imagenes/backgroundHome1.png");
+ /*  background-color: #AB835D; */
+   /*    background-image:   url("../../../../assets/imagenes/backgroundHome1.png");
   
     
-   background-position: center;
-    background-repeat: no-repeat;
+    background-position: center;
+    background-repeat: no-repeat; */
     width: 100%;
     height: 100vh;
     display: flex;
 
+}
 
+
+/* .bg-1{
+    background-color: #1b1b1b97;
+    background-image:    linear-gradient(rgba(0, 0, 0, 0.482), rgba(20, 20, 20, 0.586), rgba(0, 0, 0, 0.526)), url("../../../../assets/imagenes/backGrounds/spaces.jpg");     
+    background-position: center;
 
 }
+
+.bg-2{
+  background-color: #AB835D;
+    background-image:   url("../../../../assets/imagenes/backGrounds/backgroundHome1.png");    
+    background-position: center;
+    background-repeat: no-repeat;
+} */
+/*  */
 
 .custom-shadow {
     text-shadow: 3px 2px 4px rgba(0,0,0,0.5); /* Definición personalizada de sombra */

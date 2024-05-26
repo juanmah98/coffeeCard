@@ -1,16 +1,13 @@
 body{
-    background-color: #171717;
+/*     background-color: #171717;
     background-image:   url("../../../../assets/imagenes/backgroundCard.png");
   
     
    background-position: center;
-    background-repeat: no-repeat;
+    background-repeat: no-repeat; */
     width: 100%;
 
     display: flex;
-
-
-
 }
 
 h2{

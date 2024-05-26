@@ -1,4 +1,4 @@
-import { Component, NgZone, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, NgZone, OnInit } from '@angular/core';
 import { AuthService } from 'src/app/services/auth.service.service';
 import { Router } from '@angular/router';
 import { SupabaseService } from 'src/app/services/supabase.service';
@@ -18,11 +18,16 @@ export class HomeComponent implements OnInit {
   googleUser: any;
   logged:boolean = false;
   usuarios: Usuarios[] = [];
-  constructor(private authService:AuthService, private router: Router, private _SupabaseService: SupabaseService, private ngZone: NgZone, private interno:  InternoService) { }
+  bgClass:string='bg-0';
+  entidad:string='';
+  constructor(private cdr: ChangeDetectorRef, private authService:AuthService, private router: Router, private _SupabaseService: SupabaseService, private ngZone: NgZone, private interno:  InternoService) { }
 
   ngOnInit(): void {
+    this.entidad= this.interno.getEntidad()
+    this.bgClass = `bg-${this.interno.getEntidad()}`;
     this.loading = false;
-  
+    console.log('background: ', this.bgClass);
+    this.cdr.detectChanges();
   
   setTimeout(() => {
     google.accounts.id.initialize({
@@ -37,6 +42,11 @@ export class HomeComponent implements OnInit {
       { theme: "outline", size: "large" }
     );
   }, 1000)
+}
+
+cambiarBg(valor: string): void {
+  this.bgClass = valor;
+  this.cdr.detectChanges(); // Forzar la detección de cambios si es necesario
 }
 
 handleCredentialResponse = (response: any) => {
