@@ -6,7 +6,8 @@ import { createClient, SupabaseClient } from '@supabase/supabase-js';
 import { CafeData } from '../interfaces/cafes_data';
 
 export const USERS_TABLE = "usuarios";
-export const CONTADOR_TABLE = "contador_cafe";
+export const CONTADOR_TABLE_CAFE = "contador_cafe";
+export const CONTADOR_TABLE_SPACE = "contador_space";
 
 @Injectable({
   providedIn: 'root'
@@ -48,7 +49,7 @@ export class SupabaseService {
 
   async getCofess(cafe: string){
     return await this.supabase
-    .from(CONTADOR_TABLE)
+    .from(CONTADOR_TABLE_CAFE)
     .select('*')
     .match({id: cafe})
     .single()
@@ -69,7 +70,7 @@ async postNewUser(data: any) {
 
 async updateOpcion(id: string, opcion: number) {
   return await this.supabase
-  .from(CONTADOR_TABLE)
+  .from(CONTADOR_TABLE_CAFE)
   .update({ opcion: opcion })
   .eq('id', id)
   .select()
@@ -77,14 +78,14 @@ async updateOpcion(id: string, opcion: number) {
 
 async updateContador(id: string, contador: number) {
   return await this.supabase
-  .from(CONTADOR_TABLE)
+  .from(CONTADOR_TABLE_CAFE)
   .update({ contador: contador })
   .eq('id', id)
   .select()
 }
 async updateContadorGratis(id: string, cantidad_gratis: number) {
   return await this.supabase
-  .from(CONTADOR_TABLE)
+  .from(CONTADOR_TABLE_CAFE)
   .update({ cantidad_gratis: cantidad_gratis })
   .eq('id', id)
   .select()
@@ -165,6 +166,13 @@ async updateContadorGratis(id: string, cantidad_gratis: number) {
     .subscribe()
 
     return changes.asObservable();
+  }
+
+  /* ENTIDADES */
+  async getEntidades(){
+    return await this.supabase
+    .from('entidades')
+    .select('*')
   }
 
  

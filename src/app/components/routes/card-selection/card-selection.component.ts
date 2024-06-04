@@ -66,8 +66,8 @@ export class CardSelectionComponent implements OnInit, OnDestroy  {
 
     /* this.users = await this._SupabaseService.getUs()
     console.log("USUARIOS US:", this.users); */
-    this.entidad= this._dataInterna.getEntidad()
-    this.bgClass = `bg-${this._dataInterna.getEntidad()}-card`;
+    this.entidad= this._dataInterna.getEntidad().background
+    this.bgClass = `bg-${this._dataInterna.getEntidad().background}-card`;
     console.log('background: ', this.bgClass);
     this.cdr.detectChanges();
     this.dataUser = this._dataInterna.getUser();

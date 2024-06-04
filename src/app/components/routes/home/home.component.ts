@@ -5,6 +5,7 @@ import { SupabaseService } from 'src/app/services/supabase.service';
 import { Usuarios } from 'src/app/interfaces/usuarios';
 import { InternoService } from 'src/app/services/interno.service';
 import { CafeData } from 'src/app/interfaces/cafes_data';
+import { Entidades } from 'src/app/interfaces/entdidades';
 declare var google: any;
 
 @Component({
@@ -19,14 +20,23 @@ export class HomeComponent implements OnInit {
   logged:boolean = false;
   usuarios: Usuarios[] = [];
   bgClass:string='bg-0';
-  entidad:string='';
+  entidad_bg:string='';
+  entidad:Entidades= {
+    "id": "",
+      "nombre": "",
+      "email": "",
+      "background": "0",
+      "fecha_creacion": new Date(),
+  }
   constructor(private cdr: ChangeDetectorRef, private authService:AuthService, private router: Router, private _SupabaseService: SupabaseService, private ngZone: NgZone, private interno:  InternoService) { }
 
   ngOnInit(): void {
-    this.entidad= this.interno.getEntidad()
-    this.bgClass = `bg-${this.interno.getEntidad()}`;
+    this.entidad= this.interno.getEntidad();
+    this.entidad_bg=this.entidad.background;
+    this.bgClass = `bg-${this.entidad_bg}`;
     this.loading = false;
-    console.log('background: ', this.bgClass);
+    console.log('entidad: ', this.entidad);
+    console.log('background: ', this.entidad.background);
     this.cdr.detectChanges();
   
   setTimeout(() => {

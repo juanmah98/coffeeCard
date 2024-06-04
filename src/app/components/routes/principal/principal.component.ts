@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { Entidades } from 'src/app/interfaces/entdidades';
 import { InternoService } from 'src/app/services/interno.service';
+import { SupabaseService } from 'src/app/services/supabase.service';
 
 
 @Component({
@@ -10,13 +12,19 @@ import { InternoService } from 'src/app/services/interno.service';
 })
 export class PrincipalComponent implements OnInit {
 
-  constructor(public _interno: InternoService, private router: Router) { }
+  entidadesArre: any = {};
+  entidades: Entidades[] =[];
 
-  ngOnInit(): void {
+  constructor(public _interno: InternoService, private router: Router, private _supabaseServices: SupabaseService) { }
+
+  async ngOnInit(): Promise<void> {
+  this.entidadesArre =  await this._supabaseServices.getEntidades()
+  this.entidades = this.entidadesArre.data;
+  console.log(this.entidades)
   }
 
-  run(valor:string){
-    this._interno.setEntidad(valor);
+  run(valor: number){
+    this._interno.setEntidad(this.entidades[valor]);
 
     this.router.navigate(['/home']);
   }

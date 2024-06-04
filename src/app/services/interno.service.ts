@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { Usuarios } from '../interfaces/usuarios';
+import { Entidades } from '../interfaces/entdidades';
 
 @Injectable({
   providedIn: 'root'
@@ -15,11 +16,18 @@ export class InternoService {
       "contador_cafe_id": "",
       "admin": false,
       "name":"",
-      "entidad_id":"e4180b6c-a43e-4157-86c1-3c134ede2bb8"
+      "entidad_id":""
     }
   );
   
-  private entidad = new BehaviorSubject<string>('');
+  private entidad = new BehaviorSubject<Entidades>({
+  
+      "id": "",
+      "nombre": "",
+      "email": "",
+      "background": "0",
+      "fecha_creacion": new Date(),
+  });
 
   miControl$ = this.logged.asObservable();
   miUser$ = this.user.asObservable();
@@ -41,10 +49,10 @@ export class InternoService {
       this.logged.next(logged);
     }
 
-    if (entidadString) {
+    /* if (entidadString) {
       const entidad = JSON.parse(entidadString);
       this.entidad.next(entidad);
-    }
+    } */
   }
 
   getLogged(): boolean {
@@ -65,11 +73,11 @@ export class InternoService {
     localStorage.setItem('user', JSON.stringify(valor));
   }
 
-  getEntidad(): string {
+  getEntidad(): Entidades {
     return this.entidad.value;
   }
 
-  setEntidad(valor: string): void {
+  setEntidad(valor: Entidades): void {
     this.entidad.next(valor);
     localStorage.setItem('entidad', JSON.stringify(valor));
   }
