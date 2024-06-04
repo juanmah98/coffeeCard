@@ -6,6 +6,7 @@ import { Usuarios } from 'src/app/interfaces/usuarios';
 import { InternoService } from 'src/app/services/interno.service';
 import { CafeData } from 'src/app/interfaces/cafes_data';
 import { Entidades } from 'src/app/interfaces/entdidades';
+import { Usuarios_admins } from 'src/app/interfaces/usuarios_admin';
 declare var google: any;
 
 @Component({
@@ -19,25 +20,18 @@ export class HomeComponent implements OnInit {
   googleUser: any;
   logged:boolean = false;
   usuarios: Usuarios[] = [];
-  bgClass:string='bg-0';
-  entidad_bg:string='';
-  entidad:Entidades= {
-    "id": "",
-      "nombre": "",
-      "email": "",
-      "background": "0",
-      "fecha_creacion": new Date(),
-  }
+  admins: Usuarios_admins[] =[]
+  entidades:Entidades[]=[];
+  userAdmin:boolean = false;
+  entidad:string='';
   constructor(private cdr: ChangeDetectorRef, private authService:AuthService, private router: Router, private _SupabaseService: SupabaseService, private ngZone: NgZone, private interno:  InternoService) { }
 
-  ngOnInit(): void {
-    this.entidad= this.interno.getEntidad();
-    this.entidad_bg=this.entidad.background;
-    this.bgClass = `bg-${this.entidad_bg}`;
-    this.loading = false;
-    console.log('entidad: ', this.entidad);
-    console.log('background: ', this.entidad.background);
-    this.cdr.detectChanges();
+  async ngOnInit(): Promise<void> {
+    this.getEntidades()
+
+   await this.getAdmins();
+   /* await this.getUsers(); */
+    this.userAdmin = false;
   
   setTimeout(() => {
     google.accounts.id.initialize({
@@ -54,12 +48,47 @@ export class HomeComponent implements OnInit {
   }, 1000)
 }
 
-cambiarBg(valor: string): void {
-  this.bgClass = valor;
-  this.cdr.detectChanges(); // Forzar la detección de cambios si es necesario
+async getAdmins() {
+  try {
+    const response:any = await this._SupabaseService.getUsersAdminTable();
+    console.log('ADMINS', response.data);
+    this.admins = response.data;
+    // Continúa aquí con lo que necesites hacer con la respuesta
+    return response; // Retorna la respuesta si es necesario
+  } catch (error) {
+    console.error('Error al cargar admins', error);
+    throw error; // Propaga el error si es necesario
+  }
 }
 
-handleCredentialResponse = (response: any) => {
+async getUsers() {
+  try {
+    const response:any = await this._SupabaseService.getUsersTable();
+    console.log('USUARIOS', response.data);
+    this.usuarios = response.data;
+    // Continúa aquí con lo que necesites hacer con la respuesta
+    return response; // Retorna la respuesta si es necesario
+  } catch (error) {
+    console.error('Error al cargar usuarios', error);
+    throw error; // Propaga el error si es necesario
+  }
+}
+
+async getEntidades() {
+  try {
+    const response:any = await this._SupabaseService.getEntidades();
+    console.log('ENTIDADES', response.data);
+    this.entidades = response.data;
+    // Continúa aquí con lo que necesites hacer con la respuesta
+    return response; // Retorna la respuesta si es necesario
+  } catch (error) {
+    console.error('Error al cargar entidades', error);
+    throw error; // Propaga el error si es necesario
+  }
+}
+
+
+handleCredentialResponse = async (response: any) => {
   console.log('Respuesta del servidor:', response);
   this._SupabaseService.getUsers().subscribe((data: any) => {
     this.usuarios = data.email;
@@ -84,50 +113,77 @@ handleCredentialResponse = (response: any) => {
   console.log("this.usuarios")
   console.log(this.usuarios)
   this.loading = true;
-  this._SupabaseService.getUsers().subscribe((data: any) => {
-    this.usuarios = data.email;
-    let logg = false;
-     if(data == ''){
-      this.crearUsuario(this.googleUser.email, this.googleUser.name);
-    } 
-    console.log(data)
-    for (let i = 0; i < data.length; i++) {
-      const email = data[i].email;
-      if (data[i].email == this.googleUser.email) {
-          logg = true;    
-          this.interno.setUser(data[i]);
-      }
 
-     
-      // Realizar la verificación del email aquí
-  }
-  if(logg){
-        
-    console.log("Registrado")
-    console.log("navegando")
-   this.authService.login();
-   const dataUs=this.interno.getUser();
-   if(dataUs.admin==true){
-    this.ngZone.run(() => {
+  
+  this.admins.forEach(data=>{
+    if(this.googleUser.email == data.email)
+      {
+       this.entidad = data.entidad_id;
+        this.userAdmin=true;
+      }
+  })
+
+  await this.setEntidad()
+
+  if(this.userAdmin){
+
+    this.authService.login();
+     this.ngZone.run(() => {
       this.loading = false;
       this.router.navigate(['/qrscan']);
-    });
-   }else{
-    this.ngZone.run(() => {
-      this.loading = false;
-      this.router.navigate(['/cardSelection']);
-    });
-   }
-   
-}else{
-  this.interno.setLogged(true);
-  console.log("nuevo")
-  this.crearUsuario(this.googleUser.email, this.googleUser.name);
-}
+    }); 
+  }else{
+    this._SupabaseService.getUsers().subscribe((data: any) => {
+      this.usuarios = data.email;
+      let logg = false;
+       if(data == ''){
+        this.crearUsuario(this.googleUser.email, this.googleUser.name);
+      } 
+      console.log(data)
+      for (let i = 0; i < data.length; i++) {
+        const email = data[i].email;
+        if (data[i].email == this.googleUser.email) {
+            logg = true;    
+            this.interno.setUser(data[i]);
+        }
   
-})
+       
+        // Realizar la verificación del email aquí
+    }
+    if(logg){          
+      console.log("Registrado")
+      console.log("navegando")
+     this.authService.login();  
+       this.ngZone.run(() => {
+        this.loading = false;
+        this.router.navigate(['/principal']);
+      }); 
+      
+     
+  }else{
+    this.interno.setLogged(true);
+    console.log("nuevo")
+    this.crearUsuario(this.googleUser.email, this.googleUser.name);
+  }
+    
+  })
+  }
 
   
+
+  
+}
+
+async setEntidad(){
+
+  this.entidades.forEach(data=>{
+    if(data.id == this.entidad){
+    this.interno.setEntidad(data); 
+    }
+  })
+
+  
+   
 }
 
 
@@ -155,24 +211,22 @@ async crearUsuario(email: any, name:any): Promise<void> {
   console.log("Creando");
   const dataUser:any = {
     email: email,
-    contador_cafe_id: null,
     name: name,
-    entidad_id: "e4180b6c-a43e-4157-86c1-3c134ede2bb8",
-    admin: false
+    fecha_creacion: new Date(),
   };
-  const dataCafe:any = {
+/*   const dataCafe:any = {
        
       contador: 0,
         gratis: false,
         opcion: 0,
         cantidad_gratis: 0
-  };
+  }; */
   
-  console.log("dataCafe")
-  console.log(dataCafe)
+/*   console.log("dataCafe")
+  console.log(dataCafe) */
 
    
-  const response:any = (await this._SupabaseService.postNewCoffe(dataCafe)).data;
+/*   const response:any = (await this._SupabaseService.postNewCoffe(dataCafe)).data;
 console.log("Contador_cafe CREADO", response);
 if (response && response.length > 0) {
     dataUser.contador_cafe_id = response[0].id;
@@ -180,7 +234,7 @@ if (response && response.length > 0) {
 } else {
     console.error("Error al obtener la respuesta del contador_cafe");
     // Manejar el error adecuadamente
-}
+} */
 
 const responseUser:any = (await this._SupabaseService.postNewUser(dataUser)).data;
 console.log("Usuario CREADO", responseUser);
@@ -190,10 +244,10 @@ console.log("Usuario CREADO", responseUser);
       this.interno.setUser(responseUser[0]);
       console.log("DATA PARA SET INTERNO",responseUser[0])
        this.authService.login();
-      this.ngZone.run(() => {
+       this.ngZone.run(() => {
       this.loading = false;
-      this.router.navigate(['/cardSelection']);
-    }); 
+      this.router.navigate(['/principal']);
+    });  
 
    
 

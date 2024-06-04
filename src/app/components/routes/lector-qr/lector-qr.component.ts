@@ -6,6 +6,8 @@ import { CafeData } from 'src/app/interfaces/cafes_data';
 import { Subscription, interval } from 'rxjs';
 import { takeWhile } from 'rxjs/operators';
 import { Router } from '@angular/router';
+import { InternoService } from 'src/app/services/interno.service';
+import { Entidades } from 'src/app/interfaces/entdidades';
 
 @Component({
   selector: 'app-lector-qr',
@@ -21,6 +23,7 @@ export class LectorQrComponent implements OnInit {
   uuidCifrado: string = '';
   data_cafe: CafeData = {
     id: "",
+    usuario_id: '',
     contador: 0,
     gratis: false,
     opcion: 0,
@@ -31,12 +34,16 @@ export class LectorQrComponent implements OnInit {
   clave = 'piazzetta';
   private scanSubscription: Subscription = new Subscription();
  continueScanning = true;
+ entidad!:Entidades;
+ entidadDistinta=false;
 
-  constructor(private _SupabaseService: SupabaseService, private router: Router) { }
+  constructor(private _SupabaseService: SupabaseService, private router: Router, private _InternoServices: InternoService) { }
 
   ngOnInit(): void {
     this.startCamera();
     this.initScanInterval();
+    this.entidad = this._InternoServices.getEntidad();
+    console.log('Entidad: ', this.entidad)
   }
 
   ngOnDestroy(): void {
@@ -141,9 +148,16 @@ export class LectorQrComponent implements OnInit {
       const uuidDescifrado = this.descifrarUUID(code.data, this.clave);
       console.log('UUID descifrado:', uuidDescifrado);
   
-      this._SupabaseService.getDataCard(uuidDescifrado).subscribe((data: any) => {
-        this.data_cafe = data[0]; 
-        console.log(data[0]);
+      this._SupabaseService.getDataCard(uuidDescifrado, this.entidad.tabla_contador).subscribe((data: any) => {
+        
+        if(data[0]==undefined){
+          console.log("ENTIDAD INEXISTENTE");
+          this.entidadDistinta=true;
+        }else{
+          this.data_cafe = data[0]; 
+          console.log(data[0]);
+          this.entidadDistinta=false;
+        }
       });
       
       // Detener el escaneo después de leer un código QR
@@ -183,13 +197,13 @@ export class LectorQrComponent implements OnInit {
 
       try {
 
-      const responseOpcion:any = (await this._SupabaseService.updateOpcion(this.data_cafe.id, 0)).data;
+      const responseOpcion:any = (await this._SupabaseService.updateOpcion(this.data_cafe.id,this.entidad.tabla_contador, 0)).data;
       console.log("Opcion set 0", responseOpcion);
 
-      const responseContador:any = (await this._SupabaseService.updateContador(this.data_cafe.id, 0)).data;
+      const responseContador:any = (await this._SupabaseService.updateContador(this.data_cafe.id,this.entidad.tabla_contador, 0)).data;
       console.log("Contador set 0", responseContador);
 
-      const responseContadorGratis:any = (await this._SupabaseService.updateContadorGratis(this.data_cafe.id, this.data_cafe.cantidad_gratis)).data;
+      const responseContadorGratis:any = (await this._SupabaseService.updateContadorGratis(this.data_cafe.id,this.entidad.tabla_contador, this.data_cafe.cantidad_gratis)).data;
       console.log("Contador Gratis +1", responseContadorGratis);
 
        /*  await this._SupabaseService.postOpcion(this.data_cafe.id, 0).toPromise();
@@ -201,7 +215,7 @@ export class LectorQrComponent implements OnInit {
       }
     } else {
       try {
-        const responseContador:any = (await this._SupabaseService.updateContador(this.data_cafe.id, this.data_cafe.contador + 1)).data;
+        const responseContador:any = (await this._SupabaseService.updateContador(this.data_cafe.id,this.entidad.tabla_contador, this.data_cafe.contador + 1)).data;
         console.log("Contador +1 ", responseContador);
        /*  await this._SupabaseService.postContador(this.data_cafe.id, this.data_cafe.contador + 1).toPromise(); */
         this.reiniciarEscaneo();

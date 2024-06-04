@@ -8,6 +8,7 @@ import { Subscription, interval } from 'rxjs';
 import { PopupQrService } from 'src/app/services/popup-qr.service';
 import { ToastComponent } from '../../layout/toast/toast.component';
 import { PopupInfoService } from 'src/app/services/popup-info.service';
+import { Entidades } from 'src/app/interfaces/entdidades';
 
 
 @Component({
@@ -28,15 +29,14 @@ export class CardSelectionComponent implements OnInit, OnDestroy  {
   dataUser:Usuarios = {
     id: "",
     email: "",
-    contador_cafe_id: "",
-    admin: false,
     name: "",
-    entidad_id: "e4180b6c-a43e-4157-86c1-3c134ede2bb8"
+    fecha_creacion: new Date(),
   };
 
-  data_cafe:CafeData = 
+  data_contador:CafeData = 
     {
       id: "",
+      usuario_id: '',
       contador: 0,
       gratis: false,
       opcion: 0,
@@ -50,12 +50,14 @@ export class CardSelectionComponent implements OnInit, OnDestroy  {
   clave = 'piazzetta';
   users: any[] = [];
   coffes: any[] = [];
-  bgClass:string='bg-0';
-  entidad:string='';
+  bgClass:string='bg';
+  entidadOpcion:string='';
+  entidad!:Entidades;
   private dataSubscription: Subscription = new Subscription();
   constructor(private cdr: ChangeDetectorRef, private _SupabaseService:SupabaseService, private _dataInterna: InternoService, public popupService: PopupQrService, public infopopupService: PopupInfoService) { }
 
   async ngOnInit(): Promise<void> {
+
 
     /* this._SupabaseService.getUserss().subscribe(message => {
       // Actualiza la lista de usuarios cuando se recibe un mensaje
@@ -63,12 +65,13 @@ export class CardSelectionComponent implements OnInit, OnDestroy  {
       console.log(message.payload)
       this.users = message.payload;
     }); */
-
-    /* this.users = await this._SupabaseService.getUs()
-    console.log("USUARIOS US:", this.users); */
-    this.entidad= this._dataInterna.getEntidad().background
+    
+    this.entidad= this._dataInterna.getEntidad()
+    console.log("USUARIOS US:", this.users); 
     this.bgClass = `bg-${this._dataInterna.getEntidad().background}-card`;
+    this.entidadOpcion = this._dataInterna.getEntidad().background;
     console.log('background: ', this.bgClass);
+    await this.getContador()
     this.cdr.detectChanges();
     this.dataUser = this._dataInterna.getUser();
     this.nombre = localStorage.getItem("name");
@@ -82,7 +85,7 @@ export class CardSelectionComponent implements OnInit, OnDestroy  {
       )
       .subscribe((data: any) => {
         // Actualiza los datos recibidos
-        this.data_cafe = data[0];
+        this.data_contador = data[0];
         console.log(data[0]);
         if(data[0]!='')
       {
@@ -90,10 +93,10 @@ export class CardSelectionComponent implements OnInit, OnDestroy  {
       }
       }); */
 
-      console.log();
-      this.data_cafe = (await this._SupabaseService.getCofess(this.dataUser.contador_cafe_id)).data
+/*       console.log();
+      this.data_contador = (await this._SupabaseService.getCofess("this.dataUser.contador_cafe_id",'')).data
     
-      console.log("DATA CAFE NUEVA: ",this.data_cafe);
+      console.log("DATA CAFE NUEVA: ",this.data_contador); */
       
       
     /* setTimeout(() => {
@@ -102,6 +105,19 @@ export class CardSelectionComponent implements OnInit, OnDestroy  {
     }, 2000) */
 
     this.handleRealTimeUpdate();
+  }
+
+  async getContador() {
+    try {
+      const response:any = await this._SupabaseService.getTablaContador(this._dataInterna.getUser().id, this.entidad.tabla_contador)
+      console.log('contador', response.data);
+      this.data_contador = response.data;
+      // Continúa aquí con lo que necesites hacer con la respuesta
+      return response; // Retorna la respuesta si es necesario
+    } catch (error) {
+      console.error('Error al cargar contador', error);
+      throw error; // Propaga el error si es necesario
+    }
   }
 
   cambiarBg(valor: string): void {
@@ -118,17 +134,17 @@ export class CardSelectionComponent implements OnInit, OnDestroy  {
 
   handleRealTimeUpdate(){
     console.log("ESTAMSO EN REALTIME")
-    this._SupabaseService.getTablaCafesRealtime(this.dataUser.contador_cafe_id).subscribe(update => {
+    this._SupabaseService.getTablaCafesRealtime(this.data_contador.id, this.entidad.tabla_contador).subscribe(update => {
       const data:any = update;
       console.log('UPDATE:', data);
-      if(data.new.id == this.data_cafe.id){
+      if(data.new.id == this.data_contador.id){
         console.log('UPDATE == A USUARIO');
-        this.data_cafe.opcion = data.new.opcion
-        this.data_cafe.contador = data.new.contador
-        this.data_cafe.cantidad_gratis = data.new.cantidad_gratis
-        this.data_cafe.gratis = data.new.gratis
+/*         this.data_contador.opcion = data.new.opcion */
+        this.data_contador.contador = data.new.contador
+        this.data_contador.cantidad_gratis = data.new.cantidad_gratis
+        this.data_contador.gratis = data.new.gratis
         this.popupService.actualizarMostrar(false);
-        if(this.data_cafe.contador!=0){
+        if(this.data_contador.contador!=0){
           this.showToast();
         }
 
@@ -141,8 +157,10 @@ export class CardSelectionComponent implements OnInit, OnDestroy  {
   }
 
  async actualizarDatos(): Promise<void> {
-  await  this._SupabaseService.getDataCard(this.dataUser.contador_cafe_id).subscribe((data: any) => {
-      this.data_cafe = data[0];
+  console.log("DATOS A VER: ", this.data_contador )
+  await  this._SupabaseService.getDataCard(this.data_contador.id, this.entidad.tabla_contador).subscribe((data: any) => {
+      this.data_contador = data[0];
+      console.log("data[0]");
       console.log(data[0]);
       {
         this.upload = true;
@@ -152,40 +170,40 @@ export class CardSelectionComponent implements OnInit, OnDestroy  {
 
  async op1(){
     this.upload = false;
-    const response:any = (await this._SupabaseService.updateOpcion(this.dataUser.contador_cafe_id,1)).data;
+    const response:any = (await this._SupabaseService.updateOpcion(this.data_contador.id,this.entidad.tabla_contador,1)).data;
     console.log("Opcion 1 actualizada", response);
-    this.data_cafe.opcion = response[0].opcion        
+    this.data_contador.opcion = response[0].opcion        
     this.upload = true;
     
   }
 
   async op2(){
     this.upload = false;
-    const response:any = (await this._SupabaseService.updateOpcion(this.dataUser.contador_cafe_id,2)).data;
+    const response:any = (await this._SupabaseService.updateOpcion(this.data_contador.id,this.entidad.tabla_contador,2)).data;
     console.log("Opcion 2 actualizada", response);
-    this.data_cafe.opcion = response[0].opcion      
+    this.data_contador.opcion = response[0].opcion      
     this.upload = true;
    
   }
 
   async op3(){
     this.upload = false;
-    const response:any = (await this._SupabaseService.updateOpcion(this.dataUser.contador_cafe_id,3)).data;
+    const response:any = (await this._SupabaseService.updateOpcion(this.data_contador.id,this.entidad.tabla_contador,3)).data;
     console.log("Opcion 3 actualizada", response);
-    this.data_cafe.opcion = response[0].opcion    
+    this.data_contador.opcion = response[0].opcion    
     this.upload = true;
   }
 
   async sumar(){
-    if(this.data_cafe.contador==10){
+    if(this.data_contador.contador==10){
 
-      this.data_cafe.contador=0;
-      this.data_cafe.opcion=0;
+      this.data_contador.contador=0;
+      this.data_contador.opcion=0;
 
-      const responseOpcion:any = (await this._SupabaseService.updateOpcion(this.dataUser.contador_cafe_id,0)).data;
+      const responseOpcion:any = (await this._SupabaseService.updateOpcion(this.data_contador.id,this.entidad.tabla_contador,0)).data;
       console.log("Opcion set 0", responseOpcion);
 
-      const responseContador:any = (await this._SupabaseService.updateContador(this.dataUser.contador_cafe_id,0)).data;
+      const responseContador:any = (await this._SupabaseService.updateContador(this.data_contador.id,this.entidad.tabla_contador,0)).data;
       console.log("Opcion set 0", responseContador);
 
       
@@ -210,10 +228,10 @@ export class CardSelectionComponent implements OnInit, OnDestroy  {
       ); */
       /* this.ngOnInit(); */
     }else{      
-      const responseContador:any = (await this._SupabaseService.updateContador(this.dataUser.contador_cafe_id,this.data_cafe.contador+1)).data;
+      const responseContador:any = (await this._SupabaseService.updateContador(this.data_contador.id,this.entidad.tabla_contador,this.data_contador.contador+1)).data;
       console.log("Opcion set 0", responseContador);
 
-      /* await this._SupabaseService.postContador(this.dataUser.contador_cafe_id,this.data_cafe.contador+1).subscribe(
+      /* await this._SupabaseService.postContador(this.dataUser.contador_cafe_id,this.data_contador.contador+1).subscribe(
         (response) => {
           console.log('contador aumentado', response);
          
@@ -238,7 +256,7 @@ export class CardSelectionComponent implements OnInit, OnDestroy  {
   }
 
   cifrado(){
-    this.uuidCifrado = this.cifrarUUID(this.data_cafe.id, this.clave);
+    this.uuidCifrado = this.cifrarUUID(this.data_contador.id, this.clave);
     console.log('UUID cifrado:', this.uuidCifrado);
     this.onPopupTouch()
   }
@@ -264,7 +282,7 @@ onPopupTouch() {
 
   this.popupService.setData(this.uuidCifrado);
   this.popupService.actualizarMostrar(true)
-  if(this.data_cafe.contador==10){
+  if(this.data_contador.contador==10){
     this.popupService.setGratis(true)
   }else{
     this.popupService.setGratis(false)

@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { Usuarios } from '../interfaces/usuarios';
 import { Entidades } from '../interfaces/entdidades';
+import { Usuarios_admins } from '../interfaces/usuarios_admin';
 
 @Injectable({
   providedIn: 'root'
@@ -13,10 +14,8 @@ export class InternoService {
     {
       "id": "",
       "email": "",
-      "contador_cafe_id": "",
-      "admin": false,
       "name":"",
-      "entidad_id":""
+      "fecha_creacion": new Date(),
     }
   );
   
@@ -26,18 +25,30 @@ export class InternoService {
       "nombre": "",
       "email": "",
       "background": "0",
+      "tabla_contador": "",
       "fecha_creacion": new Date(),
   });
+
+  private userAdmin = new BehaviorSubject<Usuarios_admins>({
+  
+    "id": "",
+    "entidad_id": "",
+    "nombre": "",
+    "email": "",
+    "staff": false
+});
 
   miControl$ = this.logged.asObservable();
   miUser$ = this.user.asObservable();
   miEntidad$ = this.entidad.asObservable();
+  miUserAdmin$ = this.userAdmin.asObservable();
 
   constructor() {
     // Recuperar datos del localStorage al iniciar el servicio
     const userString = localStorage.getItem('user');
     const loggedString = localStorage.getItem('logged');
     const entidadString = localStorage.getItem('entidad');
+    const userADminString = localStorage.getItem('userAdmin');
 
     if (userString) {
       const user = JSON.parse(userString);
@@ -47,6 +58,10 @@ export class InternoService {
     if (loggedString) {
       const logged = JSON.parse(loggedString);
       this.logged.next(logged);
+    }
+    if (userADminString) {
+      const userAdmin = JSON.parse(userADminString);
+      this.logged.next(userAdmin);
     }
 
     /* if (entidadString) {
@@ -71,6 +86,14 @@ export class InternoService {
   setUser(valor: Usuarios): void {
     this.user.next(valor);
     localStorage.setItem('user', JSON.stringify(valor));
+  }
+  getUserAdmin(): Usuarios_admins {
+    return this.userAdmin.value;
+  }
+
+  setUserAdmin(valor: Usuarios_admins): void {
+    this.userAdmin.next(valor);
+    localStorage.setItem('userAdmin', JSON.stringify(valor));
   }
 
   getEntidad(): Entidades {

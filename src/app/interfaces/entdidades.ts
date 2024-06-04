@@ -9,6 +9,7 @@ export interface Entidades {
     nombre:         string;
     email:          string;
     background:     string;
+    tabla_contador: string;
     fecha_creacion: Date;
 }
 

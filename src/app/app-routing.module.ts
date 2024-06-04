@@ -11,7 +11,7 @@ import { MenuAdminComponent } from './components/routes/menu-admin/menu-admin.co
 const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' }, // Redirigir a '/home' en la ruta raíz
   { path: 'home', component: HomeComponent },
-  { path: 'principal', component: PrincipalComponent },
+  { path: 'principal', component: PrincipalComponent, canActivate: [AuthGuard] },
   { path: 'qrscan', component: LectorQrComponent, canActivate: [AuthGuard]},
   { path: 'cardSelection', component: CardSelectionComponent, canActivate: [AuthGuard] },
   { path: 'menu', component: MenuComponent },

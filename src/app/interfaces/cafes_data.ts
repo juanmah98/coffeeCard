@@ -6,6 +6,7 @@
 
 export interface CafeData {
     id:              string;
+    usuario_id: string
     contador:        number;
     gratis:          boolean;
     opcion:          number;

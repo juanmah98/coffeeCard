@@ -4,20 +4,21 @@
 //
 //   const usuarios = Convert.toUsuarios(json);
 
-export interface Usuarios {
-    id:               string;
-    email:            string;
-    name: string;
-    fecha_creacion: Date;
+export interface Usuarios_admins {
+    id: string;
+    entidad_id: string;
+    email: string;
+    nombre: string;
+    staff: boolean;
 }
 
 // Converts JSON strings to/from your types
 export class Convert {
-    public static toUsuarios(json: string): Usuarios[] {
+    public static toUsuarios(json: string): Usuarios_admins[] {
         return JSON.parse(json);
     }
 
-    public static usuariosToJson(value: Usuarios[]): string {
+    public static usuariosToJson(value: Usuarios_admins[]): string {
         return JSON.stringify(value);
     }
 }
