@@ -115,3 +115,12 @@ background: linear-gradient(60deg, rgba(0,0,0,1) 0%, rgba(0,6,36,1) 35%, rgba(0,
     -webkit-animation-direction: normal, alternate;
     animation-direction: normal, alternate;
   }
+
+
+  @media (max-width: 596px) { 
+    
+    body{
+
+        height: auto;
+    }
+  }
