@@ -7,10 +7,12 @@ import { LectorQrComponent } from './components/routes/lector-qr/lector-qr.compo
 import { PrincipalComponent } from './components/routes/principal/principal.component';
 import { MenuComponent } from './components/routes/menu/menu.component';
 import { MenuAdminComponent } from './components/routes/menu-admin/menu-admin.component';
+import { SplineViewerComponent } from './components/routes/spline-viewer/spline-viewer.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' }, // Redirigir a '/home' en la ruta raíz
   { path: 'home', component: HomeComponent },
+  { path: 'view', component: SplineViewerComponent },
   { path: 'principal', component: PrincipalComponent, canActivate: [AuthGuard] },
   { path: 'qrscan', component: LectorQrComponent, canActivate: [AuthGuard]},
   { path: 'cardSelection', component: CardSelectionComponent, canActivate: [AuthGuard] },

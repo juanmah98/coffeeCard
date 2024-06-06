@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HomeComponent } from './home/home.component';
 import { CardSelectionComponent } from './card-selection/card-selection.component';
@@ -10,6 +10,8 @@ import { LayoutModule } from '../layout/layout.module';
 import { MenuComponent } from './menu/menu.component';
 import { MenuAdminComponent } from './menu-admin/menu-admin.component';
 import { FormsModule } from '@angular/forms';
+import { SplineViewerComponent } from './spline-viewer/spline-viewer.component';
+import { SplineViewrCardComponent } from './spline-viewr-card/spline-viewr-card.component';
 
 
 
@@ -21,6 +23,7 @@ import { FormsModule } from '@angular/forms';
     PrincipalComponent,
     MenuComponent,
     MenuAdminComponent,
+    SplineViewrCardComponent
    
     
   ],
@@ -32,7 +35,9 @@ import { FormsModule } from '@angular/forms';
   ],
   exports:[
     HomeComponent,
-    CardSelectionComponent
+    CardSelectionComponent,
   ],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
+  
 })
 export class RoutesModule { }

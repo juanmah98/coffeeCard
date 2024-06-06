@@ -169,6 +169,9 @@ export class LectorQrComponent implements OnInit {
     }
   }
   
+  restart(){
+    
+  }
   
 
   detenerEscaneo(): void {

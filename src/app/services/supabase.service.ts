@@ -63,6 +63,7 @@ export class SupabaseService {
     .match({usuario_id: id})
     .single()
   }
+  
   async postNewCoffe(data: any, tabla: string) {
     return await this.supabase
       .from(tabla)

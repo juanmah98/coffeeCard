@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -10,10 +10,14 @@ import { RoutesModule } from './components/routes/routes.module';
 import { QRCodeModule } from 'angularx-qrcode';
 import { LayoutModule } from './components/layout/layout.module';
 import { FormsModule } from '@angular/forms';
+import { SplineViewerComponent } from './components/routes/spline-viewer/spline-viewer.component';
+import { SplineViewrCardComponent } from './components/routes/spline-viewr-card/spline-viewr-card.component';
 
 @NgModule({
   declarations: [
     AppComponent,
+    SplineViewerComponent,
+
   ],
   imports: [
     BrowserModule,
@@ -24,9 +28,11 @@ import { FormsModule } from '@angular/forms';
     LayoutModule,
     CommonModule,
     QRCodeModule,
-    FormsModule  
+    FormsModule,
+      
   ],
   providers: [],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
