@@ -31,6 +31,7 @@ export class CardSelectionComponent implements OnInit, OnDestroy  {
     email: "",
     name: "",
     fecha_creacion: new Date(),
+    pais: ''
   };
 
   data_contador:CafeData = 
@@ -74,7 +75,8 @@ export class CardSelectionComponent implements OnInit, OnDestroy  {
     await this.getContador()
     this.cdr.detectChanges();
     this.dataUser = this._dataInterna.getUser();
-    this.nombre = localStorage.getItem("name");
+   /*  this.nombre = localStorage.getItem("name"); */
+    this.nombre = this.dataUser.name;
     this.foto = localStorage.getItem("photo");
     this.actualizarDatos();
 

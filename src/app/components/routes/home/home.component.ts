@@ -24,11 +24,15 @@ export class HomeComponent implements OnInit {
   entidades:Entidades[]=[];
   userAdmin:boolean = false;
   entidad:string='';
+  usuarioNuevo!:Usuarios;
+  userEmail:string='';
+  userName:string='';
+  paisOpcion: boolean = false;
   constructor(private cdr: ChangeDetectorRef, private authService:AuthService, private router: Router, private _SupabaseService: SupabaseService, private ngZone: NgZone, private interno:  InternoService) { }
 
   async ngOnInit(): Promise<void> {
     this.getEntidades()
-
+    this.paisOpcion = false;
    await this.getAdmins();
    /* await this.getUsers(); */
     this.userAdmin = false;
@@ -137,7 +141,8 @@ handleCredentialResponse = async (response: any) => {
       this.usuarios = data.email;
       let logg = false;
        if(data == ''){
-        this.crearUsuario(this.googleUser.email, this.googleUser.name);
+        this.usuarioCreado(this.googleUser.email, this.googleUser.name);
+        
       } 
       console.log(data)
       for (let i = 0; i < data.length; i++) {
@@ -163,7 +168,9 @@ handleCredentialResponse = async (response: any) => {
   }else{
     this.interno.setLogged(true);
     console.log("nuevo")
-    this.crearUsuario(this.googleUser.email, this.googleUser.name);
+    this.usuarioCreado(this.googleUser.email, this.googleUser.name);
+    this.paisOpcion = true
+        console.log(this.paisOpcion)
   }
     
   })
@@ -191,6 +198,18 @@ async crearCafeRealtime(){
 
 }
 
+async usuarioCreado(email: string, name:string){
+  /* const dataUser:any = {
+    email: email,
+    name: name,
+    fecha_creacion: new Date();
+  }; */
+
+  this.userEmail= email;
+  this.userName= name;
+  this.paisOpcion = true;
+}
+
 async createCafe(dataCafe:any) {
   try {
     const response = await this._SupabaseService.postCafes(dataCafe).toPromise();
@@ -207,13 +226,15 @@ async createCafe(dataCafe:any) {
 
 
 
-async crearUsuario(email: any, name:any): Promise<void> {
+async crearUsuario(pais: string): Promise<void> {
   console.log("Creando");
   const dataUser:any = {
-    email: email,
-    name: name,
+    email:this.userEmail,
+    name: this.userName,
     fecha_creacion: new Date(),
-  };
+    pais: pais
+  }; 
+
 /*   const dataCafe:any = {
        
       contador: 0,

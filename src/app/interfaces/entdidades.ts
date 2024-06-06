@@ -11,6 +11,7 @@ export interface Entidades {
     background:     string;
     tabla_contador: string;
     fecha_creacion: Date;
+    pais:string;
 }
 
 // Converts JSON strings to/from your types

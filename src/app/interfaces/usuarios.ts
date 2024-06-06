@@ -9,6 +9,7 @@ export interface Usuarios {
     email:            string;
     name: string;
     fecha_creacion: Date;
+    pais:string;
 }
 
 // Converts JSON strings to/from your types

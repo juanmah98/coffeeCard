@@ -1,4 +1,4 @@
-<body class="text-center"> <!-- Clase text-center aplicada al body para centrar todo el contenido -->
+<body class="text-center" [ngClass]="bgClass"> <!-- Clase text-center aplicada al body para centrar todo el contenido -->
   <div class="container-fluid">
     <div class="row justify-content-center pb-3">
       <div class="col-12 pb-2 pt-3 text-light ">
@@ -27,7 +27,7 @@
           </div>
 
           <div *ngIf="entidadDistinta==true" class="pt-2">
-            <h2>Error de escaneo</h2>          
+            <h2>QR no valido</h2>          
             <button type="button" class="btn btn-danger" (click)="reiniciarEscaneo()">Escanear</button>
           </div>
         

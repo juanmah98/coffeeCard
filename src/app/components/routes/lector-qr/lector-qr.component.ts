@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import jsQR from 'jsqr';
 import * as CryptoJS from 'crypto-js';
 import { SupabaseService } from 'src/app/services/supabase.service';
@@ -30,6 +30,9 @@ export class LectorQrComponent implements OnInit {
     cantidad_gratis: 0
   };
 
+  bgClass:string='bg';
+  
+
   // Clave para cifrar/descifrar
   clave = 'piazzetta';
   private scanSubscription: Subscription = new Subscription();
@@ -37,13 +40,17 @@ export class LectorQrComponent implements OnInit {
  entidad!:Entidades;
  entidadDistinta=false;
 
-  constructor(private _SupabaseService: SupabaseService, private router: Router, private _InternoServices: InternoService) { }
+  constructor(private cdr: ChangeDetectorRef, private _SupabaseService: SupabaseService, private router: Router, private _InternoServices: InternoService) { }
 
   ngOnInit(): void {
     this.startCamera();
     this.initScanInterval();
     this.entidad = this._InternoServices.getEntidad();
     console.log('Entidad: ', this.entidad)
+
+    this.entidad= this._InternoServices.getEntidad()
+    this.bgClass = `bg-${this._InternoServices.getEntidad().background}-card`;
+    this.cdr.detectChanges();
   }
 
   ngOnDestroy(): void {

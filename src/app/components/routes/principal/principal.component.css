@@ -121,6 +121,14 @@ background: linear-gradient(60deg, rgba(0,0,0,1) 0%, rgba(0,6,36,1) 35%, rgba(0,
     
     body{
 
+        height: 100vh;
+    }
+  }
+
+  @media (max-width: 500px) { 
+    
+    body{
+
         height: auto;
     }
   }

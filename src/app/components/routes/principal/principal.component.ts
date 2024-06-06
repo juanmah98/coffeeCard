@@ -20,6 +20,7 @@ export class PrincipalComponent implements OnInit {
 
   async ngOnInit(): Promise<void> {
    await this.getEntidades()
+   this.usuario= this._interno.getUser()
   }
 
   async getEntidades() {
@@ -60,7 +61,6 @@ export class PrincipalComponent implements OnInit {
 
   async run(valor: number){
     this._interno.setEntidad(this.entidades[valor]);
-    this.usuario= this._interno.getUser()
    await this.getContadorTabla(this.usuario.id, this.entidades[valor].tabla_contador )
     
     
