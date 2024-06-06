@@ -145,6 +145,7 @@ export class CardSelectionComponent implements OnInit, OnDestroy  {
         this.data_contador.contador = data.new.contador
         this.data_contador.cantidad_gratis = data.new.cantidad_gratis
         this.data_contador.gratis = data.new.gratis
+        this.getContador();
         this.popupService.actualizarMostrar(false);
         if(this.data_contador.contador!=0){
           this.showToast();
