@@ -294,7 +294,7 @@ onPopupTouch() {
 
 onInfoTouch() {
   this.infopopupService.setDataOpcion("Cafe");
-  this.infopopupService.setData("Con la compra de 10 cafes, tienes gratis un cafe expresso, cortado o con leche (tamaño regular)");
+  this.infopopupService.setData(this.entidad.informacion);
   this.infopopupService.actualizarMostrar(true)
 }
 

@@ -8,7 +8,7 @@
     flex-direction: column;
     justify-content: center;
   
-    background-color: rgb(0, 0, 0);
+    background-color: rgba(0, 0, 0, 0.651);
     opacity: 70%;
   }
   
@@ -19,7 +19,7 @@
   transform: translate(-50%, -50%);
   width: calc(100% - 40px); /* Asumiendo un padding de 20px a cada lado */
   max-width: 700px; /* O cualquier máximo que desees */
-  height: 70%; /* Altura auto para manejar el contenido dinámicamente */
+  height: 40%; /* Altura auto para manejar el contenido dinámicamente */
   padding: 20px;
   z-index: 10;
 

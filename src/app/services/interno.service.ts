@@ -28,7 +28,8 @@ export class InternoService {
       "background": "0",
       "tabla_contador": "",
       "fecha_creacion": new Date(),
-      "pais": ''
+      "pais": '',
+      "informacion":''
   });
 
   private userAdmin = new BehaviorSubject<Usuarios_admins>({
