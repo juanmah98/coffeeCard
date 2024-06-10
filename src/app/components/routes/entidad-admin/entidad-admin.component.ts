@@ -14,124 +14,105 @@ import { SupabaseService } from 'src/app/services/supabase.service';
 })
 export class EntidadAdminComponent implements OnInit {
 
-  entidad!:Entidades;
-  usuariosAdmin:Usuarios_admins[]=[];
-  usuarios:Usuarios[]=[];
-  admin!:Usuarios_admins
-  ngZone: any;
-  tarjetas:number=0;
-  nuevos:number=0;
+  entidad!: Entidades;
+  usuariosAdmin: Usuarios_admins[] = [];
+  usuarios: Usuarios[] = [];
+  admin!: Usuarios_admins;
+  tarjetas: number = 0;
+  nuevos: number = 0;
 
-  constructor(private _supabaseServices: SupabaseService, private router: Router, private _InternoServices: InternoService) { }
+  constructor(
+    private supabaseService: SupabaseService,
+    private router: Router,
+    private internoService: InternoService
+  ) { }
 
   async ngOnInit(): Promise<void> {
+    this.admin = this.internoService.getUserAdmin();
+    this.entidad = this.internoService.getEntidad();
 
-    this.admin= this._InternoServices.getUserAdmin();
-    this.entidad= this._InternoServices.getEntidad();
-   await this.getAdmins();
-   await this.getUsers();
-   await this.regaladas();
+    try {
+      await Promise.all([
+        this.loadAdmins(),
+        this.loadUsers(),
+        this.loadRegaladas()
+      ]);
+      this.nuevos = this.contarUsuariosNuevosDelMes(this.usuarios);
+    } catch (error) {
+      console.error('Error durante la inicialización:', error);
+    }
 
-    console.log("admin: ",this.admin)
-    console.log("Entidad: ",this.entidad)
-    this.nuevos = this.contarUsuariosNuevosDelMes(this.usuarios);
+    console.log("Admin:", this.admin);
+    console.log("Entidad:", this.entidad);
+    console.log(`Cantidad de usuarios nuevos del mes: ${this.nuevos}`);
   }
 
-
-  async getAdmins() {
+  async loadAdmins(): Promise<void> {
     try {
-      const response:any = await this._supabaseServices.getUsersAdminTable();
-      console.log('entidades', response.data);
+      const response:any = await this.supabaseService.getUsersAdminTable();
       this.usuariosAdmin = response.data;
-      // Continúa aquí con lo que necesites hacer con la respuesta
-      return response; // Retorna la respuesta si es necesario
+      console.log('Admins:', this.usuariosAdmin);
     } catch (error) {
-      console.error('Error al cargar entidades', error);
-      throw error; // Propaga el error si es necesario
+      console.error('Error al cargar admins:', error);
+      throw error;
     }
   }
 
-  async getUsers() {
+  async loadUsers(): Promise<void> {
     try {
-      const response:any = (await this._supabaseServices.getTablaContadorData('*',this.entidad.tabla_contador)).data
-      console.log('Tablas user', response);
-        await this.usuariosEntidad(response)
-      // Continúa aquí con lo que necesites hacer con la respuesta
-      return response; // Retorna la respuesta si es necesario
+      const response = await this.supabaseService.getTablaContadorData('*', this.entidad.tabla_contador);
+      const users:any = response.data;
+      await this.loadUsuariosEntidad(users);
     } catch (error) {
-      console.error('Error al cargar entidades', error);
-      throw error; // Propaga el error si es necesario
+      console.error('Error al cargar usuarios:', error);
+      throw error;
     }
   }
 
- 
-  async usuariosEntidad(users: CafeData[]){
-    console.log("users: ", users)
-    let index = 0;
-    users.forEach(async user=>{
-     await this.getUser(user, index++)
-    })
-    console.log('usuarios totales', this.usuarios);
-
+  async loadUsuariosEntidad(users: CafeData[]): Promise<void> {
+    const userPromises = users.map((user, index) => this.loadUser(user, index));
+    await Promise.all(userPromises);
+    console.log('Usuarios totales:', this.usuarios);
   }
 
-  async getUser(user: CafeData, index: number) {
+  async loadUser(user: CafeData, index: number): Promise<void> {
     try {
-      const response:any = (await this._supabaseServices.getUsuariosId(user.usuario_id)).data
-      
-      this.usuarios[index] = response;
-      // Continúa aquí con lo que necesites hacer con la respuesta
-      return response; // Retorna la respuesta si es necesario
+      const response = await this.supabaseService.getUsuariosId(user.usuario_id);
+      this.usuarios[index] = response.data;
     } catch (error) {
-      console.error('Error al cargar entidades', error);
-      throw error; // Propaga el error si es necesario
+      console.error('Error al cargar usuario:', error);
+      throw error;
     }
   }
 
- async regaladas(){
-  try {
-    const response:any = (await this._supabaseServices.getTablaContadorData('cantidad_gratis',this.entidad.tabla_contador)).data
-    console.log("entidad: ", this.entidad.tabla_contador)
-    console.log('tabla', response);
-    await this.suma(response);
-    // Continúa aquí con lo que necesites hacer con la respuesta
-    return response; // Retorna la respuesta si es necesario
-  } catch (error) {
-    console.error('Error al cargar entidades', error);
-    throw error; // Propaga el error si es necesario
-  }  
+  async loadRegaladas(): Promise<void> {
+    try {
+      const response = await this.supabaseService.getTablaContadorData('cantidad_gratis', this.entidad.tabla_contador);
+      const contador:any = response.data;
+      this.sumaTarjetas(contador);
+    } catch (error) {
+      console.error('Error al cargar regaladas:', error);
+      throw error;
+    }
   }
 
-  async suma(contador: any[]){
-    console.log("contador: ", contador)
-    contador.forEach(element => {
-     this.tarjetas = this.tarjetas + parseInt(element.cantidad_gratis); 
-    });
-
-    console.log("tarjetas: ", this.tarjetas)
+  sumaTarjetas(contador: any[]): void {
+    this.tarjetas = contador.reduce((total, item) => total + parseInt(item.cantidad_gratis, 10), 0);
+    console.log("Tarjetas:", this.tarjetas);
   }
 
   contarUsuariosNuevosDelMes(usuarios: Usuarios[]): number {
-    const fechaActual: Date = new Date();
-    const mesActual: number = fechaActual.getMonth();
-    const anioActual: number = fechaActual.getFullYear();
+    const fechaActual = new Date();
+    const mesActual = fechaActual.getMonth();
+    const anioActual = fechaActual.getFullYear();
 
-    // Filtrar los usuarios cuya fecha de registro coincide con el mes actual
-    const usuariosDelMes: Usuarios[] = usuarios.filter(usuario => {
-        // Convertir el string de fecha_creacion a un objeto Date si es necesario
-        const fechaCreacion: Date = new Date(usuario.fecha_creacion);
-        const mesRegistro: number = fechaCreacion.getMonth();
-        const anioRegistro: number = fechaCreacion.getFullYear();
-        return mesRegistro === mesActual && anioRegistro === anioActual;
-    });
-
-    // Devolver la cantidad de usuarios registrados este mes
-    return usuariosDelMes.length;
-}
-
-
-  scan(){
-    this.router.navigate(['/qrscan']);
+    return usuarios.filter(usuario => {
+      const fechaCreacion = new Date(usuario.fecha_creacion);
+      return fechaCreacion.getMonth() === mesActual && fechaCreacion.getFullYear() === anioActual;
+    }).length;
   }
 
+  scan(): void {
+    this.router.navigate(['/qrscan']);
+  }
 }
