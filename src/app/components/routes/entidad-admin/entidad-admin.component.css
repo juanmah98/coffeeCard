@@ -1,0 +1,23 @@
+body{
+    background-color: black;
+    width: 100%;
+    height: 100vh;
+    padding-top: 1.5rem;
+}
+
+.admin-card {
+    background-color: white;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+.admin-list li:nth-child(odd) {
+    background-color: #929292;
+}
+
+.admin-list li:nth-child(even) {
+    background-color: #dbdbdb;
+}
+

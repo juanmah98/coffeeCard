@@ -38,7 +38,7 @@ export class InternoService {
     "entidad_id": "",
     "nombre": "",
     "email": "",
-    "staff": false
+    "admin": false
 });
 
   miControl$ = this.logged.asObservable();

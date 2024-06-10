@@ -12,6 +12,7 @@ import { MenuAdminComponent } from './menu-admin/menu-admin.component';
 import { FormsModule } from '@angular/forms';
 import { SplineViewerComponent } from './spline-viewer/spline-viewer.component';
 import { SplineViewrCardComponent } from './spline-viewr-card/spline-viewr-card.component';
+import { EntidadAdminComponent } from './entidad-admin/entidad-admin.component';
 
 
 
@@ -23,7 +24,8 @@ import { SplineViewrCardComponent } from './spline-viewr-card/spline-viewr-card.
     PrincipalComponent,
     MenuComponent,
     MenuAdminComponent,
-    SplineViewrCardComponent
+    SplineViewrCardComponent,
+    EntidadAdminComponent
    
     
   ],

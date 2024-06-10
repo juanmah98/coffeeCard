@@ -23,6 +23,7 @@ export class HomeComponent implements OnInit {
   admins: Usuarios_admins[] =[]
   entidades:Entidades[]=[];
   userAdmin:boolean = false;
+  userAdminMaster:boolean=false;
   entidad:string='';
   usuarioNuevo!:Usuarios;
   userEmail:string='';
@@ -36,6 +37,7 @@ export class HomeComponent implements OnInit {
    await this.getAdmins();
    /* await this.getUsers(); */
     this.userAdmin = false;
+    this.userAdminMaster=false;
   
   setTimeout(() => {
     google.accounts.id.initialize({
@@ -130,12 +132,20 @@ handleCredentialResponse = async (response: any) => {
   await this.setEntidad()
 
   if(this.userAdmin){
-
+    await this.setAdmin()
     this.authService.login();
-     this.ngZone.run(() => {
-      this.loading = false;
-      this.router.navigate(['/qrscan']);
-    }); 
+    if(this.userAdminMaster){
+      this.ngZone.run(() => {
+        this.loading = false;      
+        this.router.navigate(['/admin']);
+        }); 
+        }else{
+          this.ngZone.run(() => {
+            this.loading = false;      
+            this.router.navigate(['/qrscan']);
+      }); 
+    }
+     
   }else{
     this._SupabaseService.getUsers().subscribe((data: any) => {
       this.usuarios = data.email;
@@ -185,12 +195,29 @@ async setEntidad(){
 
   this.entidades.forEach(data=>{
     if(data.id == this.entidad){
-    this.interno.setEntidad(data); 
+    this.interno.setEntidad(data);     
     }
-  })
+  }) 
 
-  
+  /* if(this.userAdmin == true)
+    {
+      this.admins.forEach(data=>{
+        if(data.entidad_id == this.entidad){
+        this.interno.setUserAdmin(data); 
+        }
+      }) 
+    } */
    
+}
+
+async setAdmin(){
+  this.admins.forEach(data=>{
+    if(data.entidad_id == this.entidad){
+    this.interno.setUserAdmin(data); 
+    this.userAdminMaster = data.admin;
+      
+    }
+  }) 
 }
 
 

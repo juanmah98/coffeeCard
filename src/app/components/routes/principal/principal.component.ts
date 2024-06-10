@@ -59,9 +59,9 @@ export class PrincipalComponent implements OnInit {
     }
   }
 
-  async run(valor: number){
-    this._interno.setEntidad(this.entidades[valor]);
-   await this.getContadorTabla(this.usuario.id, this.entidades[valor].tabla_contador )
+  async run(valor: Entidades){
+    this._interno.setEntidad(valor);
+   await this.getContadorTabla(this.usuario.id, valor.tabla_contador )
     
     
      this.router.navigate(['/cardSelection']);

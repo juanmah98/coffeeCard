@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { BehaviorSubject, Observable, Subject  } from 'rxjs';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
-import { createClient, SupabaseClient } from '@supabase/supabase-js';
+import { createClient, Session, SupabaseClient } from '@supabase/supabase-js';
 import { CafeData } from '../interfaces/cafes_data';
 
 export const USERS_TABLE = "usuarios";
@@ -21,7 +21,7 @@ export class SupabaseService {
 
 
   private supabase: SupabaseClient;
-
+  private session!: BehaviorSubject<Session | null>;
 
  
   /* private messageSubject: Subject<any> = new Subject<any>(); */
@@ -30,7 +30,17 @@ export class SupabaseService {
     
     
    
-    this.supabase = createClient('https://rwttebejxwncpurszzld.supabase.co', environment.supabaseKey)
+    this.supabase = createClient('https://rwttebejxwncpurszzld.supabase.co', environment.supabaseKey);
+
+    // Recuperar la sesión actual, si existe
+    this.supabase.auth.getSession().then(({ data }) => {
+      this.session.next(data.session);
+    });
+
+    // Escuchar cambios de autenticación
+    this.supabase.auth.onAuthStateChange((_event, session) => {
+      this.session.next(session);
+    });
   }
 
   private getHeaders(): HttpHeaders {

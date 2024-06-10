@@ -9,7 +9,7 @@ export interface Usuarios_admins {
     entidad_id: string;
     email: string;
     nombre: string;
-    staff: boolean;
+    admin: boolean;
 }
 
 // Converts JSON strings to/from your types
