@@ -134,7 +134,7 @@ handleCredentialResponse = async (response: any) => {
   if(this.userAdmin){
     await this.setAdmin()
     this.authService.login();
-    if(this.userAdminMaster){
+    if(!this.userAdminMaster){
       this.ngZone.run(() => {
         this.loading = false;      
         this.router.navigate(['/admin']);

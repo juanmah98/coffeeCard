@@ -41,10 +41,13 @@ export class InternoService {
     "admin": false
 });
 
+private userAll = new BehaviorSubject<Usuarios[]>([]);
+
   miControl$ = this.logged.asObservable();
   miUser$ = this.user.asObservable();
   miEntidad$ = this.entidad.asObservable();
   miUserAdmin$ = this.userAdmin.asObservable();
+  miUserAll$ = this.userAll.asObservable();
 
   constructor() {
     // Recuperar datos del localStorage al iniciar el servicio
@@ -90,6 +93,15 @@ export class InternoService {
     this.user.next(valor);
     localStorage.setItem('user', JSON.stringify(valor));
   }
+
+  getUserAll(): Usuarios[] {
+    return this.userAll.value;
+  }
+
+  setUserAll(valor: Usuarios[]): void {
+    this.userAll.next(valor);
+  }
+
   getUserAdmin(): Usuarios_admins {
     return this.userAdmin.value;
   }

@@ -15,14 +15,14 @@
             <div class="col-8 col-sm-6 col-md-4">
                 <div class="admin-card text-dark">
                     <p>Tarjetas regaladas</p>
-                    <h5>50</h5>
+                    <h5>{{tarjetas}}</h5>
                 </div>
             </div>
 
             <div class="col-8 col-sm-6 col-md-4">
                 <div class="admin-card text-dark">
                     <p>Usuarios de este mes</p>
-                    <h5>25</h5>
+                    <h5>{{nuevos}}</h5>
                 </div>
             </div>
 
@@ -31,17 +31,15 @@
                     <img src="../../../../assets/imagenes/image 46.png" width="150px" alt="">
                 </div>
                 <h4>Admins</h4>
-               <!--  <ul class="list-group admin-list" *ngFor="let admins of usuariosAdmin">
-                    <li *ngIf="admin.entidad_id == admins.entidad_id" class="list-group-item">{{admins.nombre}}</li>             
-                </ul> -->
-
+                <!-- Campo de entrada de texto para el nuevo correo electrónico -->
+               
                 <table class="table table-dark table-striped">
                     <thead>
                         <tr>
                             <th scope="col">#</th>
                             <th scope="col">Nombre</th>
                             <th scope="col">Correo</th>
-                            <th scope="col">Staff</th>
+                            <th scope="col">Admins</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -53,7 +51,18 @@
                         </tr>
                     </tbody>
                 </table>
+
+                <div class="input-group mb-3">
+                    <input type="text" class="form-control"  placeholder="Correo electrónico">
+                    <div class="input-group-append mx-2">
+                        <!-- Botón para agregar el nuevo correo electrónico -->
+                        <button class="btn btn-primary" type="button" >Agregar</button>
+                    </div>
+                </div>
             </div>
+
+            
+            
 
         <div class="col-12 text-center">
             <button class="btn btn-light " (click)="scan()">ESCANER</button>

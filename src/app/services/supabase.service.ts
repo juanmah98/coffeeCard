@@ -73,6 +73,29 @@ export class SupabaseService {
     .match({usuario_id: id})
     .single()
   }
+
+  async getTablaContadorData(column: string,tabla: string){
+    return await this.supabase
+    .from(tabla)
+    .select(column)
+
+  }
+
+  async getUsuariosId(id: string){
+    return await this.supabase
+    .from(USERS_TABLE)
+    .select('*')
+    .match({id: id})
+    .single()
+  }
+
+  async getUsuariosDataTable(id: string, tabla: string){
+    return await this.supabase
+    .from(USERS_TABLE)
+    .select('*')
+    .match({id: id})
+    .single()
+  }
   
   async postNewCoffe(data: any, tabla: string) {
     return await this.supabase
