@@ -106,8 +106,8 @@ export class LectorQrComponent implements OnInit {
       .pipe(
         takeWhile(() => this.continueScanning)
       )
-      .subscribe(() => {
-        this.scanQRCode();
+      .subscribe(async () => {
+       await this.scanQRCode();
       });
   }
 
@@ -126,7 +126,7 @@ export class LectorQrComponent implements OnInit {
     }
   }
 
-  scanQRCode() {
+ async scanQRCode() {
     const video = this.videoElement?.nativeElement; // Verificar si videoElement está definido
     if (!video) {
       console.error('Elemento de video no está definido.');

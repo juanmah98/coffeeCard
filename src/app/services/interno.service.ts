@@ -38,7 +38,7 @@ export class InternoService {
     "entidad_id": "",
     "nombre": "",
     "email": "",
-    "admin": false
+    "soloLectura": false
 });
 
 private userAll = new BehaviorSubject<Usuarios[]>([]);

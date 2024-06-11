@@ -136,7 +136,7 @@ export class CardSelectionComponent implements OnInit, OnDestroy  {
 
   handleRealTimeUpdate(){
     console.log("ESTAMSO EN REALTIME")
-    this._SupabaseService.getTablaCafesRealtime(this.data_contador.id, this.entidad.tabla_contador).subscribe(update => {
+    this._SupabaseService.getTablaCafesRealtime(this.data_contador.id, this.entidad.tabla_contador).subscribe(async update => {
       const data:any = update;
       console.log('UPDATE:', data);
       if(data.new.id == this.data_contador.id){
@@ -145,7 +145,7 @@ export class CardSelectionComponent implements OnInit, OnDestroy  {
         this.data_contador.contador = data.new.contador
         this.data_contador.cantidad_gratis = data.new.cantidad_gratis
         this.data_contador.gratis = data.new.gratis
-        this.getContador();
+       await this.getContador();
         this.popupService.actualizarMostrar(false);
         if(this.data_contador.contador!=0){
           this.showToast();

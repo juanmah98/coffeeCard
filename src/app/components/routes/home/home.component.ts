@@ -23,7 +23,7 @@ export class HomeComponent implements OnInit {
   admins: Usuarios_admins[] =[]
   entidades:Entidades[]=[];
   userAdmin:boolean = false;
-  userAdminMaster:boolean=false;
+  user_solo_lectura:boolean=false;
   entidad:string='';
   usuarioNuevo!:Usuarios;
   userEmail:string='';
@@ -37,7 +37,7 @@ export class HomeComponent implements OnInit {
    await this.getAdmins();
    /* await this.getUsers(); */
     this.userAdmin = false;
-    this.userAdminMaster=false;
+    this.user_solo_lectura=false;
   
   setTimeout(() => {
     google.accounts.id.initialize({
@@ -134,7 +134,7 @@ handleCredentialResponse = async (response: any) => {
   if(this.userAdmin){
     await this.setAdmin()
     this.authService.login();
-    if(!this.userAdminMaster){
+    if(!this.user_solo_lectura){
       this.ngZone.run(() => {
         this.loading = false;      
         this.router.navigate(['/admin']);
@@ -214,7 +214,7 @@ async setAdmin(){
   this.admins.forEach(data=>{
     if(data.entidad_id == this.entidad){
     this.interno.setUserAdmin(data); 
-    this.userAdminMaster = data.admin;
+    this.user_solo_lectura = data.soloLectura;
       
     }
   }) 

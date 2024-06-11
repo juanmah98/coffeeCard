@@ -17,6 +17,7 @@ export class EntidadAdminComponent implements OnInit {
   entidad!: Entidades;
   usuariosAdmin: Usuarios_admins[] = [];
   usuarios: Usuarios[] = [];
+  rolesAdmins: Usuarios_admins[] = [];
   admin!: Usuarios_admins;
   tarjetas: number = 0;
   nuevos: number = 0;
@@ -52,6 +53,13 @@ export class EntidadAdminComponent implements OnInit {
       const response:any = await this.supabaseService.getUsersAdminTable();
       this.usuariosAdmin = response.data;
       console.log('Admins:', this.usuariosAdmin);
+
+      this.rolesAdmins = this.usuariosAdmin.filter(usuario => {
+        return usuario.entidad_id === this.entidad.id;
+      });
+
+
+
     } catch (error) {
       console.error('Error al cargar admins:', error);
       throw error;

@@ -39,15 +39,16 @@
                             <th scope="col">#</th>
                             <th scope="col">Nombre</th>
                             <th scope="col">Correo</th>
-                            <th scope="col">Admins</th>
+                            <th scope="col">Roles</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr *ngFor="let admin of usuariosAdmin; let index = index">
+                        <tr *ngFor="let admin of rolesAdmins; let index = index">
                             <th scope="row">{{ index + 1 }}</th>
                             <td>{{ admin.nombre }}</td>
                             <td>{{ admin.email }}</td>
-                            <td>{{ admin.admin }}</td>
+                            <td *ngIf="admin.soloLectura">Scaner</td>
+                            <td *ngIf="!admin.soloLectura">Admin</td>
                         </tr>
                     </tbody>
                 </table>
