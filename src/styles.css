@@ -41,7 +41,7 @@
 
 .bg-2{
   background-color: #AB835D;
-    background-image:   url("./assets/imagenes//backGrounds/backgroundHome1.png");    
+    background-image:   url("./assets/imagenes/backGrounds/backgroundHome1.png");    
     background-position: center;
     background-repeat: no-repeat;
 }
@@ -56,8 +56,8 @@
 
 .bg-2-card {
     background-color: #171717;
-    background-image:   url("./assets/imagenes/backgroundCard.png"); 
+    background-image:  linear-gradient(rgba(0, 0, 0, 0.723), rgba(20, 20, 20, 0.74), rgba(0, 0, 0, 0.674)),  url("./assets/imagenes/backGrounds/cafetery.jpg"); 
     
    background-position: center;
-    background-repeat: no-repeat;
+    /* background-repeat: no-repeat; */
 }

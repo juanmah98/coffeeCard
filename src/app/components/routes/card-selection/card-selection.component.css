@@ -49,13 +49,26 @@ h2{
 
 .circle {
     margin: 2px;
-    width: 23px;
-    height: 23px;
-    border: 1px solid #DDAA45;
+    width: 26px;
+    height: 26px;
+    border: 1.6px dashed #ffffff;
     border-radius: 50%;
   }
   
   .filled {
-    background-color: #DDAA45;
+    background-color: #ffffff;
+    border: 1px solid #ffffff;
   }
   
+
+  @media (max-width: 400px) { 
+    
+    .circle {
+        margin: 2px;
+        width: 23px;
+        height: 23px;
+        border: 1.7px dotted #ffffff;
+        border-radius: 50%;
+      }
+   
+  }
