@@ -23,3 +23,12 @@ body {
     background-color: #dbdbdb;
 }
 
+.editable {
+    cursor: pointer;
+    color: rgb(170, 255, 0); /* Puedes cambiar el estilo como prefieras */
+  }
+
+  .editableFalse {
+    cursor: pointer;
+    color: rgb(255, 106, 0); /* Puedes cambiar el estilo como prefieras */
+  }

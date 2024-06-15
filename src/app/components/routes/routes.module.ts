@@ -9,7 +9,7 @@ import { PopupQrComponent } from '../layout/popup-qr/popup-qr.component';
 import { LayoutModule } from '../layout/layout.module';
 import { MenuComponent } from './menu/menu.component';
 import { MenuAdminComponent } from './menu-admin/menu-admin.component';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SplineViewerComponent } from './spline-viewer/spline-viewer.component';
 import { SplineViewrCardComponent } from './spline-viewr-card/spline-viewr-card.component';
 import { EntidadAdminComponent } from './entidad-admin/entidad-admin.component';
@@ -33,7 +33,8 @@ import { EntidadAdminComponent } from './entidad-admin/entidad-admin.component';
     CommonModule,
     QRCodeModule,
     LayoutModule,
-    FormsModule
+    FormsModule,
+    ReactiveFormsModule
   ],
   exports:[
     HomeComponent,

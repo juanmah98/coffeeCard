@@ -213,11 +213,19 @@ async setEntidad(){
 async setAdmin(){
   this.admins.forEach(data=>{
     if(data.entidad_id == this.entidad){
-    this.interno.setUserAdmin(data); 
-    this.user_solo_lectura = data.soloLectura;
-      
+      if(this.googleUser.email == data.email){
+        this.interno.setUserAdmin(data); 
+        this.user_solo_lectura = data.soloLectura;
+        console.log("data")
+        console.log(data)
+      }
+   
     }
   }) 
+
+
+  console.log("this.user_solo_lectura")
+  console.log(this.user_solo_lectura)
 }
 
 

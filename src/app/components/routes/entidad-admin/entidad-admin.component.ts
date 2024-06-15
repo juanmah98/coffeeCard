@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { CafeData } from 'src/app/interfaces/cafes_data';
 import { Entidades } from 'src/app/interfaces/entdidades';
@@ -21,6 +22,11 @@ export class EntidadAdminComponent implements OnInit {
   admin!: Usuarios_admins;
   tarjetas: number = 0;
   nuevos: number = 0;
+
+  adminForm = new FormGroup({
+    nombre: new FormControl('', Validators.required),
+    email: new FormControl('', [Validators.required, Validators.email]),
+  });
 
   constructor(
     private supabaseService: SupabaseService,
@@ -122,5 +128,38 @@ export class EntidadAdminComponent implements OnInit {
 
   scan(): void {
     this.router.navigate(['/qrscan']);
+  }
+
+  async toggleSoloLectura(admin: Usuarios_admins) {
+    admin.soloLectura = !admin.soloLectura;
+
+    const response:any = (await this.supabaseService.updateAdmin(admin.id, admin.soloLectura)).data;
+    console.log("Update rol", response);  
+  }
+
+
+  async agregarAdmin() {
+   const userAdmin:any = ({  
+      "entidad_id": this.admin.entidad_id,
+      "nombre": "",
+      "email": "",
+      "soloLectura": true
+  });
+
+
+    if (this.adminForm.valid) {
+      const newAdmin:any = this.adminForm.value;
+      userAdmin.nombre=newAdmin.nombre;
+      userAdmin.email=newAdmin.email;
+      console.log('Nuevo Admin:', newAdmin);
+      console.log('Nuevo userAdmin:', userAdmin);
+       const responseUser:any = (await this.supabaseService.postNewAdmin(userAdmin)).data;
+      console.log("Usuario CREADO", responseUser); 
+      // Aquí puedes manipular los datos del nuevo administrador como desees
+      this.adminForm.reset();
+      this.ngOnInit()
+    } else {
+      console.log('Formulario no válido');
+    }
   }
 }

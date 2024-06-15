@@ -44,28 +44,31 @@
                     </thead>
                     <tbody>
                         <tr *ngFor="let admin of rolesAdmins; let index = index">
-                            <th scope="row">{{ index + 1 }}</th>
-                            <td>{{ admin.nombre }}</td>
-                            <td>{{ admin.email }}</td>
-                            <td *ngIf="admin.soloLectura">Scaner</td>
-                            <td *ngIf="!admin.soloLectura">Admin</td>
+                          <th scope="row">{{ index + 1 }}</th>
+                          <td>{{ admin.nombre }}</td>
+                          <td>{{ admin.email }}</td>
+                          <td (click)="toggleSoloLectura(admin)" [ngClass]="{'editable': !admin.soloLectura, 'editableFalse': admin.soloLectura}">
+                            {{ admin.soloLectura ? 'Scanner' : 'Admin' }}
+                          </td>
                         </tr>
-                    </tbody>
+                      </tbody>
+                      
                 </table>
 
-                <div class="input-group mb-3">
-                    <input type="text" class="form-control"  placeholder="Correo electrónico">
+                <div [formGroup]="adminForm" class="input-group mb-3">
+                    <input type="text" class="form-control" formControlName="nombre" placeholder="Nombre">
+                    <input type="email" class="form-control mx-1" formControlName="email" placeholder="Correo electrónico">
                     <div class="input-group-append mx-2">
-                        <!-- Botón para agregar el nuevo correo electrónico -->
-                        <button class="btn btn-primary" type="button" >Agregar</button>
+                      <button class="btn btn-primary" type="button" (click)="agregarAdmin()">Agregar</button>
                     </div>
-                </div>
+                  </div>
+                  
             </div>
 
             
             
 
-        <div class="col-12 text-center">
+        <div class="col-12 text-center mt-2">
             <button class="btn btn-light " (click)="scan()">ESCANER</button>
         </div>
         </div>

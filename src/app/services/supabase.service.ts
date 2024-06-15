@@ -229,5 +229,20 @@ async updateContadorGratis(id: string, tabla: string, cantidad_gratis: number) {
     .select('*')
   }
 
+  async updateAdmin(id: string, soloLectura: boolean) {
+    return await this.supabase
+    .from('usuarios_admin')
+    .update({ soloLectura: soloLectura })
+    .eq('id', id)
+    .select()
+  }
+
+  async postNewAdmin(data: any) {
+    return await this.supabase
+        .from("usuarios_admin")
+        .insert(data)
+        .select();
+  }
+
  
 }
