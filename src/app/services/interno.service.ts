@@ -70,10 +70,10 @@ private userAll = new BehaviorSubject<Usuarios[]>([]);
       this.logged.next(userAdmin);
     }
 
-    /* if (entidadString) {
+     if (entidadString) {
       const entidad = JSON.parse(entidadString);
       this.entidad.next(entidad);
-    } */
+    } 
   }
 
   getLogged(): boolean {

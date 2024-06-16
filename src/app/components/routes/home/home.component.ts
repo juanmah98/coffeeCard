@@ -32,26 +32,80 @@ export class HomeComponent implements OnInit {
   constructor(private cdr: ChangeDetectorRef, private authService:AuthService, private router: Router, private _SupabaseService: SupabaseService, private ngZone: NgZone, private interno:  InternoService) { }
 
   async ngOnInit(): Promise<void> {
-    this.getEntidades()
-    this.paisOpcion = false;
-   await this.getAdmins();
-   /* await this.getUsers(); */
-    this.userAdmin = false;
-    this.user_solo_lectura=false;
-  
-  setTimeout(() => {
-    google.accounts.id.initialize({
-      client_id: '1098514169833-k37o1p50kphlrpf10jeftk7d5qumb6sv.apps.googleusercontent.com',
-      callback: this.handleCredentialResponse
-    });
+    
+ const log:boolean = await this.localStorage()
+     
+    if(log){
 
-    google.accounts.id.prompt();
+          this.getEntidades()
+          this.paisOpcion = false;
+          await this.getAdmins();
+          /* await this.getUsers(); */
+          this.userAdmin = false;
+          this.user_solo_lectura=false;
+          
+      setTimeout(() => {
+        google.accounts.id.initialize({
+          client_id: '1098514169833-k37o1p50kphlrpf10jeftk7d5qumb6sv.apps.googleusercontent.com',
+          callback: this.handleCredentialResponse
+        });
 
-    google.accounts.id.renderButton(
-      document.getElementById("buttonDiv"),
-      { theme: "outline", size: "large" }
-    );
-  }, 1000)
+        google.accounts.id.prompt();
+
+        google.accounts.id.renderButton(
+          document.getElementById("buttonDiv"),
+          { theme: "outline", size: "large" }
+        );
+      }, 1000)
+
+    }
+    
+
+
+   
+}
+
+async localStorage():Promise<boolean>{
+    let log = true;
+    const userString = localStorage.getItem('user');
+    const loggedString = localStorage.getItem('logged');
+    const entidadString = localStorage.getItem('entidad');
+    const userADminString:any = localStorage.getItem('userAdmin');
+    
+    /* if(userString != '')
+      {
+        this.authService.login();  
+        this.ngZone.run(() => {
+          this.loading = false;
+          log = false
+          this.router.navigate(['/principal']);
+        }); 
+      }else {
+        if(userADminString != ''){
+          
+            this.authService.login();
+            if(!userADminString.user_solo_lectura){
+              this.ngZone.run(() => {
+                this.loading = false;    
+                log = false  
+                this.router.navigate(['/admin']);
+                }); 
+                }else{
+                  this.ngZone.run(() => {
+                    this.loading = false;  
+                    log = false    
+                    this.router.navigate(['/qrscan']);
+              }); 
+            }             
+        }
+      } */
+
+      console.log('Usuario: ',userString );
+      console.log('logged: ',loggedString );
+      console.log('entidad: ',entidadString );
+      console.log('userAdmin: ',userADminString );
+
+      return true;
 }
 
 async getAdmins() {
