@@ -31,6 +31,7 @@ h2{
     /* border: 2px solid white; */
     margin: 1rem 1rem 1rem 1rem;
     background-color: #00000066;
+   /*  background-image: url("../../../../assets/imagenes/logos/FidelityCardBackground.png");  */
     /* height: 12rem; */
 }
 
@@ -51,7 +52,7 @@ h2{
     margin: 2px;
     width: 26px;
     height: 26px;
-    border: 1.6px dashed #ffffff;
+    border: 1.3px dashed #ffffff;
     border-radius: 50%;
   }
   
@@ -67,7 +68,7 @@ h2{
         margin: 2px;
         width: 23px;
         height: 23px;
-        border: 1.7px dotted #ffffff;
+        border: 1.2px dashed #ffffff;
         border-radius: 50%;
       }
    
