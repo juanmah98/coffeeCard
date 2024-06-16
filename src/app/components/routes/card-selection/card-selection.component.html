@@ -59,6 +59,13 @@
 
         <div *ngIf="data_contador.opcion == 0 " class="row justify-content-center text-white upload">
             <div class="col pt-5">
+
+              <div class="row row justify-content-start text-start">
+                <div class="col-12">
+                    <button class="btn btn m-2" (click)="back()"><img class=" pb-1" src="../../../../assets/imagenes/cards/back2.png" width="18px" alt=""></button>
+                </div>
+            </div>
+
                 <h2 *ngIf="entidadOpcion=='1'" class="text-center text-white custom-shadow" style="font-family: OpenSans; text-transform: capitalize;">{{entidad.nombre}} <img src="../../../../assets/imagenes/cards/card.png" width="50px" alt=""></h2>  
                 <h2 *ngIf="entidadOpcion=='2'" class="text-center text-white custom-shadow" style="text-transform: capitalize;">{{entidad.nombre}} <img src="../../../../assets/imagenes/cards/card.png" width="50px" alt=""></h2>  
                 <div class="row justify-content-center">

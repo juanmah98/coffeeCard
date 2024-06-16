@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, NgZone, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { CafeData } from 'src/app/interfaces/cafes_data';
 import { Usuarios } from 'src/app/interfaces/usuarios';
 import { InternoService } from 'src/app/services/interno.service';
@@ -9,6 +9,8 @@ import { PopupQrService } from 'src/app/services/popup-qr.service';
 import { ToastComponent } from '../../layout/toast/toast.component';
 import { PopupInfoService } from 'src/app/services/popup-info.service';
 import { Entidades } from 'src/app/interfaces/entdidades';
+import { Router } from '@angular/router';
+
 
 
 @Component({
@@ -55,7 +57,7 @@ export class CardSelectionComponent implements OnInit, OnDestroy  {
   entidadOpcion:string='';
   entidad!:Entidades;
   private dataSubscription: Subscription = new Subscription();
-  constructor(private cdr: ChangeDetectorRef, private _SupabaseService:SupabaseService, private _dataInterna: InternoService, public popupService: PopupQrService, public infopopupService: PopupInfoService) { }
+  constructor(private cdr: ChangeDetectorRef, private _SupabaseService:SupabaseService, private _dataInterna: InternoService, public popupService: PopupQrService, public infopopupService: PopupInfoService, private ngZone: NgZone,  private router: Router,) { }
 
   async ngOnInit(): Promise<void> {
 
@@ -296,6 +298,12 @@ onInfoTouch() {
   this.infopopupService.setDataOpcion("Cafe");
   this.infopopupService.setData(this.entidad.informacion);
   this.infopopupService.actualizarMostrar(true)
+}
+
+back(): void {
+  this.ngZone.run(() => {   
+    this.router.navigate(['/principal']);
+    }); 
 }
 
 /* onPopupTouch() {

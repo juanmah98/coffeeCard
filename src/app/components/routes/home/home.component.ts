@@ -72,8 +72,9 @@ async localStorage():Promise<boolean>{
     const entidadString = localStorage.getItem('entidad');
     const userADminString:any = localStorage.getItem('userAdmin');
     
-    /* if(userString != '')
+    if(userString != null)
       {
+        console.log('Entro: ',userString );
         this.authService.login();  
         this.ngZone.run(() => {
           this.loading = false;
@@ -81,7 +82,7 @@ async localStorage():Promise<boolean>{
           this.router.navigate(['/principal']);
         }); 
       }else {
-        if(userADminString != ''){
+        if(userADminString != null){
           
             this.authService.login();
             if(!userADminString.user_solo_lectura){
@@ -98,7 +99,7 @@ async localStorage():Promise<boolean>{
               }); 
             }             
         }
-      } */
+      } 
 
       console.log('Usuario: ',userString );
       console.log('logged: ',loggedString );

@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, NgZone, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Entidades } from 'src/app/interfaces/entdidades';
 import { Usuarios } from 'src/app/interfaces/usuarios';
+import { AuthService } from 'src/app/services/auth.service.service';
 import { InternoService } from 'src/app/services/interno.service';
 import { SupabaseService } from 'src/app/services/supabase.service';
 
@@ -16,7 +17,7 @@ export class PrincipalComponent implements OnInit {
   entidadesArre: any = {};
   entidades: Entidades[] =[];
   usuario!:Usuarios;
-  constructor(public _interno: InternoService, private router: Router, private _supabaseServices: SupabaseService) { }
+  constructor(public _interno: InternoService, private router: Router, private ngZone: NgZone, private _supabaseServices: SupabaseService, private authService:AuthService) { }
 
   async ngOnInit(): Promise<void> {
    await this.getEntidades()
@@ -65,6 +66,14 @@ export class PrincipalComponent implements OnInit {
     
     
      this.router.navigate(['/cardSelection']);
+  }
+
+  clearStorage(): void {
+    localStorage.clear();
+    this.authService.login();
+    this.ngZone.run(() => {   
+      this.router.navigate(['/home']);
+      }); 
   }
 
 }

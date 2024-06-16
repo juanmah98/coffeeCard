@@ -1,10 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, NgZone, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { CafeData } from 'src/app/interfaces/cafes_data';
 import { Entidades } from 'src/app/interfaces/entdidades';
 import { Usuarios } from 'src/app/interfaces/usuarios';
 import { Usuarios_admins } from 'src/app/interfaces/usuarios_admin';
+import { AuthService } from 'src/app/services/auth.service.service';
 import { InternoService } from 'src/app/services/interno.service';
 import { SupabaseService } from 'src/app/services/supabase.service';
 
@@ -31,7 +32,9 @@ export class EntidadAdminComponent implements OnInit {
   constructor(
     private supabaseService: SupabaseService,
     private router: Router,
-    private internoService: InternoService
+    private internoService: InternoService,
+    private ngZone: NgZone,
+    private authService:AuthService
   ) { }
 
   async ngOnInit(): Promise<void> {
@@ -161,5 +164,13 @@ export class EntidadAdminComponent implements OnInit {
     } else {
       console.log('Formulario no válido');
     }
+  }
+
+  clearStorage(): void {
+    localStorage.clear();
+    this.authService.login();
+    this.ngZone.run(() => {   
+      this.router.navigate(['/home']);
+      }); 
   }
 }
