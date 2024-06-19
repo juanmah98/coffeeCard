@@ -106,7 +106,7 @@ async localStorage():Promise<boolean>{
       console.log('entidad: ',entidadString );
       console.log('userAdmin: ',userADminString );
 
-      return true;
+      return log;
 }
 
 async getAdmins() {
