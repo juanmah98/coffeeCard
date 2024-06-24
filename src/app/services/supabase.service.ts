@@ -51,8 +51,10 @@ export class SupabaseService {
   }
 
   async getUs() {
-    const user = await this.supabase.from(USERS_TABLE).select('*');
-    return user.data || [];
+    const user = await this.supabase.
+    from(USERS_TABLE).
+    select('*');
+    return user|| [];
   }
 
   async getCofess(id: string, tabla: string) {

@@ -24,7 +24,7 @@ export class EntidadAdminComponent implements OnInit {
   tarjetas: number = 0;
   nuevos: number = 0;
   opcion: boolean = false;
-
+  allUsers: Usuarios[] = [];
   adminForm = new FormGroup({
     nombre: new FormControl('', Validators.required),
     email: new FormControl('', [Validators.required, Validators.email]),
@@ -47,7 +47,8 @@ export class EntidadAdminComponent implements OnInit {
       await Promise.all([
         this.loadAdmins(),
         this.loadUsers(),
-        this.loadRegaladas()
+        this.loadRegaladas(),
+        this.loadAllUserWhatilist()
       ]);
       this.nuevos = this.contarUsuariosNuevosDelMes(this.usuarios);
     } catch (error) {
@@ -111,6 +112,17 @@ export class EntidadAdminComponent implements OnInit {
       this.sumaTarjetas(contador);
     } catch (error) {
       console.error('Error al cargar regaladas:', error);
+      throw error;
+    }
+  }
+
+  async loadAllUserWhatilist(): Promise<void> {
+    try {
+      const response = await this.supabaseService.getUs();
+      const users:any = response.data;
+      this.allUsers = users
+    } catch (error) {
+      console.error('Error al cargar usuarios:', error);
       throw error;
     }
   }
