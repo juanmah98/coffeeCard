@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, NgZone, OnInit, ViewChild } from '@angular/core';
 import jsQR from 'jsqr';
 import * as CryptoJS from 'crypto-js';
 import { SupabaseService } from 'src/app/services/supabase.service';
@@ -8,6 +8,7 @@ import { takeWhile } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import { InternoService } from 'src/app/services/interno.service';
 import { Entidades } from 'src/app/interfaces/entdidades';
+import { AuthService } from 'src/app/services/auth.service.service';
 
 @Component({
   selector: 'app-lector-qr',
@@ -39,15 +40,16 @@ export class LectorQrComponent implements OnInit {
  continueScanning = true;
  entidad!:Entidades;
  entidadDistinta=false;
+ admin = true;
 
-  constructor(private cdr: ChangeDetectorRef, private _SupabaseService: SupabaseService, private router: Router, private _InternoServices: InternoService) { }
+  constructor(private cdr: ChangeDetectorRef, private _SupabaseService: SupabaseService, private router: Router, private _InternoServices: InternoService, private ngZone: NgZone, private authService:AuthService) { }
 
   ngOnInit(): void {
     this.startCamera();
     this.initScanInterval();
     this.entidad = this._InternoServices.getEntidad();
     console.log('Entidad: ', this.entidad)
-
+    this.admin = this._InternoServices.getUserAdmin().soloLectura;
     this.entidad= this._InternoServices.getEntidad()
     this.bgClass = `bg-${this._InternoServices.getEntidad().background}-card`;
     this.cdr.detectChanges();
@@ -237,7 +239,26 @@ export class LectorQrComponent implements OnInit {
   }
 
   menu(){
-    this.router.navigate(['/menu-admin'])
+   
+    this.ngZone.run(() => {   
+      this.router.navigate(['/menu-admin'])
+      }); 
+  }
+
+  back(): void {
+    
+    console.log("back: ")
+    this.ngZone.run(() => {       
+        this.router.navigate(['/admin']);           
+    }); 
+  }
+
+  clearStorage(): void {
+    localStorage.clear();
+    this.authService.logout();
+    this.ngZone.run(() => {   
+      this.router.navigate(['/home']);
+      }); 
   }
 
 }

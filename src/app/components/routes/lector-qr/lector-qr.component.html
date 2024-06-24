@@ -1,7 +1,20 @@
 <body class="text-center" [ngClass]="bgClass"> <!-- Clase text-center aplicada al body para centrar todo el contenido -->
   <div class="container-fluid">
+
+    <div *ngIf="!admin" class="row row justify-content-start text-start">
+      <div class="col-12">
+          <button  class="btn btn m-2" (click)="back()"><img class=" pb-1" src="../../../../assets/imagenes/cards/back2.png" width="18px" alt=""></button>
+      </div>
+  </div>
+
+  <div *ngIf="admin" class="row row justify-content-end text-end">
+    <div class="col-12">
+        <button class="btn btn-dark m-2" (click)="clearStorage()"><img class=" pb-1" src="../../../../assets/imagenes/cards/out.png" width="18px" alt=""></button>
+    </div>
+</div>
+
     <div class="row justify-content-center pb-3">
-      <div class="col-12 pb-2 pt-3 text-light ">
+      <div class="col-12 pb-2 pt-0 text-light ">
         <div class="">
           <video [ngClass]="{'video':video1,'video2':video2}" #video autoplay></video>
           <canvas #canvas style="display: none;"></canvas>

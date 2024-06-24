@@ -70,7 +70,7 @@ export class PrincipalComponent implements OnInit {
 
   clearStorage(): void {
     localStorage.clear();
-    this.authService.login();
+    this.authService.logout();
     this.ngZone.run(() => {   
       this.router.navigate(['/home']);
       }); 
