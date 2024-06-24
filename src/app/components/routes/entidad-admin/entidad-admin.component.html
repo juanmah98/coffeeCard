@@ -35,9 +35,13 @@
                 <div class="text-center">
                     <img src="../../../../assets/imagenes/image 46.png" width="150px" alt="">
                 </div>
-                <h4>Admins</h4>
+
+                <div class="d-flex">
+                   <button class="btn btn-outline-light fw-bold fs-5" (click)="opcion=false">Admins</button> <!-- <h4 class="mx-2">Admins</h4> -->
+                   <button class="btn btn-outline-light fw-bold fs-5" (click)="opcion=true">Whatilist</button><!-- <h4 class="mx-2">Whatilist</h4> -->
+                </div>
                 <!-- Campo de entrada de texto para el nuevo correo electrónico -->
-               
+               <div *ngIf="!opcion">
                 <table class="table table-dark table-striped">
                     <thead>
                         <tr>
@@ -67,13 +71,35 @@
                       <button class="btn btn-primary" type="button" (click)="agregarAdmin()">Agregar</button>
                     </div>
                   </div>
+                </div>
+                
+            <table *ngIf="opcion" class="table table-dark table-striped">
+                <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                       <!--  <th scope="col">Nombre</th> -->
+                        <th scope="col">Correo</th>
+                        <th scope="col">Whatilist</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let users of usuarios; let index = index">
+                      <th scope="row">{{ index + 1 }}</th>
+                    <!--   <td>{{ users.name }}</td> -->
+                      <td>{{ users.email }}</td>
+                      <td (click)="toggleWhitelist(users)" [ngClass]="{'editable': users.whitelist, 'editableFalse': !users.whitelist}">
+                        {{ users.whitelist ? 'Activo' : 'Pendiente' }}
+                      </td>
+                    </tr>
+                  </tbody>
                   
-            </div>
+            </table>
 
-            
-            
+                
+                  
+            </div>            
 
-        <div class="col-12 text-center mt-2">
+        <div class="col-12 text-center mt-2 mb-5">
             <button class="btn btn-light " (click)="scan()">ESCANER</button>
         </div>
         </div>

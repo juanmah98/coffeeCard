@@ -23,6 +23,7 @@ export class EntidadAdminComponent implements OnInit {
   admin!: Usuarios_admins;
   tarjetas: number = 0;
   nuevos: number = 0;
+  opcion: boolean = false;
 
   adminForm = new FormGroup({
     nombre: new FormControl('', Validators.required),
@@ -40,6 +41,7 @@ export class EntidadAdminComponent implements OnInit {
   async ngOnInit(): Promise<void> {
     this.admin = this.internoService.getUserAdmin();
     this.entidad = this.internoService.getEntidad();
+    this.opcion = false;
 
     try {
       await Promise.all([
@@ -138,6 +140,13 @@ export class EntidadAdminComponent implements OnInit {
 
     const response:any = (await this.supabaseService.updateAdmin(admin.id, admin.soloLectura)).data;
     console.log("Update rol", response);  
+  }
+
+  async toggleWhitelist(user: Usuarios) {
+    user.whitelist = !user.whitelist;
+
+    const response:any = (await this.supabaseService.updateUser(user.id, user.whitelist)).data;
+    console.log("Update whitelist", response);  
   }
 
 

@@ -234,6 +234,14 @@ export class SupabaseService {
       .select();
   }
 
+  async updateUser(id: string, whitelist: boolean) {
+    return await this.supabase
+      .from('usuarios')
+      .update({ whitelist: whitelist })
+      .eq('id', id)
+      .select();
+  }
+
   async postNewAdmin(data: any) {
     return await this.supabase
       .from("usuarios_admin")
