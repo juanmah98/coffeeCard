@@ -122,3 +122,19 @@ body{
   }
 }
 
+.denegado-1{
+  font-family: "OpenSans";
+  font-size: medium;
+  padding-top: 5px;
+}
+.denegado-2{
+  font-family: "OpenSans";
+  font-size: small;
+  font-weight: bold;
+  padding-top: 5px;
+}
+.denegado-3{
+  font-family: "OpenSans";
+  font-size: small;
+}
+

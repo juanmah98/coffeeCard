@@ -29,6 +29,8 @@ export class HomeComponent implements OnInit {
   userEmail:string='';
   userName:string='';
   paisOpcion: boolean = false;
+  status: string = 'default';
+  whitelist:boolean = false;
   constructor(private cdr: ChangeDetectorRef, private authService:AuthService, private router: Router, private _SupabaseService: SupabaseService, private ngZone: NgZone, private interno:  InternoService) { }
 
   async ngOnInit(): Promise<void> {
@@ -214,15 +216,15 @@ handleCredentialResponse = async (response: any) => {
         const email = data[i].email;
         if (data[i].email == this.googleUser.email) {
             logg = true;    
+            this.whitelist = data[i].whitelist;
             this.interno.setUser(data[i]);
         }
   
        
         // Realizar la verificación del email aquí
     }
-    if(logg){          
+    if(logg && this.whitelist){          
       console.log("Registrado")
-      console.log("navegando")
      this.authService.login();  
        this.ngZone.run(() => {
         this.loading = false;
@@ -230,12 +232,27 @@ handleCredentialResponse = async (response: any) => {
       }); 
       
      
-  }else{
-    this.interno.setLogged(true);
-    console.log("nuevo")
-    this.usuarioCreado(this.googleUser.email, this.googleUser.name);
-    this.paisOpcion = true
-        console.log(this.paisOpcion)
+  }else{ 
+    if(logg && !this.whitelist){
+
+      this.paisOpcion = true;
+      this.status = 'whitelist';
+      console.log("ESTAMOS EN WHATIS")
+      console.log("status: ", this.status, "pais: ", this.paisOpcion, "this.whitelis: ", this.whitelist)
+      this.cdr.detectChanges();
+      this.clearStorage(); 
+      
+    }else{
+      if(!logg){
+        this.interno.setLogged(true);
+        console.log("nuevo")
+        this.usuarioCreado(this.googleUser.email, this.googleUser.name);
+        this.paisOpcion = true
+            console.log(this.paisOpcion)
+            this.cdr.detectChanges();
+      }   
+    }
+     
   }
     
   })
@@ -284,10 +301,6 @@ async setAdmin(){
 }
 
 
-async crearCafeRealtime(){
-
-}
-
 async usuarioCreado(email: string, name:string){
   /* const dataUser:any = {
     email: email,
@@ -322,7 +335,8 @@ async crearUsuario(pais: string): Promise<void> {
     email:this.userEmail,
     name: this.userName,
     fecha_creacion: new Date(),
-    pais: pais
+    pais: pais,
+    whitelist: false
   }; 
 
 /*   const dataCafe:any = {
@@ -357,7 +371,9 @@ console.log("Usuario CREADO", responseUser);
        this.authService.login();
        this.ngZone.run(() => {
       this.loading = false;
-      this.router.navigate(['/principal']);
+      /* this.router.navigate(['/principal']); */
+      this.router.navigate(['/home']);
+      this.clearStorage();
     });  
 
    
@@ -423,7 +439,25 @@ menu(){
   this.router.navigate(['/menu'])
 }
 
+setStatus(newStatus: string) {
+  this.status = newStatus;
+  this.cdr.detectChanges();
+}
 
+clearStorage(): void {
+  localStorage.clear();
+  this.authService.logout();
+/*   this.ngZone.run(() => {   
+    this.router.navigate(['/home']);
+    });  */
+}
+
+back(){
+  this.paisOpcion = false;
+  this.whitelist = false;
+  this.cdr.detectChanges();
+  this.ngOnInit()
+}
 
 
 }

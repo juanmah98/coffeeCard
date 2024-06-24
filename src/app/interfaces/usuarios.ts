@@ -10,6 +10,7 @@ export interface Usuarios {
     name: string;
     fecha_creacion: Date;
     pais:string;
+    whitelist: boolean;
 }
 
 // Converts JSON strings to/from your types

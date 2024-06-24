@@ -33,7 +33,8 @@ export class CardSelectionComponent implements OnInit, OnDestroy  {
     email: "",
     name: "",
     fecha_creacion: new Date(),
-    pais: ''
+    pais: '',
+    whitelist: false
   };
 
   data_contador:CafeData = 

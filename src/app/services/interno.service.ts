@@ -16,7 +16,8 @@ export class InternoService {
       "email": "",
       "name":"",
       "fecha_creacion": new Date(),
-      "pais": ''
+      "pais": '',
+      "whitelist": false
     }
   );
   
@@ -29,7 +30,8 @@ export class InternoService {
       "tabla_contador": "",
       "fecha_creacion": new Date(),
       "pais": '',
-      "informacion":''
+      "informacion":'',
+      "text_card":''
   });
 
   private userAdmin = new BehaviorSubject<Usuarios_admins>({

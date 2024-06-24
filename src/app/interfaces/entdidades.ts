@@ -13,6 +13,7 @@ export interface Entidades {
     fecha_creacion: Date;
     pais:string;
     informacion: string;
+    text_card: string;
 }
 
 // Converts JSON strings to/from your types

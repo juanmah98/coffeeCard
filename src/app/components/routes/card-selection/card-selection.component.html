@@ -89,8 +89,8 @@
                             <img *ngIf="entidadOpcion=='1'" src="../../../../assets/imagenes/cards/burguers.png" width="50px" class="mr-3" alt="">
                             <img *ngIf="entidadOpcion=='2'" src="../../../../assets/imagenes/cards/cafe.png" width="70px" class="mr-3" alt="">
                         </div>
-                        <p *ngIf="entidadOpcion=='1'" class="text-center fs-5 pt-3 mb-1">Burguers <b>{{data_contador.contador}}</b></p>
-                        <p *ngIf="entidadOpcion=='2'" class="text-center fs-5 pt-3 mb-1">Cafes <b>{{data_contador.contador}}</b></p>
+                        <p *ngIf="entidadOpcion=='1'" class="text-center fs-5 pt-3 mb-1">{{entidad.text_card}} <b>{{data_contador.contador}}</b></p>
+                        <p *ngIf="entidadOpcion=='2'" class="text-center fs-5 pt-3 mb-1">{{entidad.text_card}} <b>{{data_contador.contador}}</b></p>
                         <button *ngIf="data_contador.contador!=10" class="btn btn-light mt-2" (click)="cifrado()"><img src="../../../../assets/imagenes/cards/ticketmas.png" width="28px" alt=""></button>
                         <button *ngIf="data_contador.contador==10" class="btn btn-light mt-2" (click)="cifrado()"><img src="../../../../assets/imagenes/cards/free.png" width="30px" alt=""></button>
                         </div>

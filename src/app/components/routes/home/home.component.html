@@ -12,30 +12,81 @@
                             <button id="buttonDiv" class="googleButton text-center">INICIAR</button>                  
                         </div>
 
-                        <div *ngIf="paisOpcion == true" class="col-4 loginContainer justify-content-center" style="font-family: OpenSans;">
+                        <!-- <div *ngIf="paisOpcion == true" class="col-4 loginContainer justify-content-center" style="font-family: OpenSans;">
                             <h5 class="pb-1 pt-1">Selecciona tu pais</h5> 
                             <button class="btn text-center" (click)="crearUsuario('argentina')"><img src="../../../../assets/imagenes/paises/argentina.png" width="70px" alt=""></button>                  
                             <button class="btn text-center" (click)="crearUsuario('españa')"><img src="../../../../assets/imagenes/paises/españa.png" width="70px" alt=""></button>                  
-                        </div>
+                        </div> -->
+                       
+
+
+                        <div *ngIf="paisOpcion == true" [ngSwitch]="status" class="col-4 loginContainer justify-content-center" style="font-family: OpenSans;">
+                           
+                            <div *ngSwitchCase="'1'" class="text-center">
+                                        <h5 class="pb-1 pt-1 ">Paso 1/2</h5> 
+                                         <div class="text-center">
+                                        <p class="denegado-1">¿Donde escuchaste sobre nosotros?</p>
+                                        
+                                        <div class="dropdown pb-2">
+                                            <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                              Opciones
+                                            </button>
+                                            <ul class="dropdown-menu dropdown-menu-dark">
+                                              <li><a class="dropdown-item">Amigos o familiares</a></li>
+                                              <li><a class="dropdown-item">Redes sociales</a></li>
+                                              <li><a class="dropdown-item">Internet</a></li>
+                                            </ul>
+                                          </div>
+                                        
+                                       <!--  <input type="email" class="form-control mx-1" formControlName="email" placeholder="Correo electrónico"> -->
+                                     </div>                                     
+                                        <button class="btn btn-outline-success btn-sm pt-2" (click)="setStatus('2')">Siguiente</button>      
+                            </div>
+
+                            <div *ngSwitchCase="'2'" class="text-center">
+
+                                <h5 class="pb-1 pt-1 ">Paso 2/2</h5> 
+                                <p class="denegado-1">Verifica tus datos</p>                                    
+                                <div class="text-start">
+                                    <span class="denegado-3"><b>Email:</b> {{this.googleUser.email}}</span><br>
+                                    <span class="denegado-3"><b>Nombre:</b> {{this.googleUser.name}}</span>
+                                </div> 
+                                <button class="btn btn-outline-success btn-sm pt-2"  (click)="crearUsuario('argentina')" (click)="setStatus('3')">Enviar</button>    
+                            </div> 
+                            <div *ngSwitchCase="'3'" class="text-center">
+                                <h5 class="pb-1 pt-1 ">Solicitud enviada</h5> 
+                                <p class="denegado-1">Esperamos verte pronto</p> 
+                                <button class="btn btn-outline-success btn-sm pt-2"  (click)="back()">Volver</button>
+                            </div> 
+                            
+
+                            <div *ngSwitchCase="'whitelist'" class="text-center">
+                                <h5 class="pb-1 pt-1 ">Solicitud pendiente</h5>                                 
+                                <div class="text-center">
+                                    <p class="denegado-1">Debes esperar entrar en la whitelist</p>                                    
+                                    <p class="denegado-2">Intentalo más tarde</p>
+                                </div> 
+                                <button class="btn btn-outline-success btn-sm pt-2"  (click)="back()">Volver</button>
+                            </div>    
+                           
+                            <div *ngSwitchDefault class="text-center">
+                                
+                                <h4 class="pb-1 pt-1 ">ACCESO DENEGADO</h4> 
+                                <div class="text-center">
+                                    <p class="denegado-1">No estás autorizado para acceder en la app</p>                                    
+                                    <p class="denegado-2">Solicita ingresar a nuestra whitelist</p>
+                                </div> 
+                                <button class="btn btn-outline-success btn-sm"  (click)="setStatus('1')">Solicitar</button>    
+
+                            </div>                        
+                          </div>
+
+
                     </div>
                 </div>
             </div>
 
-            <!-- <div class="text-center">
-                <button class="btn btn-light" (click)="menu()"><b>CARTA</b><img src="../../../../assets/imagenes/cards/menus.png" width="35px" alt=""></button>
-                 </div> -->
-        </div>
-
-        <!-- <div *ngIf="loading==true" class="row justify-content-center">
-            <div class="col pb-5  d-flex justify-content-center align-items-center">
-                <div class="col backdrop">
-                    <div class="row justify-content-center">
-                        <div class="lds-ring"><div></div><div></div><div></div><div></div></div>
-                    </div>
-                </div>
-            </div>
-        </div>   -->     
-
+        </div>   
        
     </div>
 
