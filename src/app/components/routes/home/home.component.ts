@@ -206,23 +206,25 @@ handleCredentialResponse = async (response: any) => {
   }else{
     this._SupabaseService.getUsers().subscribe((data: any) => {
       this.usuarios = data.email;
+      
       let logg = false;
        if(data == ''){
         this.usuarioCreado(this.googleUser.email, this.googleUser.name);
         
       } 
       console.log(data)
+      
       for (let i = 0; i < data.length; i++) {
-        const email = data[i].email;
+        const email = data[i].email;       
         if (data[i].email == this.googleUser.email) {
             logg = true;    
             this.waitlist = data[i].waitlist;
-            this.interno.setUser(data[i]);
+            this.interno.setUser(data[i]);           
         }
   
        
         // Realizar la verificación del email aquí
-    }
+    } 
     if(logg && this.waitlist){          
       console.log("Registrado")
      this.authService.login();  
