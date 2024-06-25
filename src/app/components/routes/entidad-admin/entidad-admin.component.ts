@@ -25,6 +25,7 @@ export class EntidadAdminComponent implements OnInit {
   nuevos: number = 0;
   opcion: boolean = false;
   allUsers: Usuarios[] = [];
+  status: string = '1';
   adminForm = new FormGroup({
     nombre: new FormControl('', Validators.required),
     email: new FormControl('', [Validators.required, Validators.email]),
@@ -39,6 +40,7 @@ export class EntidadAdminComponent implements OnInit {
   ) { }
 
   async ngOnInit(): Promise<void> {
+
     this.admin = this.internoService.getUserAdmin();
     this.entidad = this.internoService.getEntidad();
     this.opcion = false;
@@ -154,11 +156,11 @@ export class EntidadAdminComponent implements OnInit {
     console.log("Update rol", response);  
   }
 
-  async toggleWhitelist(user: Usuarios) {
-    user.whitelist = !user.whitelist;
+  async togglewaitlist(user: Usuarios) {
+    user.waitlist = !user.waitlist;
 
-    const response:any = (await this.supabaseService.updateUser(user.id, user.whitelist)).data;
-    console.log("Update whitelist", response);  
+    const response:any = (await this.supabaseService.updateUser(user.id, user.waitlist)).data;
+    console.log("Update waitlist", response);  
   }
 
 
@@ -193,5 +195,9 @@ export class EntidadAdminComponent implements OnInit {
     this.ngZone.run(() => {   
       this.router.navigate(['/home']);
       }); 
+  }
+
+  statusChange(dato:string){
+    this.status = dato;
   }
 }

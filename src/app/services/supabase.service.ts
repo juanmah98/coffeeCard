@@ -236,10 +236,10 @@ export class SupabaseService {
       .select();
   }
 
-  async updateUser(id: string, whitelist: boolean) {
+  async updateUser(id: string, waitlist: boolean) {
     return await this.supabase
       .from('usuarios')
-      .update({ whitelist: whitelist })
+      .update({ waitlist: waitlist })
       .eq('id', id)
       .select();
   }

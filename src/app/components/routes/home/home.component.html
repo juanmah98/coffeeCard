@@ -60,10 +60,10 @@
                             </div> 
                             
 
-                            <div *ngSwitchCase="'whitelist'" class="text-center">
+                            <div *ngSwitchCase="'waitlist'" class="text-center">
                                 <h5 class="pb-1 pt-1 ">Solicitud pendiente</h5>                                 
                                 <div class="text-center">
-                                    <p class="denegado-1">Debes esperar entrar en la whitelist</p>                                    
+                                    <p class="denegado-1">Debes esperar entrar en la waitlist</p>                                    
                                     <p class="denegado-2">Intentalo más tarde</p>
                                 </div> 
                                 <button class="btn btn-outline-success btn-sm pt-2"  (click)="back()">Volver</button>
@@ -74,7 +74,7 @@
                                 <h4 class="pb-1 pt-1 ">ACCESO DENEGADO</h4> 
                                 <div class="text-center">
                                     <p class="denegado-1">No estás autorizado para acceder en la app</p>                                    
-                                    <p class="denegado-2">Solicita ingresar a nuestra whitelist</p>
+                                    <p class="denegado-2">Solicita ingresar a nuestra waitlist</p>
                                 </div> 
                                 <button class="btn btn-outline-success btn-sm"  (click)="setStatus('1')">Solicitar</button>    
 

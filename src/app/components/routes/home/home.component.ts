@@ -30,7 +30,7 @@ export class HomeComponent implements OnInit {
   userName:string='';
   paisOpcion: boolean = false;
   status: string = 'default';
-  whitelist:boolean = false;
+  waitlist:boolean = false;
   constructor(private cdr: ChangeDetectorRef, private authService:AuthService, private router: Router, private _SupabaseService: SupabaseService, private ngZone: NgZone, private interno:  InternoService) { }
 
   async ngOnInit(): Promise<void> {
@@ -216,14 +216,14 @@ handleCredentialResponse = async (response: any) => {
         const email = data[i].email;
         if (data[i].email == this.googleUser.email) {
             logg = true;    
-            this.whitelist = data[i].whitelist;
+            this.waitlist = data[i].waitlist;
             this.interno.setUser(data[i]);
         }
   
        
         // Realizar la verificación del email aquí
     }
-    if(logg && this.whitelist){          
+    if(logg && this.waitlist){          
       console.log("Registrado")
      this.authService.login();  
        this.ngZone.run(() => {
@@ -233,12 +233,12 @@ handleCredentialResponse = async (response: any) => {
       
      
   }else{ 
-    if(logg && !this.whitelist){
+    if(logg && !this.waitlist){
 
       this.paisOpcion = true;
-      this.status = 'whitelist';
+      this.status = 'waitlist';
       console.log("ESTAMOS EN WHATIS")
-      console.log("status: ", this.status, "pais: ", this.paisOpcion, "this.whitelis: ", this.whitelist)
+      console.log("status: ", this.status, "pais: ", this.paisOpcion, "this.whitelis: ", this.waitlist)
       this.cdr.detectChanges();
       this.clearStorage(); 
       
@@ -336,7 +336,7 @@ async crearUsuario(pais: string): Promise<void> {
     name: this.userName,
     fecha_creacion: new Date(),
     pais: pais,
-    whitelist: false
+    waitlist: false
   }; 
 
 /*   const dataCafe:any = {
@@ -454,7 +454,7 @@ clearStorage(): void {
 
 back(){
   this.paisOpcion = false;
-  this.whitelist = false;
+  this.waitlist = false;
   this.cdr.detectChanges();
   this.ngOnInit()
 }
