@@ -13,7 +13,7 @@
                 <div class="col-12 text-center justify-content-center">
                    
                    
-                        <img src="../../../../assets/imagenes/logos/FidelityCardCard.png" width="210px" alt="">
+                        <img class="pb-1" src="../../../../assets/imagenes/logos/GiftNew.gif" width="210px" alt="">
                        <!--  <h2 class="text-white mt-3" style="font-family: 'Courier New', Courier, monospace">WELCOME</h2> -->
                    
                     <h3 class="text-white mt-2 mt-3" style="font-family: 'Courier New', Courier, monospace">Selecciona tu tarjeta favorita</h3>
@@ -31,21 +31,18 @@
             </div>
 
             <div class="container-fluid pt-2 mt-1">
-              <div class="row text-center justify-content-center" *ngFor="let entidad of entidades">                
-                
-               
-
-                
-                 <div  *ngIf="usuario.pais== entidad.pais || usuario.pais=='todos'" class="card  col-md-4 col-sm-6 col-10 m-4" (click)="run(entidad)">                  
-                    <div class=" w-50 m-auto">
-                       <!--  <img src="../../../../assets/imagenes/Clients/SpaceWhite.png" class="img-fluid" alt="..."> -->
-                       <img *ngIf="usuario.pais=='argentina' || usuario.pais=='todos' && entidad.pais=='argentina'" src="../../../../assets/imagenes/Clients/SpaceWhite.png" class="img-fluid" alt="...">
-                       <h4 *ngIf="usuario.pais=='españa' || usuario.pais=='todos' && entidad.pais=='españa'" class="text-center text-white custom-shadow" style="font-family: Sil;">LA PIAZZETTA</h4> 
-                    </div>   
-                 </div>
-
+                <div class="container ">
+                    <div class="row text-center justify-content-center" *ngFor="let entidad of entidades">
+                      <div class="card col-md-4 col-sm-6 col-10 m-4" *ngIf="usuario.pais == entidad.pais || usuario.pais == 'todos'" (click)="run(entidad)">
+                        <div class="w-50 m-auto">
+                          <!--  <img src="../../../../assets/imagenes/Clients/SpaceWhite.png" class="img-fluid" alt="..."> -->
+                          <img *ngIf="(usuario.pais == 'argentina' || usuario.pais == 'todos') && entidad.pais == 'argentina'" src="../../../../assets/imagenes/Clients/SpaceWhite.png" class="img-fluid" alt="...">
+                          <h4 *ngIf="(usuario.pais == 'españa' || usuario.pais == 'todos') && entidad.pais == 'españa'" class="text-center text-white custom-shadow" style="font-family: Sil;">LA PIAZZETTA</h4>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                   
-              </div>
           </div>
           
               
