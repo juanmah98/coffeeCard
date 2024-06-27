@@ -71,10 +71,10 @@ export class CardSelectionComponent implements OnInit, OnDestroy  {
     }); */
     
     this.entidad= this._dataInterna.getEntidad()
-    console.log("USUARIOS US:", this.users); 
+   /*  console.log("USUARIOS US:", this.users);  */
     this.bgClass = `bg-${this._dataInterna.getEntidad().background}-card`;
     this.entidadOpcion = this._dataInterna.getEntidad().background;
-    console.log('background: ', this.bgClass);
+   /*  console.log('background: ', this.bgClass); */
     await this.getContador()
     this.cdr.detectChanges();
     this.dataUser = this._dataInterna.getUser();
@@ -115,7 +115,7 @@ export class CardSelectionComponent implements OnInit, OnDestroy  {
   async getContador() {
     try {
       const response:any = await this._SupabaseService.getTablaContador(this._dataInterna.getUser().id, this.entidad.tabla_contador)
-      console.log('contador', response.data);
+      /* console.log('contador', response.data); */
       this.data_contador = response.data;
       // Continúa aquí con lo que necesites hacer con la respuesta
       return response; // Retorna la respuesta si es necesario
@@ -138,12 +138,12 @@ export class CardSelectionComponent implements OnInit, OnDestroy  {
   }
 
   handleRealTimeUpdate(){
-    console.log("ESTAMSO EN REALTIME")
+    /* console.log("ESTAMSO EN REALTIME") */
     this._SupabaseService.getTablaCafesRealtime(this.data_contador.id, this.entidad.tabla_contador).subscribe(async update => {
       const data:any = update;
-      console.log('UPDATE:', data);
+      /* console.log('UPDATE:', data); */
       if(data.new.id == this.data_contador.id){
-        console.log('UPDATE == A USUARIO');
+        /* console.log('UPDATE == A USUARIO'); */
 /*         this.data_contador.opcion = data.new.opcion */
         this.data_contador.contador = data.new.contador
         this.data_contador.cantidad_gratis = data.new.cantidad_gratis
@@ -163,11 +163,11 @@ export class CardSelectionComponent implements OnInit, OnDestroy  {
   }
 
  async actualizarDatos(): Promise<void> {
-  console.log("DATOS A VER: ", this.data_contador )
+ /*  console.log("DATOS A VER: ", this.data_contador ) */
   await  this._SupabaseService.getDataCard(this.data_contador.id, this.entidad.tabla_contador).subscribe((data: any) => {
       this.data_contador = data[0];
-      console.log("data[0]");
-      console.log(data[0]);
+      /* console.log("data[0]");
+      console.log(data[0]); */
       {
         this.upload = true;
       }
@@ -177,7 +177,7 @@ export class CardSelectionComponent implements OnInit, OnDestroy  {
  async op1(){
     this.upload = false;
     const response:any = (await this._SupabaseService.updateOpcion(this.data_contador.id,this.entidad.tabla_contador,1)).data;
-    console.log("Opcion 1 actualizada", response);
+    /* console.log("Opcion 1 actualizada", response); */
     this.data_contador.opcion = response[0].opcion        
     this.upload = true;
     
@@ -186,7 +186,7 @@ export class CardSelectionComponent implements OnInit, OnDestroy  {
   async op2(){
     this.upload = false;
     const response:any = (await this._SupabaseService.updateOpcion(this.data_contador.id,this.entidad.tabla_contador,2)).data;
-    console.log("Opcion 2 actualizada", response);
+   /*  console.log("Opcion 2 actualizada", response); */
     this.data_contador.opcion = response[0].opcion      
     this.upload = true;
    
@@ -195,7 +195,7 @@ export class CardSelectionComponent implements OnInit, OnDestroy  {
   async op3(){
     this.upload = false;
     const response:any = (await this._SupabaseService.updateOpcion(this.data_contador.id,this.entidad.tabla_contador,3)).data;
-    console.log("Opcion 3 actualizada", response);
+    /* console.log("Opcion 3 actualizada", response); */
     this.data_contador.opcion = response[0].opcion    
     this.upload = true;
   }
@@ -207,10 +207,10 @@ export class CardSelectionComponent implements OnInit, OnDestroy  {
       this.data_contador.opcion=0;
 
       const responseOpcion:any = (await this._SupabaseService.updateOpcion(this.data_contador.id,this.entidad.tabla_contador,0)).data;
-      console.log("Opcion set 0", responseOpcion);
+      /* console.log("Opcion set 0", responseOpcion); */
 
       const responseContador:any = (await this._SupabaseService.updateContador(this.data_contador.id,this.entidad.tabla_contador,0)).data;
-      console.log("Opcion set 0", responseContador);
+      /* console.log("Opcion set 0", responseContador); */
 
       
     /*  await this._SupabaseService.postOpcion(this.dataUser.contador_cafe_id,0).subscribe(
@@ -235,7 +235,7 @@ export class CardSelectionComponent implements OnInit, OnDestroy  {
       /* this.ngOnInit(); */
     }else{      
       const responseContador:any = (await this._SupabaseService.updateContador(this.data_contador.id,this.entidad.tabla_contador,this.data_contador.contador+1)).data;
-      console.log("Opcion set 0", responseContador);
+      /* console.log("Opcion set 0", responseContador); */
 
       /* await this._SupabaseService.postContador(this.dataUser.contador_cafe_id,this.data_contador.contador+1).subscribe(
         (response) => {
@@ -263,13 +263,13 @@ export class CardSelectionComponent implements OnInit, OnDestroy  {
 
   cifrado(){
     this.uuidCifrado = this.cifrarUUID(this.data_contador.id, this.clave);
-    console.log('UUID cifrado:', this.uuidCifrado);
+    /* console.log('UUID cifrado:', this.uuidCifrado); */
     this.onPopupTouch()
   }
 
   decifrado(){
     const uuidDescifrado = this.descifrarUUID(this.uuidCifrado, this.clave);
-    console.log('UUID descifrado:', uuidDescifrado);
+   /*  console.log('UUID descifrado:', uuidDescifrado); */
   }
 
 

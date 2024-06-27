@@ -209,11 +209,11 @@ export class SupabaseService {
   }
 
   getTablaCafesRealtime(id: string, tabla: string) {
-    console.log('getTablaCafesRealtime');
+    /* console.log('getTablaCafesRealtime'); */
     const changes = new Subject();
 
     this.supabase.channel('room1').on('postgres_changes', { event: '*', schema: 'public', table: tabla, filter: `id=eq.${id}` }, payload => {
-      console.log('Change received!', payload);
+     /*  console.log('Change received!', payload); */
       changes.next(payload);
     })
     .subscribe();

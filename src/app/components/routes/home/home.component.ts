@@ -103,10 +103,10 @@ async localStorage():Promise<boolean>{
         }
       } 
 
-      console.log('Usuario: ',userString );
+    /*   console.log('Usuario: ',userString );
       console.log('logged: ',loggedString );
       console.log('entidad: ',entidadString );
-      console.log('userAdmin: ',userADminString );
+      console.log('userAdmin: ',userADminString ); */
 
       return log;
 }
@@ -114,7 +114,7 @@ async localStorage():Promise<boolean>{
 async getAdmins() {
   try {
     const response:any = await this._SupabaseService.getUsersAdminTable();
-    console.log('ADMINS', response.data);
+   /*  console.log('ADMINS', response.data); */
     this.admins = response.data;
     // Continúa aquí con lo que necesites hacer con la respuesta
     return response; // Retorna la respuesta si es necesario
@@ -127,7 +127,7 @@ async getAdmins() {
 async getUsers() {
   try {
     const response:any = await this._SupabaseService.getUsersTable();
-    console.log('USUARIOS', response.data);
+    /* console.log('USUARIOS', response.data); */
     this.usuarios = response.data;
     // Continúa aquí con lo que necesites hacer con la respuesta
     return response; // Retorna la respuesta si es necesario
@@ -140,7 +140,7 @@ async getUsers() {
 async getEntidades() {
   try {
     const response:any = await this._SupabaseService.getEntidades();
-    console.log('ENTIDADES', response.data);
+   /*  console.log('ENTIDADES', response.data); */
     this.entidades = response.data;
     // Continúa aquí con lo que necesites hacer con la respuesta
     return response; // Retorna la respuesta si es necesario
@@ -152,10 +152,10 @@ async getEntidades() {
 
 
 handleCredentialResponse = async (response: any) => {
-  console.log('Respuesta del servidor:', response);
+ /*  console.log('Respuesta del servidor:', response); */
   this._SupabaseService.getUsers().subscribe((data: any) => {
     this.usuarios = data.email;
-    console.log(data);
+    /* console.log(data); */
   });
 
   
@@ -173,8 +173,8 @@ handleCredentialResponse = async (response: any) => {
   localStorage.setItem("photo", this.googleUser.picture)
   localStorage.setItem("name", this.googleUser.name)
 
-  console.log("this.usuarios")
-  console.log(this.usuarios)
+ /*  console.log("this.usuarios") */
+ /*  console.log(this.usuarios) */
   this.loading = true;
 
   
@@ -212,7 +212,7 @@ handleCredentialResponse = async (response: any) => {
         this.usuarioCreado(this.googleUser.email, this.googleUser.name);
         
       } 
-      console.log(data)
+      /* console.log(data) */
       
       for (let i = 0; i < data.length; i++) {
         const email = data[i].email;       
@@ -226,7 +226,7 @@ handleCredentialResponse = async (response: any) => {
         // Realizar la verificación del email aquí
     } 
     if(logg && this.waitlist){          
-      console.log("Registrado")
+      /* console.log("Registrado") */
      this.authService.login();  
        this.ngZone.run(() => {
         this.loading = false;
@@ -239,18 +239,18 @@ handleCredentialResponse = async (response: any) => {
 
       this.paisOpcion = true;
       this.status = 'waitlist';
-      console.log("ESTAMOS EN WHATIS")
-      console.log("status: ", this.status, "pais: ", this.paisOpcion, "this.whitelis: ", this.waitlist)
+      /* console.log("ESTAMOS EN WHATIS")
+      console.log("status: ", this.status, "pais: ", this.paisOpcion, "this.whitelis: ", this.waitlist) */
       this.cdr.detectChanges();
       this.clearStorage(); 
       
     }else{
       if(!logg){
         this.interno.setLogged(true);
-        console.log("nuevo")
+       /*  console.log("nuevo") */
         this.usuarioCreado(this.googleUser.email, this.googleUser.name);
         this.paisOpcion = true
-            console.log(this.paisOpcion)
+            /* console.log(this.paisOpcion) */
             this.cdr.detectChanges();
       }   
     }
@@ -290,16 +290,16 @@ async setAdmin(){
       if(this.googleUser.email == data.email){
         this.interno.setUserAdmin(data); 
         this.user_solo_lectura = data.soloLectura;
-        console.log("data")
-        console.log(data)
+        /* console.log("data")
+        console.log(data) */
       }
    
     }
   }) 
 
 
-  console.log("this.user_solo_lectura")
-  console.log(this.user_solo_lectura)
+ /*  console.log("this.user_solo_lectura")
+  console.log(this.user_solo_lectura) */
 }
 
 
@@ -318,7 +318,7 @@ async usuarioCreado(email: string, name:string){
 async createCafe(dataCafe:any) {
   try {
     const response = await this._SupabaseService.postCafes(dataCafe).toPromise();
-    console.log('Café creado con éxito', response);
+    /* console.log('Café creado con éxito', response); */
     // Continúa aquí con lo que necesites hacer con la respuesta
     return response; // Retorna la respuesta si es necesario
   } catch (error) {
@@ -332,7 +332,7 @@ async createCafe(dataCafe:any) {
 
 
 async crearUsuario(pais: string): Promise<void> {
-  console.log("Creando");
+ /*  console.log("Creando"); */
   const dataUser:any = {
     email:this.userEmail,
     name: this.userName,
@@ -364,12 +364,12 @@ if (response && response.length > 0) {
 } */
 
 const responseUser:any = (await this._SupabaseService.postNewUser(dataUser)).data;
-console.log("Usuario CREADO", responseUser);
+/* console.log("Usuario CREADO", responseUser); */
 
       
       this.interno.setLogged(false); 
       this.interno.setUser(responseUser[0]);
-      console.log("DATA PARA SET INTERNO",responseUser[0])
+     /*  console.log("DATA PARA SET INTERNO",responseUser[0]) */
        this.authService.login();
        this.ngZone.run(() => {
       this.loading = false;

@@ -24,19 +24,19 @@ export class MenuComponent implements OnInit {
 
   async ngOnInit(): Promise<void> {
     this.cafes = await this._SupabasMenuServices.getCafes()
-    console.log("cafes: ", this.cafes)
+    /* console.log("cafes: ", this.cafes) */
     this.cafes.sort((a, b) => a.id - b.id);
 
     this.menus = await this._SupabasMenuServices.getMenu()
-    console.log("menus: ", this.menus)
+   /*  console.log("menus: ", this.menus) */
     this.menus.sort((a, b) => a.id - b.id);
 
     this.bebidas = await this._SupabasMenuServices.getBebidas()
-    console.log("bebidas: ", this.bebidas)
+   /*  console.log("bebidas: ", this.bebidas) */
     this.bebidas.sort((a, b) => a.id - b.id);
 
     this.extras = await this._SupabasMenuServices.getExtras()
-    console.log("extras: ", this.extras)
+    /* console.log("extras: ", this.extras) */
     this.extras.sort((a, b) => a.id - b.id);
 
 

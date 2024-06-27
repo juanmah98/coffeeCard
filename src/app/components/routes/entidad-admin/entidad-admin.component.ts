@@ -57,16 +57,16 @@ export class EntidadAdminComponent implements OnInit {
       console.error('Error durante la inicialización:', error);
     }
 
-    console.log("Admin:", this.admin);
+   /*  console.log("Admin:", this.admin);
     console.log("Entidad:", this.entidad);
-    console.log(`Cantidad de usuarios nuevos del mes: ${this.nuevos}`);
+    console.log(`Cantidad de usuarios nuevos del mes: ${this.nuevos}`); */
   }
 
   async loadAdmins(): Promise<void> {
     try {
       const response:any = await this.supabaseService.getUsersAdminTable();
       this.usuariosAdmin = response.data;
-      console.log('Admins:', this.usuariosAdmin);
+      /* console.log('Admins:', this.usuariosAdmin); */
 
       this.rolesAdmins = this.usuariosAdmin.filter(usuario => {
         return usuario.entidad_id === this.entidad.id;
@@ -94,7 +94,7 @@ export class EntidadAdminComponent implements OnInit {
   async loadUsuariosEntidad(users: CafeData[]): Promise<void> {
     const userPromises = users.map((user, index) => this.loadUser(user, index));
     await Promise.all(userPromises);
-    console.log('Usuarios totales:', this.usuarios);
+    /* console.log('Usuarios totales:', this.usuarios); */
   }
 
   async loadUser(user: CafeData, index: number): Promise<void> {
@@ -131,7 +131,7 @@ export class EntidadAdminComponent implements OnInit {
 
   sumaTarjetas(contador: any[]): void {
     this.tarjetas = contador.reduce((total, item) => total + parseInt(item.cantidad_gratis, 10), 0);
-    console.log("Tarjetas:", this.tarjetas);
+   /*  console.log("Tarjetas:", this.tarjetas); */
   }
 
   contarUsuariosNuevosDelMes(usuarios: Usuarios[]): number {
@@ -153,14 +153,14 @@ export class EntidadAdminComponent implements OnInit {
     admin.soloLectura = !admin.soloLectura;
 
     const response:any = (await this.supabaseService.updateAdmin(admin.id, admin.soloLectura)).data;
-    console.log("Update rol", response);  
+    /* console.log("Update rol", response); */  
   }
 
   async togglewaitlist(user: Usuarios) {
     user.waitlist = !user.waitlist;
 
     const response:any = (await this.supabaseService.updateUser(user.id, user.waitlist)).data;
-    console.log("Update waitlist", response);  
+   /*  console.log("Update waitlist", response);  */ 
   }
 
 
@@ -177,15 +177,15 @@ export class EntidadAdminComponent implements OnInit {
       const newAdmin:any = this.adminForm.value;
       userAdmin.nombre=newAdmin.nombre;
       userAdmin.email=newAdmin.email;
-      console.log('Nuevo Admin:', newAdmin);
-      console.log('Nuevo userAdmin:', userAdmin);
+     /*  console.log('Nuevo Admin:', newAdmin);
+      console.log('Nuevo userAdmin:', userAdmin); */
        const responseUser:any = (await this.supabaseService.postNewAdmin(userAdmin)).data;
-      console.log("Usuario CREADO", responseUser); 
+     /*  console.log("Usuario CREADO", responseUser);  */
       // Aquí puedes manipular los datos del nuevo administrador como desees
       this.adminForm.reset();
       this.ngOnInit()
     } else {
-      console.log('Formulario no válido');
+      /* console.log('Formulario no válido'); */
     }
   }
 
