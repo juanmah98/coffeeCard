@@ -9,6 +9,8 @@ import { MenuComponent } from './components/routes/menu/menu.component';
 import { MenuAdminComponent } from './components/routes/menu-admin/menu-admin.component';
 import { SplineViewerComponent } from './components/routes/spline-viewer/spline-viewer.component';
 import { EntidadAdminComponent } from './components/routes/entidad-admin/entidad-admin.component';
+import { PrivacyPolicyComponent } from './components/layout/privacy-policy/privacy-policy.component';
+import { CookiesPolicyComponent } from './components/layout/cookies-policy/cookies-policy.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' }, // Redirigir a '/home' en la ruta raíz
@@ -20,6 +22,8 @@ const routes: Routes = [
   { path: 'menu', component: MenuComponent },
   { path: 'menu-admin', component: MenuAdminComponent, canActivate: [AuthGuard] },
   { path: 'admin', component: EntidadAdminComponent, canActivate: [AuthGuard]  },
+  { path: 'privacy-policy', component: PrivacyPolicyComponent },
+  { path: 'cookies-policy', component: CookiesPolicyComponent },
 ];
 
 @NgModule({

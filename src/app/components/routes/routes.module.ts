@@ -13,6 +13,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SplineViewerComponent } from './spline-viewer/spline-viewer.component';
 import { SplineViewrCardComponent } from './spline-viewr-card/spline-viewr-card.component';
 import { EntidadAdminComponent } from './entidad-admin/entidad-admin.component';
+import { LandingComponent } from './landing/landing.component';
 
 
 
@@ -25,7 +26,8 @@ import { EntidadAdminComponent } from './entidad-admin/entidad-admin.component';
     MenuComponent,
     MenuAdminComponent,
     SplineViewrCardComponent,
-    EntidadAdminComponent
+    EntidadAdminComponent,
+    LandingComponent
    
     
   ],
@@ -34,7 +36,7 @@ import { EntidadAdminComponent } from './entidad-admin/entidad-admin.component';
     QRCodeModule,
     LayoutModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
   ],
   exports:[
     HomeComponent,
