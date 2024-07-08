@@ -16,9 +16,9 @@
     <div class="row justify-content-center pb-3">
       <div class="col-12 pb-2 pt-0 text-light ">
         <div class="">
-          <video [ngClass]="{'video':video1,'video2':video2}" #video autoplay></video>
+          <video [ngClass]="{'video':video1,'video2':video2}" #video autoplay playsinline></video>
           <canvas #canvas style="display: none;"></canvas>
-          <h3 *ngIf="continueScanning==true" class="text-light">ESCANEANDO QR</h3>
+          <h3 *ngIf="continueScanning==true" class="text-light">ESCANEANDO QR IHPONE</h3>
           <h3 *ngIf="continueScanning==false && entidadDistinta==false" class="text-warning">ESCANEO CORRECTO</h3>
           <h3 *ngIf="continueScanning==false && entidadDistinta==true" class="text-warning">ERROR</h3>
         </div> 

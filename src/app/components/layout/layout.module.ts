@@ -8,6 +8,7 @@ import { PrivacyPolicyComponent } from './privacy-policy/privacy-policy.componen
 import { CookiesPolicyComponent } from './cookies-policy/cookies-policy.component';
 import { FooterComponent } from './footer/footer.component';
 import { BannerPolicyComponent } from './banner-policy/banner-policy.component';
+import { PopupScanerqrComponent } from './popup-scanerqr/popup-scanerqr.component';
 
 
 
@@ -19,7 +20,8 @@ import { BannerPolicyComponent } from './banner-policy/banner-policy.component';
     PrivacyPolicyComponent,
     CookiesPolicyComponent,
     FooterComponent,
-    BannerPolicyComponent
+    BannerPolicyComponent,
+    PopupScanerqrComponent
   ],
   
   exports: [
@@ -27,7 +29,8 @@ import { BannerPolicyComponent } from './banner-policy/banner-policy.component';
     ToastComponent,
     InfoComponent,
     BannerPolicyComponent,
-    FooterComponent
+    FooterComponent,
+    PopupScanerqrComponent
   ],
   
   imports: [
