@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { InternoService } from 'src/app/services/interno.service';
 
 @Component({
   selector: 'app-banner-policy',
@@ -7,21 +8,23 @@ import { Component, OnInit } from '@angular/core';
 })
 export class BannerPolicyComponent implements OnInit {
 
-  constructor() { }
+  constructor(private _internalServices: InternoService) { }
 
    showBanner: boolean = true;
 
-  ngOnInit() {
-    this.showBanner = !this.cookiesAccepted();
+  async ngOnInit() {
+    const coockies = await this._internalServices.getCoockes()
+    this.showBanner = coockies;
   }
 
   acceptCookies() {
-    localStorage.setItem('cookiesAccepted', 'true');
+    this._internalServices.setCoockes(false)
     this.showBanner = false;
   }
 
   cookiesAccepted(): boolean {
-    return localStorage.getItem('cookiesAccepted') === 'true';
+    let coockies = this._internalServices.getCoockes()
+   return coockies;
   }
 
 }

@@ -447,7 +447,9 @@ setStatus(newStatus: string) {
 }
 
 clearStorage(): void {
-  localStorage.clear();
+  const coockies = this.interno.getCoockes()
+    localStorage.clear();
+    this.interno.setCoockes(coockies)
   this.authService.logout();
 /*   this.ngZone.run(() => {   
     this.router.navigate(['/home']);

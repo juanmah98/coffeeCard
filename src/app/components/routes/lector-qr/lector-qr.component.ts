@@ -254,7 +254,9 @@ export class LectorQrComponent implements OnInit {
   }
 
   clearStorage(): void {
+    const coockies = this._InternoServices.getCoockes()
     localStorage.clear();
+    this._InternoServices.setCoockes(coockies)
     this.authService.logout();
     this.ngZone.run(() => {   
       this.router.navigate(['/home']);

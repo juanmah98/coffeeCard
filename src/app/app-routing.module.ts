@@ -11,6 +11,7 @@ import { SplineViewerComponent } from './components/routes/spline-viewer/spline-
 import { EntidadAdminComponent } from './components/routes/entidad-admin/entidad-admin.component';
 import { PrivacyPolicyComponent } from './components/layout/privacy-policy/privacy-policy.component';
 import { CookiesPolicyComponent } from './components/layout/cookies-policy/cookies-policy.component';
+import { LandingComponent } from './components/routes/landing/landing.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' }, // Redirigir a '/home' en la ruta raíz
@@ -24,6 +25,7 @@ const routes: Routes = [
   { path: 'admin', component: EntidadAdminComponent, canActivate: [AuthGuard]  },
   { path: 'privacy-policy', component: PrivacyPolicyComponent },
   { path: 'cookies-policy', component: CookiesPolicyComponent },
+  { path: 'landing', component: LandingComponent },
 ];
 
 @NgModule({

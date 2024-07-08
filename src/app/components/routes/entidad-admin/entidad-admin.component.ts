@@ -190,7 +190,9 @@ export class EntidadAdminComponent implements OnInit {
   }
 
   clearStorage(): void {
+   const coockies = this.internoService.getCoockes()
     localStorage.clear();
+    this.internoService.setCoockes(coockies)
     this.authService.login();
     this.ngZone.run(() => {   
       this.router.navigate(['/home']);

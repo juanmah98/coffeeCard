@@ -69,7 +69,9 @@ export class PrincipalComponent implements OnInit {
   }
 
   clearStorage(): void {
+    const coockies = this._interno.getCoockes()
     localStorage.clear();
+    this._interno.setCoockes(coockies)
     this.authService.logout();
     this.ngZone.run(() => {   
       this.router.navigate(['/home']);
