@@ -39,8 +39,5 @@
     "karma-jasmine": "~5.1.0",
     "karma-jasmine-html-reporter": "~2.0.0",
     "typescript": "~4.7.2"
-  },
-  "overrides": {
-    "@supabase/supabase-js>@supabase/auth-js": "2.61.0"
-}
+  }
 }
