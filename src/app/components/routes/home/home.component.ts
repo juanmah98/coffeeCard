@@ -73,6 +73,8 @@ async localStorage():Promise<boolean>{
     const loggedString = localStorage.getItem('logged');
     const entidadString = localStorage.getItem('entidad');
     const userADminString:any = localStorage.getItem('userAdmin');
+    const onlyScaner:any = localStorage.getItem('onlyScaner');
+    
     
     if(userString != null)
       {
@@ -87,7 +89,7 @@ async localStorage():Promise<boolean>{
         if(userADminString != null){
           
             this.authService.login();
-            if(!userADminString.user_solo_lectura){
+            if(!userADminString.user_solo_lectura && !onlyScaner){
               this.ngZone.run(() => {
                 this.loading = false;    
                 log = false  
@@ -197,6 +199,7 @@ handleCredentialResponse = async (response: any) => {
         this.router.navigate(['/admin']);
         }); 
         }else{
+          this.interno.setOnlyScaner(true);
           this.ngZone.run(() => {
             this.loading = false;      
             this.router.navigate(['/qrscan']);

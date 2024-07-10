@@ -44,6 +44,7 @@ export class InternoService {
 });
 
 private coockies = new BehaviorSubject<boolean>(true);
+private onlyScaner = new BehaviorSubject<boolean>(false);
 
 private userAll = new BehaviorSubject<Usuarios[]>([]);
 
@@ -53,6 +54,7 @@ private userAll = new BehaviorSubject<Usuarios[]>([]);
   miUserAdmin$ = this.userAdmin.asObservable();
   miUserAll$ = this.userAll.asObservable();
   micoockies$ = this.coockies.asObservable();
+  mionlyScaner$ = this.onlyScaner.asObservable();
 
   constructor() {
     // Recuperar datos del localStorage al iniciar el servicio
@@ -61,6 +63,7 @@ private userAll = new BehaviorSubject<Usuarios[]>([]);
     const entidadString = localStorage.getItem('entidad');
     const userADminString = localStorage.getItem('userAdmin');
     const coockiesString = localStorage.getItem('coockies');
+    const onlyScanerString = localStorage.getItem('onlyScaner');
 
     if (userString) {
       const user = JSON.parse(userString);
@@ -74,6 +77,10 @@ private userAll = new BehaviorSubject<Usuarios[]>([]);
     if (coockiesString) {
       const coockies = JSON.parse(coockiesString);
       this.coockies.next(coockies);
+    }
+    if (onlyScanerString) {
+      const onlyScaner = JSON.parse(onlyScanerString);
+      this.onlyScaner.next(onlyScaner);
     }
     if (userADminString) {
       const userAdmin = JSON.parse(userADminString);
@@ -102,6 +109,15 @@ private userAll = new BehaviorSubject<Usuarios[]>([]);
   setCoockes(valor: boolean): void {
     this.coockies.next(valor);
     localStorage.setItem('coockies', JSON.stringify(valor));
+  }
+
+  getOnlyScaner(): boolean {
+    return this.onlyScaner.value;
+  }
+
+  setOnlyScaner(valor: boolean): void {
+    this.onlyScaner.next(valor);
+    localStorage.setItem('onlyScaner', JSON.stringify(valor));
   }
 
   getUser(): Usuarios {

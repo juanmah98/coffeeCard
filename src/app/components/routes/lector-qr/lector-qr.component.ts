@@ -38,6 +38,7 @@ export class LectorQrComponent implements OnInit {
   entidad!: Entidades;
   entidadDistinta = false;
   admin = true;
+  lectorOnly = false;
 
   constructor(private cdr: ChangeDetectorRef, private _SupabaseService: SupabaseService, private router: Router, private _InternoServices: InternoService, private ngZone: NgZone, private authService: AuthService) { }
 
@@ -46,8 +47,10 @@ export class LectorQrComponent implements OnInit {
     this.initScanInterval();
     this.entidad = this._InternoServices.getEntidad();
     this.admin = this._InternoServices.getUserAdmin().soloLectura;
+    this.lectorOnly = this._InternoServices.getOnlyScaner();
     this.bgClass = `bg-${this._InternoServices.getEntidad().background}-card`;
     this.cdr.detectChanges();
+    console.log("ONly: ", this.lectorOnly, "- admin. ", this.admin)
   }
 
   ngOnDestroy(): void {

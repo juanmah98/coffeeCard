@@ -17,7 +17,7 @@ body{
 .background-menu{
     background-image: url("../../../../assets/imagenes/menus/menus.jpg");
     padding-top: 2rem;
-    height: 105vh;
+    min-height: 105vh;
     background-repeat: no-repeat; /* Evita que la imagen se repita */
     background-size: cover; /* Cubre todo el espacio disponible */
     background-position: center; /* Centra la imagen en el contenedor */
@@ -232,7 +232,7 @@ body{
 
   .background-menu{
 
-    height: 101vh;
+    /* height: 101vh; */
 
 }
    
@@ -252,7 +252,7 @@ body{
 
   .background-menu{
 
-    height: 110vh;
+   /*  height: 110vh; */
 
 }
 
