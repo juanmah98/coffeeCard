@@ -1,15 +1,21 @@
 <div class="container">
     <div class="container__card" [ngClass]="{'gratisNo': !gratis, 'gratisSi': gratis}">
       <div *ngIf="gratis==false" class="container__title">Sumar <img src="../../../../assets/imagenes/cards/cardqr.png" width="35px" alt=""></div>
-      <div *ngIf="gratis==true" class="container__title fw-bold">Gratis <img src="../../../../assets/imagenes/cards/free.png" width="35px" alt=""></div>
+      <div *ngIf="gratis==true" class="container__title fw-bold align-items-center"><span>¡Felicidades! </span><img src="../../../../assets/imagenes/cards/regalo-vector.png" class="pb-2" width="25px" alt=""></div>
       <!-- <div class="container__subtitle">Cv750,03509 Finestrat España</div> -->
       <!-- <div class="container__description">
         <div class="container__description-text">{{data}}</div>
       </div> -->
        <div class="container__maps">
         <qrcode *ngIf="gratis==false" [qrdata]="qrdata" [width]="300" [errorCorrectionLevel]="'M'"></qrcode>
-        <qrcode *ngIf="gratis==true" [qrdata]="qrdata" [colorDark]="'#512e00'" [width]="300" [errorCorrectionLevel]="'M'"></qrcode>
+        <qrcode *ngIf="gratis==true" [qrdata]="qrdata" [colorDark]="'#281700'" [width]="300" [errorCorrectionLevel]="'M'"></qrcode>
+       
       </div> 
+      <div *ngIf="gratis==true" ngClass="container__maps align-items-center justify-content-center text-center">
+        <span class="fs-5">Reclamar tu premio</span>
+       <!--  <img src="../../../../assets/imagenes/cards/reclamar.png" width="35px" alt=""> -->
+      </div>
+
      <!--  -->
     </div>
   
