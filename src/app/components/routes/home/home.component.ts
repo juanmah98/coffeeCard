@@ -16,7 +16,7 @@ declare var google: any;
 })
 export class HomeComponent implements OnInit {
 
-  loading:boolean = false;
+  loading:boolean = true;
   googleUser: any;
   logged:boolean = false;
   usuarios: Usuarios[] = [];
@@ -30,7 +30,6 @@ export class HomeComponent implements OnInit {
   userName:string='';
   paisOpcion: boolean = false;
   status: string = 'default';
-  waitlist:boolean = false;
   constructor(private cdr: ChangeDetectorRef, private authService:AuthService, private router: Router, private _SupabaseService: SupabaseService, private ngZone: NgZone, private interno:  InternoService) { }
 
   async ngOnInit(): Promise<void> {
@@ -221,14 +220,13 @@ handleCredentialResponse = async (response: any) => {
         const email = data[i].email;       
         if (data[i].email == this.googleUser.email) {
             logg = true;    
-            this.waitlist = data[i].waitlist;
             this.interno.setUser(data[i]);           
         }
   
        
         // Realizar la verificación del email aquí
     } 
-    if(logg && this.waitlist){          
+    if(logg){          
       /* console.log("Registrado") */
      this.authService.login();  
        this.ngZone.run(() => {
@@ -237,27 +235,16 @@ handleCredentialResponse = async (response: any) => {
       }); 
       
      
-  }else{ 
-    if(logg && !this.waitlist){
-
-      this.paisOpcion = true;
-      this.status = 'waitlist';
-      /* console.log("ESTAMOS EN WHATIS")
-      console.log("status: ", this.status, "pais: ", this.paisOpcion, "this.whitelis: ", this.waitlist) */
-      this.cdr.detectChanges();
-      this.clearStorage(); 
-      
-    }else{
-      if(!logg){
-        this.interno.setLogged(true);
-       /*  console.log("nuevo") */
-        this.usuarioCreado(this.googleUser.email, this.googleUser.name);
-        this.paisOpcion = true
-            /* console.log(this.paisOpcion) */
-            this.cdr.detectChanges();
-      }   
-    }
-     
+  }else{
+    if(!logg){
+      this.interno.setLogged(true);
+     /*  console.log("nuevo") */
+      this.usuarioCreado(this.googleUser.email, this.googleUser.name);
+      this.paisOpcion = true
+      this.loading = true;
+          /* console.log(this.paisOpcion) */
+          this.cdr.detectChanges();
+    }   
   }
     
   })
@@ -335,14 +322,15 @@ async createCafe(dataCafe:any) {
 
 
 async crearUsuario(pais: string): Promise<void> {
+  this.loading = false;
  /*  console.log("Creando"); */
   const dataUser:any = {
     email:this.userEmail,
     name: this.userName,
     fecha_creacion: new Date(),
     pais: pais,
-    waitlist: false
   }; 
+  this.cdr.detectChanges();
 
 /*   const dataCafe:any = {
        
@@ -367,19 +355,24 @@ if (response && response.length > 0) {
 } */
 
 const responseUser:any = (await this._SupabaseService.postNewUser(dataUser)).data;
-/* console.log("Usuario CREADO", responseUser); */
+/* console.log("Usuario CREADO", responseUser);  */
 
       
-      this.interno.setLogged(false); 
+      this.interno.setLogged(true); 
       this.interno.setUser(responseUser[0]);
-     /*  console.log("DATA PARA SET INTERNO",responseUser[0]) */
+       /* console.log("DATA PARA SET INTERNO",responseUser[0])  */
        this.authService.login();
-       this.ngZone.run(() => {
-      this.loading = false;
-      /* this.router.navigate(['/principal']); */
-      this.router.navigate(['/home']);
-      this.clearStorage();
-    });  
+
+       setTimeout(() => {
+         this.loading = true;
+         this.ngZone.run(() => {
+           this.router.navigate(['/principal']); 
+           /* this.router.navigate(['/home']); */
+           /*  this.clearStorage(); */
+           this.cdr.detectChanges();
+          });  
+      }, 2000)
+       
 
    
 
@@ -461,7 +454,6 @@ clearStorage(): void {
 
 back(){
   this.paisOpcion = false;
-  this.waitlist = false;
   this.cdr.detectChanges();
   this.ngOnInit()
 }

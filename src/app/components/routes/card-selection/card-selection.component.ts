@@ -34,7 +34,6 @@ export class CardSelectionComponent implements OnInit, OnDestroy  {
     name: "",
     fecha_creacion: new Date(),
     pais: '',
-    waitlist: false
   };
 
   data_contador:CafeData = 

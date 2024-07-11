@@ -17,7 +17,6 @@ export class InternoService {
       "name":"",
       "fecha_creacion": new Date(),
       "pais": '',
-      "waitlist": false
     }
   );
   

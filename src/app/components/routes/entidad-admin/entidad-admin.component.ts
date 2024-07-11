@@ -156,12 +156,7 @@ export class EntidadAdminComponent implements OnInit {
     /* console.log("Update rol", response); */  
   }
 
-  async togglewaitlist(user: Usuarios) {
-    user.waitlist = !user.waitlist;
 
-    const response:any = (await this.supabaseService.updateUser(user.id, user.waitlist)).data;
-   /*  console.log("Update waitlist", response);  */ 
-  }
 
 
   async agregarAdmin() {
