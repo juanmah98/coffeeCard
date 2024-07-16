@@ -5,7 +5,7 @@ body{
 
 .background-cafe{
     padding-top: 0.5rem;
-    height: 110vh;
+    min-height: 105vh;
 
     background-image: linear-gradient(rgba(22, 22, 22, 0.775), rgba(28, 28, 28, 0.803)), url("../../../../assets/imagenes/backGrounds/piazzetta/opcion3.jpg");
     padding-top: 2rem;
@@ -26,7 +26,7 @@ body{
 .background-bebidas{
   background-image: linear-gradient(rgba(11, 11, 11, 0.825), rgba(31, 31, 31, 0.786)), url("../../../../assets/imagenes/backGrounds/piazzetta/ambar.jpg");
   padding-top: 2rem;
-  height: 100vh;
+  min-height: 103vh;
   background-repeat: no-repeat; /* Evita que la imagen se repita */
   background-size: cover; /* Cubre todo el espacio disponible */
   background-position: center; /* Centra la imagen en el contenedor */
@@ -227,7 +227,7 @@ body{
 
     .background-cafe{
       padding-top: 1.5rem;
-      height: 100vh;
+      /* height: 100vh; */
   }
 
   .background-menu{
@@ -247,7 +247,7 @@ body{
 
     .background-cafe{
       padding-top: 1.5rem;
-      height: 108vh;
+      /* height: 108vh; */
   }
 
   .background-menu{
