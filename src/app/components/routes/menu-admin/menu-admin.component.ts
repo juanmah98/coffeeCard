@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, NgZone, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Bebidas } from 'src/app/interfaces/bebidas';
 import { CafeMenus } from 'src/app/interfaces/cafe_menus';
@@ -28,7 +28,7 @@ export class MenuAdminComponent implements OnInit {
   savedData: any;
 
   extras:Extras[]=[]
-  constructor(private _SupabasMenuServices: MenuService, private router: Router) { }
+  constructor(private _SupabasMenuServices: MenuService, private router: Router, private ngZone: NgZone) { }
 
   async ngOnInit(): Promise<void> {
     this.cafes = await this._SupabasMenuServices.getCafes()
@@ -147,7 +147,11 @@ export class MenuAdminComponent implements OnInit {
   }
 
   qrscaner(){
-    this.router.navigate(['/qrscan'])
+   
+
+    this.ngZone.run(() => {   
+      this.router.navigate(['/qrscan'])
+      }); 
   }
 
   obtenerFechaActual(): Date {

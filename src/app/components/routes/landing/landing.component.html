@@ -1,4 +1,4 @@
-<body class="container-fluid">
+<body class="">
     
    <!--  <header class="bg-black text-white text-center py-4">
         <h1>TuApp - Fidelización de Clientes</h1>
@@ -7,39 +7,38 @@
       
 
     <section class="bg-black text-white text-center  section-hero row justify-content-center align-items-center">
-        <div class="container col-12">
+        <div class="container-fluid col-12">
           <h2 style="font-family: 'OpenSans';">Bienvenido a Fidelity</h2>
           <div class="">
 
               <app-spline-viewr-card></app-spline-viewr-card>
             </div>
           <p>Descubre cómo puedes ganar recompensas en tus comercios preferidos.</p>
-          <button class="btn btn-light btn-md mt-3">Comienza Ahora</button>
         </div>
-        <div class="col-4 text-start justify-content-start">
-            <div>
-                
+        <div class="col-12 text-center justify-content-center align-items-center mt-2">
+          <div>            
+            <button class="btn btn-light btn-md mt-3" (click)="accion()">Comienza Ahora</button>
 
             </div>
         </div>
       </section>
 
       <section class="bg-black text-white py-5">
-        <div class="container">
+        <div class="container-fluid">
           <h2 class="text-center">¿Cómo Funciona?</h2>
-          <div class="row text-center">
-            <div class="col-md-4">
-              <img src="../../../../assets/imagenes/landing/fidelity.jpeg" width="200px" alt="Registro" class="img-fluid mb-3">
+          <div class="row text-center mt-4">
+            <div class="col-md-4 col-12 mt-md-0 mt-3 mb-md-0 mb-md-5">
+              <img src="../../../../assets/imagenes/landing/logg.png" width="100px" alt="Registro" class="img-fluid mb-3 car">
               <h3>Regístrate</h3>
-              <p>Crea tu cuenta en TuApp y accede a todos los comercios afiliados.</p>
+              <p>Crea tu cuenta en <b>fidelity</b> y accede a todos los comercios afiliados.</p>
             </div>
-            <div class="col-md-4">
-              <img src="path/to/image2.jpg" alt="Explora" class="img-fluid mb-3">
+            <div class="col-md-4 col-12 mt-md-0 mt-5 mb-md-0 mb-md-5">
+              <img src="../../../../assets/imagenes/landing/comercio.png" width="100px" alt="Registro" class="img-fluid mb-3 car">
               <h3>Explora Comercios</h3>
               <p>Encuentra comercios en tu zona que ofrecen recompensas.</p>
             </div>
-            <div class="col-md-4">
-              <img src="path/to/image3.jpg" alt="Gana Puntos" class="img-fluid mb-3">
+            <div class="col-md-4 col-12 mt-md-0 mt-5 mb-md-0 mb-md-5">
+              <img src="../../../../assets/imagenes/landing/recompensa.png" width="100px" alt="Registro" class="img-fluid mb-3 car">
               <h3>Gana Puntos</h3>
               <p>Acumula puntos con cada compra y canjea tus recompensas.</p>
             </div>
@@ -47,13 +46,29 @@
         </div>
       </section>
 
-      <section class="bg-black text-white text-center py-5">
-        <div class="container">
-          <h2>¡Únete a la Comunidad TuApp!</h2>
+      <section class="bg-black text-white text-center py-5 mb-4">
+        <div class="container-fluid">
+          <h2>¡Únete a la Comunidad fidelity!</h2>
           <p>Regístrate hoy y comienza a ganar recompensas en tus comercios locales favoritos.</p>
-          <button class="btn btn-primary btn-lg mt-3">Regístrate Gratis</button>
+          <button class="btn btn-primary btn-md mt-3">Regístrate Gratis</button>
         </div>
       </section>
       
+
+      <section class="bg-light text-dark text-center pt-5">
+        <img src="../../../../assets/imagenes/landing/fidelidad-local.png" width="120px" alt="Registro" class="img-fluid mb-3">
+        <div class="container-fluid">
+          <h2>¿Quieres unirte como comercio?</h2>
+          <p>Regístrate, personaliza tu tarjeta y consigue mas fidelidad con tus clientes</p>
+          <button class="btn btn-dark btn-md mt-3">¡Únete ahora!</button>
+        </div>
+
+        <div class="row mt-5">
+          <div class="col-12 mt-3">
+            <h4>Ejemplo facil de uso</h4>
+            <img src="../../../../assets/imagenes/landing/qr.png" width="90%" alt="Registro" class="img-fluid mb-3">
+          </div>
+        </div>
+      </section>
 
 </body>

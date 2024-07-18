@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, NgZone, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-landing',
@@ -7,9 +8,14 @@ import { Component, OnInit } from '@angular/core';
 })
 export class LandingComponent implements OnInit {
 
-  constructor() { }
+  constructor(private router: Router, private ngZone: NgZone) { }
 
   ngOnInit(): void {
   }
 
+  accion(){
+    this.ngZone.run(() => {   
+      this.router.navigate(['/home'])
+      }); 
+  }
 }
