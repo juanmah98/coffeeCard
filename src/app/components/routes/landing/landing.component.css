@@ -21,3 +21,26 @@
     transform: scale(1.2);   
   }
 
+  .qr{
+    width: 30%;
+    padding-bottom: 1.5rem;
+  }
+
+  @media (max-width: 1400px) { 
+    .qr{
+      width: 45%;
+    }
+  }
+
+  @media (max-width: 1000px) { 
+    .qr{
+      width: 65%;
+    }
+  }
+
+  @media (max-width: 700px) { 
+    .qr{
+      width: 90%;
+    }
+  }
+

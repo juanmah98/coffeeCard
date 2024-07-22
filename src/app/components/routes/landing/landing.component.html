@@ -1,3 +1,4 @@
+<app-header></app-header>
 <body class="">
     
    <!--  <header class="bg-black text-white text-center py-4">
@@ -6,9 +7,9 @@
       </header> -->
       
 
-    <section class="bg-black text-white text-center  section-hero row justify-content-center align-items-center">
-        <div class="container-fluid col-12">
-          <h2 style="font-family: 'OpenSans';">Bienvenido a Fidelity</h2>
+    <section class="bg-black text-white text-center container-fluid section-hero row justify-content-center align-items-center">
+        <div class=" col-12">
+          <h2 style="font-family: 'OpenSans';">Bienvenido a <b>Fidelity</b></h2>
           <div class="">
 
               <app-spline-viewr-card></app-spline-viewr-card>
@@ -23,8 +24,8 @@
         </div>
       </section>
 
-      <section class="bg-black text-white py-5">
-        <div class="container-fluid">
+      <section class="bg-black container-fluid text-white py-5">
+        <div class="">
           <h2 class="text-center">¿Cómo Funciona?</h2>
           <div class="row text-center mt-4">
             <div class="col-md-4 col-12 mt-md-0 mt-3 mb-md-0 mb-md-5">
@@ -46,27 +47,27 @@
         </div>
       </section>
 
-      <section class="bg-black text-white text-center py-5 mb-4">
-        <div class="container-fluid">
+      <section class="bg-black container-fluid text-white text-center py-5 mb-4">
+        <div class="">
           <h2>¡Únete a la Comunidad fidelity!</h2>
           <p>Regístrate hoy y comienza a ganar recompensas en tus comercios locales favoritos.</p>
-          <button class="btn btn-primary btn-md mt-3">Regístrate Gratis</button>
+          <button class="btn btn-primary btn-md mt-3" (click)="accion()">Regístrate Gratis</button>
         </div>
       </section>
       
 
-      <section class="bg-light text-dark text-center pt-5">
+      <section class="bg-light container-fluid text-dark text-center pt-5">
         <img src="../../../../assets/imagenes/landing/fidelidad-local.png" width="120px" alt="Registro" class="img-fluid mb-3">
-        <div class="container-fluid">
+        <div class="">
           <h2>¿Quieres unirte como comercio?</h2>
           <p>Regístrate, personaliza tu tarjeta y consigue mas fidelidad con tus clientes</p>
-          <button class="btn btn-dark btn-md mt-3">¡Únete ahora!</button>
+          <button class="btn btn-dark btn-md mt-3" (click)="accion()">¡Únete ahora!</button>
         </div>
 
         <div class="row mt-5">
           <div class="col-12 mt-3">
             <h4>Ejemplo facil de uso</h4>
-            <img src="../../../../assets/imagenes/landing/qr.png" width="90%" alt="Registro" class="img-fluid mb-3">
+            <img src="../../../../assets/imagenes/landing/qr.png" alt="Registro" class="img-fluid mb-3 qr">
           </div>
         </div>
       </section>

@@ -9,6 +9,7 @@ import { CookiesPolicyComponent } from './cookies-policy/cookies-policy.componen
 import { FooterComponent } from './footer/footer.component';
 import { BannerPolicyComponent } from './banner-policy/banner-policy.component';
 import { PopupScanerqrComponent } from './popup-scanerqr/popup-scanerqr.component';
+import { HeaderComponent } from './header/header.component';
 
 
 
@@ -21,7 +22,8 @@ import { PopupScanerqrComponent } from './popup-scanerqr/popup-scanerqr.componen
     CookiesPolicyComponent,
     FooterComponent,
     BannerPolicyComponent,
-    PopupScanerqrComponent
+    PopupScanerqrComponent,
+    HeaderComponent
   ],
   
   exports: [
@@ -30,7 +32,8 @@ import { PopupScanerqrComponent } from './popup-scanerqr/popup-scanerqr.componen
     InfoComponent,
     BannerPolicyComponent,
     FooterComponent,
-    PopupScanerqrComponent
+    PopupScanerqrComponent,
+    HeaderComponent
   ],
   
   imports: [
