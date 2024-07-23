@@ -12,6 +12,7 @@ import { EntidadAdminComponent } from './components/routes/entidad-admin/entidad
 import { PrivacyPolicyComponent } from './components/layout/privacy-policy/privacy-policy.component';
 import { CookiesPolicyComponent } from './components/layout/cookies-policy/cookies-policy.component';
 import { LandingComponent } from './components/routes/landing/landing.component';
+import { EmployeeSalaryComponent } from './components/routes/employee-salary/employee-salary.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' }, // Redirigir a '/home' en la ruta raíz
@@ -26,6 +27,7 @@ const routes: Routes = [
   { path: 'privacy-policy', component: PrivacyPolicyComponent },
   { path: 'cookies-policy', component: CookiesPolicyComponent },
   { path: 'landing', component: LandingComponent },
+  { path: 'pagos', component: EmployeeSalaryComponent },
 ];
 
 @NgModule({
