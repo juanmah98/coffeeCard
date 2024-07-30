@@ -38,7 +38,7 @@
 
                 <div class="d-flex mb-1">
                    <button class="btn btn-outline-light fw-bold fs-5" (click)="statusChange('1')">Admins</button> <!-- <h4 class="mx-2">Admins</h4> -->
-                   <button class="btn btn-outline-light fw-bold fs-5 " (click)="statusChange('2')">Waitlist</button><!-- <h4 class="mx-2">waitlist</h4> -->
+                   <button class="btn btn-outline-light fw-bold fs-5 " (click)="statusChange('2')">Ajustes</button><!-- <h4 class="mx-2">waitlist</h4> -->
                   <!--  <button class="btn btn-outline-light fw-bold fs-5 " (click)="statusChange('3')">Card edit</button> -->
                 </div>
                 <!-- Campo de entrada de texto para el nuevo correo electrónico -->
@@ -82,10 +82,43 @@
 
                 <div *ngSwitchCase="'2'" class="text-center">
                          
-                    <table  class="table table-dark table-striped">                      
-                       
-                          
-                    </table>
+                    <div class="container-fluid">
+                        <div class="row justify-content-center align-items-start pt-2 pb-5 text-light">
+                          <h4 class="text-center">Panel de ajustes</h4>
+                      
+                          <div class="col-12 col-md-3 mb-3">
+                            <div class="bg-setting rounded text-start p-3">
+                              <ul class="nav flex-column" style="list-style: none; padding-left: 0;">
+                                <li class="nav-item mb-2">
+                                  <a class="nav-link" (click)="setActiveTab('informacion')">Información</a>
+                                </li>
+                                <li class="nav-item mb-2">
+                                  <a class="nav-link" (click)="setActiveTab('diseño')">Diseño</a>
+                                </li>
+                                <li class="nav-item mb-2">
+                                  <a class="nav-link" (click)="setActiveTab('usuario')">Usuario</a>
+                                </li>
+                              </ul>
+                            </div>
+                          </div>
+                      
+                          <div class="col-12 col-md-9 text-start">
+                            <div *ngIf="activeTab === 'informacion'">
+                              <p class="fs-5 fw-bold">Información</p>
+                              <p>{{entidad.informacion}}</p>
+                            </div>
+                            <div *ngIf="activeTab === 'diseño'">
+                                <p class="fs-5 fw-bold">Diseño</p>
+                              <!-- contenido de configuración -->
+                            </div>
+                            <div *ngIf="activeTab === 'usuario'">
+                                <p class="fs-5 fw-bold">Usuario</p>
+                              <!-- contenido de seguridad -->
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      
                     
                         
                 </div>

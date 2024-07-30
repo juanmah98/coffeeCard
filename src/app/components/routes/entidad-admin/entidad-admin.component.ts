@@ -31,6 +31,12 @@ export class EntidadAdminComponent implements OnInit {
     email: new FormControl('', [Validators.required, Validators.email]),
   });
 
+  activeTab: string = 'informacion'; // Pestaña activa por defecto
+  entidadSettings = {
+    informacion: 'Aquí va la información de la entidad...'
+    // Añade más propiedades según sea necesario
+  };
+
   constructor(
     private supabaseService: SupabaseService,
     private router: Router,
@@ -197,4 +203,10 @@ export class EntidadAdminComponent implements OnInit {
   statusChange(dato:string){
     this.status = dato;
   }
+
+  setActiveTab(tabName: string) {
+    this.activeTab = tabName;
+  }
+
+  
 }

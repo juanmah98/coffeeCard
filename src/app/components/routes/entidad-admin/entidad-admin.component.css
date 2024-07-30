@@ -32,3 +32,25 @@ body {
     cursor: pointer;
     color: rgb(255, 106, 0); /* Puedes cambiar el estilo como prefieras */
   }
+
+  h4 {
+    margin-bottom: 20px;
+  }
+  
+  .nav-link {
+    color: #fff;
+    cursor: pointer;
+  }
+  
+  .nav-link.active {
+    color: #ff6347; /* Color del enlace activo (puedes cambiarlo) */
+    font-weight: bold;
+  }
+  
+  .bg-setting {
+    background-color: #0b0b16 !important; /* Fondo oscuro */
+  }
+  
+  .p-3 {
+    padding: 1rem !important;
+  }
