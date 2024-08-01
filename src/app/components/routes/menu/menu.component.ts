@@ -20,6 +20,7 @@ export class MenuComponent implements OnInit {
   menus:Menu[]=[]
   bebidas:Bebidas[]=[]
   extras:Extras[]=[]
+  precioMenu: string ='';
   constructor(private _SupabasMenuServices: MenuService) { }
 
   async ngOnInit(): Promise<void> {
@@ -39,6 +40,11 @@ export class MenuComponent implements OnInit {
     /* console.log("extras: ", this.extras) */
     this.extras.sort((a, b) => a.id - b.id);
 
+    this.extras.forEach(valor => {
+      if(valor.nombre=='menu'){
+        this.precioMenu=valor.precio
+      }
+    })
 
     this.subscriptions.add(this._SupabasMenuServices.gazpacho$.subscribe(data => {
       this.gazpacho = data;

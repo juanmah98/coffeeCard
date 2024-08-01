@@ -57,13 +57,14 @@
 
           <div class="col-10 text-center ">
             <h2 class="fw-bold menu-2">PLATO DE COMIDA + BEBIDA + POSTRE</h2>
-            <span class="menu-precio">7,90€</span>            
+            <span class="menu-precio">{{precioMenu}}€</span>            
           </div>
 
         </div>
         <div class="row justify-content-end">
           <div class="col-md-8 col-10">
             <div class="menus">
+              <h3 class="fw-bold menus-titulos">Platos:</h3>
                 <ul *ngFor="let item of menus" class="menu-item">
                     <li>
                       <span class="item-name-menu">{{item.menu}}</span>
@@ -72,17 +73,67 @@
                         
             </div>
 
+            <div class="menus">
+              <h3 class="fw-bold menus-titulos">Bebidas:</h3>
+                <ul class="menu-item">
+                    <li>
+                      <span class="item-name-menu">Agua</span>                   
+                    </li>
+                    <li>
+                      <span class="item-name-menu">Cerveza</span>                 
+                    </li>
+                    <li>
+                      <span class="item-name-menu">Copa de vino</span>                
+                    </li>                
+                    <li>
+                      <span class="item-name-menu">Refresco <b>+0,50€</b></span>                
+                    </li>                
+                    
+                  </ul>
+                        
+            </div>
+
+            <div class="menus">
+              <h3 class="fw-bold menus-titulos">Postres:</h3>
+                <ul class="menu-item">
+                    <li>
+                      <span class="item-name-menu">Tarta de chocolate</span>                   
+                    </li>
+                    <li>
+                      <span class="item-name-menu">Tarta de queso</span>                 
+                    </li>
+                    <li>
+                      <span class="item-name-menu">Flan de cafe</span>                
+                    </li>                
+                    <li>
+                      <span class="item-name-menu">Flan de queso</span>                
+                    </li>                
+                    <li>
+                      <span class="item-name-menu">Cuajada con arandanos</span>                
+                    </li>     
+                    <li>
+                      <span class="item-name-menu">Cuajada con miel</span>                
+                    </li>             
+                    <li>
+                      <span class="item-name-menu">Naranja preparada</span>                
+                    </li>                               
+                    
+                  </ul>
+                        
+            </div>
+
             <div class="row justify-content-center">
+              <h3 class="fw-bold menus-titulos">Extras</h3>
               <div class="col-md-8 col-10">
                 <div class="text-center extras-menu">
                   <div *ngFor="let item of extras">
-                    <span *ngIf="item.estado">{{item.nombre}} + <b>{{item.precio}}€</b></span> 
+                    <span *ngIf="item.estado && item.nombre!='menu'">{{item.nombre}} + <b>{{item.precio}}€</b></span> 
                   </div>
                  </div>
                 
              </div>
    
-             <div class="col-md-8 col-12">
+             <div class="col-md-8 col-12 pb-5">
                <div class="text-center ensalada">
                   <span>ENSALADA PEQUEÑA + <b>3,90€</b></span><br>
                   <span>ENSALADA GRANDE + <b>6,20€</b></span>
@@ -124,7 +175,7 @@
 </div>
 </div>
 
-<div class="background-promos">
+<!-- <div class="background-promos">
     
 <div class="container-fluid ">
   <div class="row">
@@ -160,5 +211,5 @@
     </div>
   </div>
 </div>
-</div>
+</div> -->
 </body>

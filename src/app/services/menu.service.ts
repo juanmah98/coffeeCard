@@ -126,10 +126,10 @@ export class MenuService {
     return extras.data || [];
   }
 
-  async upDateExtras(id: number, estado: boolean) {
+  async upDateExtras(id: number, estado: boolean, precio: string) {
     return await this.supabase
     .from("extras")
-    .update({ estado: estado })
+    .update({ estado: estado, precio: precio})
     .eq('id', id)
     .select()
   }

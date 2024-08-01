@@ -26,10 +26,10 @@
 
             <div class="text-light pb-4" >
               <h5 class="text-center">Extras</h5>
-              <div class="form-check d-flex" *ngFor="let item of extras">
-                <div class="">
+              <div  class="form-check d-flex" *ngFor="let item of extras">
+                <div class="" >
 
-                  <input class="form-check-input" type="checkbox" [checked]="item.estado" [(ngModel)]=item.estado (change)="onCheckboxChange(item)">
+                  <input *ngIf="item.nombre!= 'menu'" class="form-check-input" type="checkbox" [checked]="item.estado" [(ngModel)]=item.estado (change)="onCheckboxChange(item)">
                   <label class="form-check-label">
                     {{item.nombre}}
                   </label>

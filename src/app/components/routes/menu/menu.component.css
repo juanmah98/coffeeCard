@@ -17,7 +17,7 @@ body{
 .background-menu{
     background-image: url("../../../../assets/imagenes/menus/menus.jpg");
     padding-top: 2rem;
-    min-height: 105vh;
+    min-height: 130vh;
     background-repeat: no-repeat; /* Evita que la imagen se repita */
     background-size: cover; /* Cubre todo el espacio disponible */
     background-position: center; /* Centra la imagen en el contenedor */
@@ -26,6 +26,7 @@ body{
 .background-bebidas{
   background-image: linear-gradient(rgba(11, 11, 11, 0.825), rgba(31, 31, 31, 0.786)), url("../../../../assets/imagenes/backGrounds/piazzetta/ambar.jpg");
   padding-top: 2rem;
+  padding-bottom: 2rem;
   min-height: 103vh;
   background-repeat: no-repeat; /* Evita que la imagen se repita */
   background-size: cover; /* Cubre todo el espacio disponible */
@@ -69,8 +70,8 @@ body{
 
   
   .menu-item {
-    margin-top: 6px;
-    margin-bottom: 6px;
+    margin-top: 5px;
+    margin-bottom: 5px;
     font-family: 'OpenSans';
   }
   
@@ -146,8 +147,16 @@ body{
 
   .menus{
 
+    margin-top: 1rem;
     font-family: "Sil";
     font-size: 20px;
+    color: #594A47;
+  }
+
+  .menus-titulos{
+
+    margin-top: 1rem;
+    font-family: "Sil";
     color: #594A47;
   }
 
@@ -232,14 +241,14 @@ body{
 
   .background-menu{
 
-    /* height: 101vh; */
+     /* min-height: 150vh;  */
 
 }
    
   }
 
 
-  @media (max-width: 700px) { 
+  @media (max-width: 900px) { 
     
     .menulogo{
       width: 35%;
@@ -253,6 +262,8 @@ body{
   .background-menu{
 
    /*  height: 110vh; */
+   background-size: auto;
+   background-position: center; /* Centra la imagen en el contenedor */
 
 }
 

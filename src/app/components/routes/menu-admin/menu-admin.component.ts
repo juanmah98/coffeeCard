@@ -26,7 +26,6 @@ export class MenuAdminComponent implements OnInit {
   caldito: boolean = false;
   gazpacho: boolean = false;
   savedData: any;
-
   extras:Extras[]=[]
   constructor(private _SupabasMenuServices: MenuService, private router: Router, private ngZone: NgZone) { }
 
@@ -47,6 +46,7 @@ export class MenuAdminComponent implements OnInit {
     this.extras = await this._SupabasMenuServices.getExtras()
     console.log("extras: ", this.extras)
     this.extras.sort((a, b) => a.id - b.id);
+
 
   }
 
@@ -139,7 +139,7 @@ export class MenuAdminComponent implements OnInit {
 
   async onCheckboxChange(item:Extras) {
       console.log("Se ha detectado un cambio en un input", item);
-      const responseOpcion:any = (await this._SupabasMenuServices.upDateExtras(item.id, item.estado)).data;
+      const responseOpcion:any = (await this._SupabasMenuServices.upDateExtras(item.id, item.estado, item.precio)).data;
       console.log("Cambio efectuado", responseOpcion);
       // Limpiar la variable cuando el checkbox está desmarcado
       
