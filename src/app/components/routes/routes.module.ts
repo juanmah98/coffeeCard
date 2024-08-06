@@ -15,6 +15,7 @@ import { SplineViewrCardComponent } from './spline-viewr-card/spline-viewr-card.
 import { EntidadAdminComponent } from './entidad-admin/entidad-admin.component';
 import { LandingComponent } from './landing/landing.component';
 import { EmployeeSalaryComponent } from './employee-salary/employee-salary.component';
+import { RegistroEmpresasComponent } from './registro-empresas/registro-empresas.component';
 
 
 
@@ -29,7 +30,8 @@ import { EmployeeSalaryComponent } from './employee-salary/employee-salary.compo
     SplineViewrCardComponent,
     EntidadAdminComponent,
     LandingComponent,
-    EmployeeSalaryComponent
+    EmployeeSalaryComponent,
+    RegistroEmpresasComponent
    
     
   ],
