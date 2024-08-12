@@ -60,7 +60,7 @@ private userAll = new BehaviorSubject<Usuarios[]>([]);
     const userString = localStorage.getItem('user');
     const loggedString = localStorage.getItem('logged');
     const entidadString = localStorage.getItem('entidad');
-    const userADminString = localStorage.getItem('userAdmin');
+    const userAdminString = localStorage.getItem('userAdmin');
     const coockiesString = localStorage.getItem('coockies');
     const onlyScanerString = localStorage.getItem('onlyScaner');
 
@@ -81,8 +81,8 @@ private userAll = new BehaviorSubject<Usuarios[]>([]);
       const onlyScaner = JSON.parse(onlyScanerString);
       this.onlyScaner.next(onlyScaner);
     }
-    if (userADminString) {
-      const userAdmin = JSON.parse(userADminString);
+    if (userAdminString) {
+      const userAdmin = JSON.parse(userAdminString);
       this.logged.next(userAdmin);
     }
 

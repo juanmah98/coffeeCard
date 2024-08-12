@@ -152,7 +152,17 @@ export class EntidadAdminComponent implements OnInit {
   }
 
   scan(): void {
-    this.router.navigate(['/qrscan']);
+
+    this.ngZone.run(() => {   
+      this.router.navigate(['/qrscan']);
+      }); 
+    
+  }
+
+  master(): void {
+    this.ngZone.run(() => {   
+      this.router.navigate(['/master']);
+      }); 
   }
 
   async toggleSoloLectura(admin: Usuarios_admins) {

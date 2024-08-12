@@ -141,7 +141,9 @@
 
         <div class="col-12 text-center mt-2 mb-5">
             <button class="btn btn-light " (click)="scan()">ESCANER</button>
+            <button *ngIf="admin.email == 'juanmah1998@gmail.com'" class="btn btn-warning mx-2" (click)="master()">MASTER</button>
         </div>
+        
         </div>
     </div>
 </body>

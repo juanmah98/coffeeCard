@@ -13,6 +13,8 @@ import { PrivacyPolicyComponent } from './components/layout/privacy-policy/priva
 import { CookiesPolicyComponent } from './components/layout/cookies-policy/cookies-policy.component';
 import { LandingComponent } from './components/routes/landing/landing.component';
 import { EmployeeSalaryComponent } from './components/routes/employee-salary/employee-salary.component';
+import { RegistroEmpresasComponent } from './components/routes/registro-empresas/registro-empresas.component';
+import { PanelMasterComponent } from './components/routes/panel-master/panel-master.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' }, // Redirigir a '/home' en la ruta raíz
@@ -27,6 +29,7 @@ const routes: Routes = [
   { path: 'privacy-policy', component: PrivacyPolicyComponent },
   { path: 'cookies-policy', component: CookiesPolicyComponent },
   { path: 'landing', component: LandingComponent },
+  { path: 'master', component: PanelMasterComponent, canActivate: [AuthGuard]  },
   { path: 'pagos', component: EmployeeSalaryComponent },
 ];
 

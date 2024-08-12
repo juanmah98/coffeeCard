@@ -16,6 +16,7 @@ import { EntidadAdminComponent } from './entidad-admin/entidad-admin.component';
 import { LandingComponent } from './landing/landing.component';
 import { EmployeeSalaryComponent } from './employee-salary/employee-salary.component';
 import { RegistroEmpresasComponent } from './registro-empresas/registro-empresas.component';
+import { PanelMasterComponent } from './panel-master/panel-master.component';
 
 
 
@@ -31,7 +32,8 @@ import { RegistroEmpresasComponent } from './registro-empresas/registro-empresas
     EntidadAdminComponent,
     LandingComponent,
     EmployeeSalaryComponent,
-    RegistroEmpresasComponent
+    RegistroEmpresasComponent,
+    PanelMasterComponent
    
     
   ],
