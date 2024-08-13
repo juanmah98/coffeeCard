@@ -79,6 +79,12 @@ export class SupabaseService {
       .select(column);
   }
 
+  async getTablasTotalUsuarios(tabla: string) {
+    return await this.supabase
+      .from(tabla)
+      .select('*')
+  }
+
   async getUsuariosId(id: string) {
     return await this.supabase
       .from(USERS_TABLE)

@@ -48,9 +48,14 @@ export class EntidadAdminComponent implements OnInit {
   async ngOnInit(): Promise<void> {
 
     this.admin = this.internoService.getUserAdmin();
+    if(this.admin.email==''){
+      let a = this.internoService.getLogged();
+      console.log(a)
+    }
+
     this.entidad = this.internoService.getEntidad();
     this.opcion = false;
-
+    console.log(this.admin)
     try {
       await Promise.all([
         this.loadAdmins(),
@@ -78,7 +83,7 @@ export class EntidadAdminComponent implements OnInit {
         return usuario.entidad_id === this.entidad.id;
       });
 
-
+      /* this.admin = this.internoService.getUserAdmin() */
 
     } catch (error) {
       console.error('Error al cargar admins:', error);

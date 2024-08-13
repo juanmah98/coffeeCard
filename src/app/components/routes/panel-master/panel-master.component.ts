@@ -1,4 +1,4 @@
-import { Component, NgZone, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, NgZone, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Entidades } from 'src/app/interfaces/entdidades';
 import { Usuarios } from 'src/app/interfaces/usuarios';
@@ -15,6 +15,7 @@ import { SupabaseService } from 'src/app/services/supabase.service';
 export class PanelMasterComponent implements OnInit {
   usuarios: Usuarios[] = [];
   entidades: Entidades[] = [];
+  i = 0;
   usuariosAdmin:any[] = [
     {nombre: '', usuarios: ''},
   ];
@@ -24,11 +25,13 @@ export class PanelMasterComponent implements OnInit {
     private router: Router,
     private internoService: InternoService,
     private ngZone: NgZone,
-    private authService:AuthService) {}
+    private authService:AuthService,
+    private cdr: ChangeDetectorRef) {}
 
   ngOnInit(): void {
     this.getUsuarios();
     this.getEntidades();
+    this.cdr.detectChanges();
   }
 
   async getUsuarios() {
@@ -54,27 +57,39 @@ export class PanelMasterComponent implements OnInit {
     }
   }
 
-  async getEntidadesUsers(tabla: string, id: string) {
+  async getEntidadesUsers(tabla: string, nombre: string) {
     try {
-      const response = await this.supabaseService.getTablaContadorData(tabla, id);
+      const response = await this.supabaseService.getTablasTotalUsuarios(tabla);
       const entidad:any = response.data;
-      console.log(entidad)
-      
+/*       console.log(entidad) */
+      this.agregarUsuario(nombre,entidad.length)
+       console.log("this.usuariosAdmin")
+    console.log(this.usuariosAdmin)
     } catch (error) {
       console.error('Error al cargar usuarios:', error);
       throw error;
     }
+    this.cdr.detectChanges();
   }
 
-  for(){
-    let i = 0
-    this.entidades.forEach(data => {
-    /*  const users = this.getEntidadesUsers(data.tabla_contador, data.id)
-     console.log(users) */
-      /* this.usuariosAdmin[i+1].nombre = data.nombre;  */
-      /* this.usuariosAdmin[i++].usuarios = users;  */
+  async for(){
+    
+    this.entidades.forEach(async data => {
+    await this.getEntidadesUsers(data.tabla_contador, data.nombre)
+     
     })
-    console.log("this.usuariosAdmin")
-    console.log(this.usuariosAdmin)
   }
+
+agregarUsuario(nombre: string, usuario: string) {
+    // Verifica si el primer elemento tiene valores vacíos
+    if (this.usuariosAdmin.length > 0 && this.usuariosAdmin[0].nombre === '' && this.usuariosAdmin[0].usuarios === '') {
+        this.usuariosAdmin.shift(); // Elimina el primer elemento si está vacío
+    }
+
+    // Agrega el nuevo usuario
+    this.usuariosAdmin.push({ nombre, usuarios: usuario });
+    this.usuariosAdmin.sort((a, b) => {
+      return Number(b.usuarios) - Number(a.usuarios);
+    });
+}
 }
