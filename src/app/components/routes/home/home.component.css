@@ -1,17 +1,31 @@
 body{
-    background-color: #AB835D;
-    background-image:   url("../../../../assets/imagenes/backgroundHome1.png");
+   background-color: #111111; 
+       background-image:   url("../../../../assets/imagenes/backGrounds/FIELITYcARD.png"); 
   
     
-   background-position: center;
-    background-repeat: no-repeat;
+    background-position: center;
+  
     width: 100%;
     height: 100vh;
-    display: flex;
-
-
+    
 
 }
+
+
+/* .bg-1{
+    background-color: #1b1b1b97;
+    background-image:    linear-gradient(rgba(0, 0, 0, 0.482), rgba(20, 20, 20, 0.586), rgba(0, 0, 0, 0.526)), url("../../../../assets/imagenes/backGrounds/spaces.jpg");     
+    background-position: center;
+
+}
+
+.bg-2{
+  background-color: #AB835D;
+    background-image:   url("../../../../assets/imagenes/backGrounds/backgroundHome1.png");    
+    background-position: center;
+    background-repeat: no-repeat;
+} */
+/*  */
 
 .custom-shadow {
     text-shadow: 3px 2px 4px rgba(0,0,0,0.5); /* Definición personalizada de sombra */
@@ -66,3 +80,61 @@ body{
       filter: blur(0px);
     }
   }
+
+  
+.lds-ring,
+.lds-ring div {
+  box-sizing: border-box;
+}
+.lds-ring {
+  display: inline-block;
+  position: relative;
+  width: 80px;
+  height: 80px;
+}
+.lds-ring div {
+  box-sizing: border-box;
+  display: block;
+  position: absolute;
+  width: 64px;
+  height: 64px;
+  margin: 8px;
+  border: 8px solid white;
+  border-radius: 50%;
+  animation: lds-ring 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+  border-color: white transparent transparent transparent;
+}
+.lds-ring div:nth-child(1) {
+  animation-delay: -0.45s;
+}
+.lds-ring div:nth-child(2) {
+  animation-delay: -0.3s;
+}
+.lds-ring div:nth-child(3) {
+  animation-delay: -0.15s;
+}
+@keyframes lds-ring {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.denegado-1{
+  font-family: "OpenSans";
+  font-size: medium;
+  padding-top: 5px;
+}
+.denegado-2{
+  font-family: "OpenSans";
+  font-size: small;
+  font-weight: bold;
+  padding-top: 5px;
+}
+.denegado-3{
+  font-family: "OpenSans";
+  font-size: small;
+}
+

@@ -1,0 +1,215 @@
+<body>
+  <a href="https://wa.me/+34647911999" target="_blank" class="whatsapp-button">
+    <img src="../../../../assets/imagenes/menus/whatsapp2.png" alt="WhatsApp" class="whatsapp-icon">
+  </a>
+  
+  <div class="background-cafe">
+    <div class=" container-fluid ">
+    
+    <!-- <img src="../../../../assets/imagenes/menus/saco.png" width="100px" class="image-1">
+    <img src="../../../../assets/imagenes/menus/pipa.png" width="110px" class="image-2"> -->
+
+    
+    <div class="row">
+      <div class="col text-center p-2">
+        <!-- <img src="../../../../assets/imagenes/menus/coffe.png" class="menulogo" alt=""> -->
+        <p class="fs-1 cofe-titel">CO:FF:EE</p>
+      </div>
+    </div>
+    <div class="row justify-content-center">
+      <div class="col-md-8 col-10">
+        <div class="cafe">
+          <div *ngFor="let item of cafes" class="menu-item">
+            <span class="item-name">{{item.nombre}}</span>
+            <span *ngIf="item.precio_m == null || '' " class="item-price">{{item.precio}}€</span>
+            <span *ngIf="item.precio_m != null || '' " class="item-price2"><b>{{item.precio}}</b>€ / M <b>{{item.precio_m}}</b>€ / G <b>{{item.precio_g}}</b>€</span>
+          </div>         
+        </div>
+      </div>
+      <div class="col-md-5 col-10">
+         <div class="text-center extras">
+            <p>Descafeinado + <b>0,10€</b></p>
+            <p>Leche Avena / Soja / Sin lactosa + <b>0,20€</b></p>
+            <p>Del tiempo + <b>0,20€</b></p>
+          </div>
+
+          <!-- <div class="text-center pt-3">
+              <img src="../../../../assets/imagenes/menus/vaso.png" width="70px">
+          </div> -->
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="background-menu">
+
+    <div class="container-fluid mt-4">
+        <div class="row justify-content-end ">
+          <div class="col-11 text-end mt-4 ">
+            <span class="text-dark text-end fecha">Fecha: {{menus[0].fecha | date: 'dd/MM HH:mm'}}</span><br>
+            <div class="text-center">
+              <div class="align-items-center justify-content-center d-flex">
+                <span class="menu mx-1">MENU</span>
+                <span class="mx-1"> <a href="https://drive.google.com/file/d/1TpxR3_VQgT-FwT2XsIKgain8cy4ZNx04/view?usp=sharing"><img src="../../../../assets/imagenes/menus/libre-de-alergenos.png" width="50px" alt=""></a></span>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-10 text-center ">
+            <h2 class="fw-bold menu-2">PLATO DE COMIDA + BEBIDA + POSTRE</h2>
+            <span class="menu-precio">{{precioMenu}}€</span>            
+          </div>
+
+        </div>
+        <div class="row justify-content-end">
+          <div class="col-md-8 col-10">
+            <div class="menus">
+              <h3 class="fw-bold menus-titulos">Platos:</h3>
+                <ul *ngFor="let item of menus" class="menu-item">
+                    <li>
+                      <span class="item-name-menu">{{item.menu}}</span>
+                    </li>
+                  </ul>
+                        
+            </div>
+
+            <div class="menus">
+              <h3 class="fw-bold menus-titulos">Bebidas:</h3>
+                <ul class="menu-item">
+                    <li>
+                      <span class="item-name-menu">Agua</span>                   
+                    </li>
+                    <li>
+                      <span class="item-name-menu">Cerveza</span>                 
+                    </li>
+                    <li>
+                      <span class="item-name-menu">Copa de vino</span>                
+                    </li>                
+                    <li>
+                      <span class="item-name-menu">Refresco <b>+0,50€</b></span>                
+                    </li>                
+                    
+                  </ul>
+                        
+            </div>
+
+            <div class="menus">
+              <h3 class="fw-bold menus-titulos">Postres:</h3>
+                <ul class="menu-item">
+                    <li>
+                      <span class="item-name-menu">Tarta de chocolate</span>                   
+                    </li>
+                    <li>
+                      <span class="item-name-menu">Tarta de queso</span>                 
+                    </li>
+                    <li>
+                      <span class="item-name-menu">Flan de cafe</span>                
+                    </li>                
+                    <li>
+                      <span class="item-name-menu">Flan de queso</span>                
+                    </li>                
+                    <li>
+                      <span class="item-name-menu">Cuajada con arandanos</span>                
+                    </li>     
+                    <li>
+                      <span class="item-name-menu">Cuajada con miel</span>                
+                    </li>             
+                    <li>
+                      <span class="item-name-menu">Naranja preparada</span>                
+                    </li>                               
+                    
+                  </ul>
+                        
+            </div>
+
+            <div class="row justify-content-center">
+              <h3 class="fw-bold menus-titulos">Extras</h3>
+              <div class="col-md-8 col-10">
+                <div class="text-center extras-menu">
+                  <div *ngFor="let item of extras">
+                    <span *ngIf="item.estado && item.nombre!='menu'">{{item.nombre}} + <b>{{item.precio}}€</b></span> 
+                  </div>
+                 </div>
+                
+             </div>
+   
+             <div class="col-md-8 col-12 pb-5">
+               <div class="text-center ensalada">
+                  <span>ENSALADA PEQUEÑA + <b>3,90€</b></span><br>
+                  <span>ENSALADA GRANDE + <b>6,20€</b></span>
+                </div>
+               <div class="text-center ensaladas">
+                  <span>POLLO / GRIEGA / ATUN / <br>QUESO DE CABRA</span>               
+                </div>
+               
+            </div>
+            </div>
+          </div>
+          
+        </div>
+      </div>
+
+      
+
+</div>
+
+<div class="background-bebidas">
+    
+<div class="container-fluid ">
+  <div class="row">
+    <div class="col text-center p-2">
+      <p class="fs-1 bebida">BEBIDAS</p>
+    </div>
+  </div>
+  <div class="row justify-content-center">
+    <div class="col-md-8 col-10">
+      <div class="cafe">
+        <div *ngFor="let item of bebidas" class="bebida-item">
+          <span class="item-name-bebida">{{item.bebida}}</span>
+          <span class="item-price-bebida">{{item.precio}}€</span>
+         
+        </div>         
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- <div class="background-promos">
+    
+<div class="container-fluid ">
+  <div class="row">
+    <div class="col text-center p-2">
+      <p class="fs-1 promos">PROMOS</p>
+    </div>
+  </div>
+  <div class="row justify-content-center">
+    <div class="col-sm-6 col-md-4 col-xl-3 col-10">
+
+        <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
+          <div class="carousel-inner ">
+            <div class="carousel-item active">
+              <img src="../../../../assets/imagenes/menus/promo1.jpg" class="d-block promo-img" alt="...">
+            </div>
+            <div class="carousel-item">
+              <img  src="../../../../assets/imagenes/menus/promo2.jpg" class="d-block promo-img" alt="...">
+            </div>
+            <div class="carousel-item">
+              <img  src="../../../../assets/imagenes/menus/promo3.jpg" class="d-block promo-img" alt="...">
+            </div>
+          </div>
+          <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+          </button>
+          <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+          </button>
+        </div>
+                
+    </div>
+  </div>
+</div>
+</div> -->
+</body>

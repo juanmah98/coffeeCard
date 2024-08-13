@@ -1,0 +1,56 @@
+body {
+    margin: 0;
+    padding-top: 1rem;
+    padding-bottom: 1.5rem;
+    min-height: 100vh;
+    background-color: black;
+    width: 100%;
+}
+
+.admin-card {
+    background-color: white;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+.admin-list li:nth-child(odd) {
+    background-color: #929292;
+}
+
+.admin-list li:nth-child(even) {
+    background-color: #dbdbdb;
+}
+
+.editable {
+    cursor: pointer;
+    color: rgb(170, 255, 0); /* Puedes cambiar el estilo como prefieras */
+  }
+
+  .editableFalse {
+    cursor: pointer;
+    color: rgb(255, 106, 0); /* Puedes cambiar el estilo como prefieras */
+  }
+
+  h4 {
+    margin-bottom: 20px;
+  }
+  
+  .nav-link {
+    color: #fff;
+    cursor: pointer;
+  }
+  
+  .nav-link.active {
+    color: #ff6347; /* Color del enlace activo (puedes cambiarlo) */
+    font-weight: bold;
+  }
+  
+  .bg-setting {
+    background-color: #0b0b16 !important; /* Fondo oscuro */
+  }
+  
+  .p-3 {
+    padding: 1rem !important;
+  }

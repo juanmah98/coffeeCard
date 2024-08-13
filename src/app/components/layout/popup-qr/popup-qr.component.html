@@ -1,0 +1,30 @@
+<div class="container">
+    <div class="container__card" [ngClass]="{'gratisNo': !gratis, 'gratisSi': gratis}">
+      <div *ngIf="gratis==false" class="container__title">Sumar <img src="../../../../assets/imagenes/cards/cardqr.png" width="35px" alt=""></div>
+      <div *ngIf="gratis==true" class="container__title fw-bold align-items-center"><span>¡Felicidades! </span><img src="../../../../assets/imagenes/cards/regalo-vector.png" class="pb-2" width="25px" alt=""></div>
+      <!-- <div class="container__subtitle">Cv750,03509 Finestrat España</div> -->
+      <!-- <div class="container__description">
+        <div class="container__description-text">{{data}}</div>
+      </div> -->
+       <div class="container__maps">
+        <qrcode *ngIf="gratis==false" [qrdata]="qrdata" [width]="300" [errorCorrectionLevel]="'M'"></qrcode>
+        <qrcode *ngIf="gratis==true" [qrdata]="qrdata" [colorDark]="'#281700'" [width]="300" [errorCorrectionLevel]="'M'"></qrcode>
+       
+      </div> 
+      <div *ngIf="gratis==true" ngClass="container__maps align-items-center justify-content-center text-center">
+        <span class="fs-5">Reclamar tu premio</span>
+       <!--  <img src="../../../../assets/imagenes/cards/reclamar.png" width="35px" alt=""> -->
+      </div>
+
+     <!--  -->
+    </div>
+  
+    <div class="close" (click)="onBackgroundTouched()"><svg width="14" height="14" viewBox="0 0 16 16" fill="none"
+        xmlns="http://www.w3.org/2000/svg">
+        <path d="M16 2.91L13.09 0L8 5.09L2.91 0L0 2.91L5.09 8L0 13.09L2.91 16L8 10.91L13.09 16L16 13.09L10.91 8L16 2.91Z"
+          fill="#222222" />
+      </svg>
+      &nbsp;Cerrar</div> <!-- En vez de la "X" deberiamos poner el icono de la cruz -->
+    <div class="background" (click)="onBackgroundTouched()"></div>
+  </div>
+  

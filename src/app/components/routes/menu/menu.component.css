@@ -1,0 +1,276 @@
+body{
+    background-color: #C9BBAB;
+    font-family: "OpenSans";
+}
+
+.background-cafe{
+    padding-top: 0.5rem;
+    min-height: 105vh;
+
+    background-image: linear-gradient(rgba(22, 22, 22, 0.775), rgba(28, 28, 28, 0.803)), url("../../../../assets/imagenes/backGrounds/piazzetta/opcion3.jpg");
+    padding-top: 2rem;
+    background-repeat: no-repeat; /* Evita que la imagen se repita */
+    background-size: cover; /* Cubre todo el espacio disponible */
+    background-position: center; /* Centra la imagen en el contenedor */
+    color: white;
+}
+.background-menu{
+    background-image: url("../../../../assets/imagenes/menus/menus.jpg");
+    padding-top: 2rem;
+    min-height: 130vh;
+    background-repeat: no-repeat; /* Evita que la imagen se repita */
+    background-size: cover; /* Cubre todo el espacio disponible */
+    background-position: center; /* Centra la imagen en el contenedor */
+}
+
+.background-bebidas{
+  background-image: linear-gradient(rgba(11, 11, 11, 0.825), rgba(31, 31, 31, 0.786)), url("../../../../assets/imagenes/backGrounds/piazzetta/ambar.jpg");
+  padding-top: 2rem;
+  padding-bottom: 2rem;
+  min-height: 103vh;
+  background-repeat: no-repeat; /* Evita que la imagen se repita */
+  background-size: cover; /* Cubre todo el espacio disponible */
+  background-position: center; /* Centra la imagen en el contenedor */
+}
+
+.background-promos{
+  background-image: linear-gradient(rgba(6, 6, 6, 0.775), rgba(28, 28, 28, 0.688)), url("../../../../assets/imagenes/backGrounds/doodleblack.jpg");
+  padding-top: 2rem;
+ /*  height: 100vh; */
+ padding-bottom: 5rem;
+ padding-top: 3rem;
+  
+  
+  background-position: center; /* Centra la imagen en el contenedor */
+}
+
+.cofe-titel{
+  font-family: 'Digi';
+}
+
+.image-1 {
+    position: absolute; /* Posición absoluta */
+    top: 13%; /* Distancia desde arriba */
+    right: 8%; /* Distancia desde la izquierda */
+    z-index: 1; /* Capa más alta para que esté por encima del contenido */
+}
+
+.image-2 {
+    position: absolute; /* Posición absoluta */
+    top: 50%; /* Distancia desde arriba */
+    right: 8%; /* Distancia desde la derecha */
+    z-index: 1; /* Capa más alta para que esté por encima del contenido */
+}
+
+
+.cafe {
+    text-align: left;
+  }
+
+
+  
+  .menu-item {
+    margin-top: 5px;
+    margin-bottom: 5px;
+    font-family: 'OpenSans';
+  }
+  
+  .item-name {
+    font-family: 'OpenSans';
+    text-transform: capitalize;
+  }
+
+  .item-name-menu {
+    text-transform: uppercase;
+  }
+
+  
+  .item-price {
+    margin-left: 5px;
+    color: #ffffff;
+    font-weight: bold;    
+    font-family: 'OpenSans';
+  }
+
+  .item-price2 {
+    font-family: 'OpenSans';
+    margin-left: 5px;
+    color: #ffffff; 
+  }
+
+  .item-name-bebida {
+    font-family: 'OpenSans';
+    text-transform: capitalize;
+    color: #ffffff;
+  }
+
+  .item-price-bebida {
+    font-family: 'OpenSans';
+    margin-left: 5px;
+    color: #ffffff;
+    font-weight: bold;    
+  }
+
+  .extras{
+    margin-top: 1rem;
+    border: 2px dotted #625143; /* ancho y estilo de borde punteado */
+    padding-top: 10px; /* espacio interno para mejor visualización */
+  }
+  
+  .extras p{
+    font-size: 15px;
+  }
+
+  .menu{
+    font-family: "Sil";
+    font-size: 50px;
+    font-weight: bold; 
+  }
+  
+  .fecha{
+   font-family: "Digi";
+   /* padding-top: 3rem; */
+   font-size: 18px;
+   color: black;
+  }
+
+  .menu-2{
+    font-family: "Sil";
+    color: #2B2316;
+  }
+  .menu-precio{
+    font-family: "Sil";
+    font-weight: bold; 
+    font-size: 45px;
+    color: #594A47;
+  }
+
+  .menus{
+
+    margin-top: 1rem;
+    font-family: "Sil";
+    font-size: 20px;
+    color: #594A47;
+  }
+
+  .menus-titulos{
+
+    margin-top: 1rem;
+    font-family: "Sil";
+    color: #594A47;
+  }
+
+  .extras-menu{
+    margin: 1rem;
+    border: 3px dotted #625143; /* ancho y estilo de borde punteado */
+    padding: 10px; /* espacio interno para mejor visualización */
+    text-transform: uppercase;
+  }
+  
+  .extras-menu p{
+    font-size: 18px;    
+  }
+
+  .ensalada{
+    font-size: 20px;  
+    color: #594A47;  
+  }
+  .ensaladas{
+    padding-top: 1rem;
+    font-size: 18px;  
+    font-weight: bold;
+    color: #594A47;  
+  }
+
+  .bebida{
+    font-family: "Digi";
+    color: #ffffff;
+    filter: drop-shadow(1px 1px 1px #636363aa);
+  }
+  .promos{
+    font-family: 'Digi';
+    color: #ffffff;
+  }
+
+  .bebida-item {
+    margin-bottom: 8px;
+    font-family: "Sil";
+  }
+
+  .menulogo{
+    width: 16%;
+  }
+
+  .promo-img{
+    width: 100%;
+    align-content: center;
+  }
+
+  .whatsapp-button {
+    position: fixed;
+    right: 20px;
+    bottom: 20px;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background-color: #25D366;
+    color: white;
+    text-align: center;
+    line-height: 55px;
+    font-size: 30px;
+    box-shadow: 2px 2px 3px #999;
+    z-index: 1000;
+  }
+  
+  .whatsapp-icon {
+    width: 40px;
+    height: 40px;
+  }
+  
+
+  @media (max-width: 500px) { 
+    
+    .menulogo{
+      width: 35%;
+    }
+
+    .background-cafe{
+      padding-top: 1.5rem;
+      /* height: 100vh; */
+  }
+
+  .background-menu{
+
+     /* min-height: 150vh;  */
+
+}
+   
+  }
+
+
+  @media (max-width: 900px) { 
+    
+    .menulogo{
+      width: 35%;
+    }
+
+    .background-cafe{
+      padding-top: 1.5rem;
+      /* height: 108vh; */
+  }
+
+  .background-menu{
+
+   /*  height: 110vh; */
+   background-size: auto;
+   background-position: center; /* Centra la imagen en el contenedor */
+
+}
+
+.promo-img{
+  width: 100%;
+  align-content: center;
+}
+   
+  }
+  

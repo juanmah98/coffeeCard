@@ -1,17 +1,98 @@
 <body class="d-flex align-items-center">
+
     <div class="container-fluid">
         <div class="row justify-content-center">
             <div class="col pb-5  d-flex justify-content-center align-items-center">
-                <div class="col">
+                <div *ngIf="loading" class="col">
                     <div class="row justify-content-center">
-                        <h1 class="text-center text-white custom-shadow">LA PIAZZETTA</h1> 
-                        <div class="col-4 loginContainer justify-content-center">
+                        <!-- <h1 class="text-center text-dark custom-shadow" style="font-family: Digi;">Fidelity</h1>   -->                      
+                        <div *ngIf="paisOpcion == false" class="col-4 loginContainer justify-content-center" style="font-family: OpenSans;">
                             <h3 class="pb-4">INGRESAR</h3> 
                             <button id="buttonDiv" class="googleButton text-center">INICIAR</button>                  
                         </div>
+
+                        <div *ngIf="paisOpcion == true" class="col-4 loginContainer justify-content-center" style="font-family: OpenSans;">
+                            <h5 class="pb-1 pt-1">Selecciona tu pais</h5> 
+                            <button class="btn text-center" (click)="crearUsuario('argentina')"><img src="../../../../assets/imagenes/paises/argentina.png" width="70px" alt=""></button>                  
+                            <button class="btn text-center" (click)="crearUsuario('españa')"><img src="../../../../assets/imagenes/paises/españa.png" width="70px" alt=""></button>                  
+                        </div> -
+                       
+
+
+                       <!--  <div *ngIf="paisOpcion == true" [ngSwitch]="status" class="col-4 loginContainer justify-content-center" style="font-family: OpenSans;">
+                           
+                            <div *ngSwitchCase="'1'" class="text-center">
+                                        <h5 class="pb-1 pt-1 ">Paso 1/2</h5> 
+                                         <div class="text-center">
+                                        <p class="denegado-1">¿Donde escuchaste sobre nosotros?</p>
+                                        
+                                        <div class="dropdown pb-2">
+                                            <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                              Opciones
+                                            </button>
+                                            <ul class="dropdown-menu dropdown-menu-dark">
+                                              <li><a class="dropdown-item">Amigos o familiares</a></li>
+                                              <li><a class="dropdown-item">Redes sociales</a></li>
+                                              <li><a class="dropdown-item">Internet</a></li>
+                                            </ul>
+                                          </div>
+                                        
+                                      
+                                     </div>                                     
+                                        <button class="btn btn-outline-success btn-sm pt-2" (click)="setStatus('2')">Siguiente</button>      
+                            </div>
+
+                            <div *ngSwitchCase="'2'" class="text-center">
+
+                                <h5 class="pb-1 pt-1 ">Paso 2/2</h5> 
+                                <p class="denegado-1">Verifica tus datos</p>                                    
+                                <div class="text-start">
+                                    <span class="denegado-3"><b>Email:</b> {{this.googleUser.email}}</span><br>
+                                    <span class="denegado-3"><b>Nombre:</b> {{this.googleUser.name}}</span>
+                                </div> 
+                                <button class="btn btn-outline-success btn-sm pt-2"  (click)="crearUsuario('argentina')" (click)="setStatus('3')">Enviar</button>    
+                            </div> 
+                            <div *ngSwitchCase="'3'" class="text-center">
+                                <h5 class="pb-1 pt-1 ">Solicitud enviada</h5> 
+                                <p class="denegado-1">Esperamos verte pronto</p> 
+                                <button class="btn btn-outline-success btn-sm pt-2"  (click)="back()">Volver</button>
+                            </div> 
+                            
+
+                            <div *ngSwitchCase="'waitlist'" class="text-center">
+                                <h5 class="pb-1 pt-1 ">Solicitud pendiente</h5>                                 
+                                <div class="text-center">
+                                    <p class="denegado-1">Debes esperar entrar en la waitlist</p>                                    
+                                    <p class="denegado-2">Intentalo más tarde</p>
+                                </div> 
+                                <button class="btn btn-outline-success btn-sm pt-2"  (click)="back()">Volver</button>
+                            </div>    
+                           
+                            <div *ngSwitchDefault class="text-center">
+                                
+                                <h4 class="pb-1 pt-1 ">ACCESO DENEGADO</h4> 
+                                <div class="text-center">
+                                    <p class="denegado-1">No estás autorizado para acceder en la app</p>                                    
+                                    <p class="denegado-2">Solicita ingresar a nuestra waitlist</p>
+                                </div> 
+                                <button class="btn btn-outline-success btn-sm"  (click)="setStatus('1')">Solicitar</button>    
+
+                            </div>                        
+                          </div> -->
+
+
                     </div>
                 </div>
+
+                <div  *ngIf="!loading" class="text-center justify-content-center">
+                    <img class="mb-2" src="../../../../assets/imagenes/logos/GIFT02.gif" width="40%" alt="">
+                    <span class="mt-2"><p class="text-center text-light fs-5 custom-shadow" style="font-family: Fidelity-r;">CREANDO USUARIO...</p> </span>
+                </div>
             </div>
-        </div>
+
+        </div>   
+       
     </div>
-</body>
+
+    </body>
+

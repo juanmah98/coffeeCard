@@ -1,0 +1,11 @@
+body{
+    min-height: 100vh;
+}
+.container {
+    max-width: 600px;
+  }
+  
+  h2, h3 {
+    text-align: center;
+  }
+  

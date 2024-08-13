@@ -1,0 +1,46 @@
+
+  body {
+    background-color: #000;
+    color: #fff;
+  }
+  .btn-primary {
+    background-color: #007bff;
+    border-color: #007bff;
+  }
+  .carousel-item img {
+    width: 100px;
+    height: 100px;
+  }
+
+  .section-hero{
+    padding-top: 3.5rem;
+    padding-bottom: 6rem;
+  }
+
+  .car:hover {
+    transform: scale(1.2);   
+  }
+
+  .qr{
+    width: 30%;
+    padding-bottom: 1.5rem;
+  }
+
+  @media (max-width: 1400px) { 
+    .qr{
+      width: 45%;
+    }
+  }
+
+  @media (max-width: 1000px) { 
+    .qr{
+      width: 65%;
+    }
+  }
+
+  @media (max-width: 700px) { 
+    .qr{
+      width: 90%;
+    }
+  }
+

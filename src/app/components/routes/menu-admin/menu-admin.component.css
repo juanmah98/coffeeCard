@@ -1,0 +1,97 @@
+body{
+    font-family: "OpenSans";
+    background-color: #171717;
+    background-image: linear-gradient(rgba(0, 0, 0, 0.836), rgba(0, 0, 0, 0.814)), url("../../../../assets/imagenes/backGrounds/doodleblack.jpg");
+    background-position: center;
+}
+
+.relleno{
+  height: 50vh;
+}
+
+.background{
+    padding-top: 2rem;
+
+}
+
+.cafe {
+    text-align: left;
+  }
+  
+  .menu-item {
+    margin-bottom: 10px;
+    color: #ffffff;
+  }
+  
+  .item-name {
+    text-transform: capitalize;
+  }
+  
+  .item-price {
+    margin-left: 5px;
+    
+    font-weight: bold;    
+  }
+
+  .item-price2 {
+    margin-left: 5px;
+   
+  }
+
+  .extras{
+    margin-top: 1rem;
+    border: 2px dotted #625143; /* ancho y estilo de borde punteado */
+    padding-top: 10px; /* espacio interno para mejor visualización */
+  }
+  
+  .extras p{
+    font-size: 15px;
+  }
+
+  .menu{
+    font-family: "Sil";
+    font-size: 50px;
+    font-weight: bold; 
+  }
+
+  .menu-2{
+    font-family: "Sil";
+    
+  }
+  .menu-precio{
+    font-family: "Sil";
+    font-weight: bold; 
+    font-size: 45px;
+    
+  }
+
+  .menus{
+    font-size: 20px;
+    color: #ffffff;
+  }
+
+  .cafe input{
+    width: 45%;
+  }
+
+  .extrass input{
+   
+    margin-left: 0.5rem;
+    margin-bottom: 1rem;
+    width: 45%;
+  }
+  
+  .menu-item input{
+      width: 80%;
+      margin-right: 0.5rem;
+    }
+    
+    .agregar input{
+      width: 100%;
+      margin-bottom: 0.5rem;
+    }
+
+    .agregar{
+        padding-bottom: 2rem;
+    }
+  

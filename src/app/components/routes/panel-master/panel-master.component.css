@@ -1,0 +1,57 @@
+/* CSS personalizado */
+body {
+  background-color: #000;
+  color: #fff;
+  font-family: Arial, sans-serif;
+  min-height: 100vh;
+}
+
+h1, h2, h3 {
+  font-weight: bold;
+}
+
+h1 {
+  /* font-size: 24px; */
+  text-transform: uppercase;
+}
+
+h2 {
+  font-size: 30px;
+}
+
+h3 {
+  font-size: 18px;
+}
+
+p {
+  margin: 0;
+}
+
+.badge {
+  font-size: 16px;
+  vertical-align: middle;
+}
+
+.text-green{
+  color: #969696;
+}
+
+ul {
+  padding-left: 0;
+  list-style: none;
+  color: black;
+  text-transform: uppercase;
+}
+
+ul li {
+  font-size: 18px;
+  margin-bottom: 8px;
+}
+
+.bg-light {
+  background-color: #f8f8f8 !important;
+}
+
+.bg-secondary {
+  background-color: #f8f8f8 !important;
+}

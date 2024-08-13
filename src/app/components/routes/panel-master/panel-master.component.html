@@ -1,0 +1,44 @@
+<body class="container-fluid pt-5">
+  <div class="container text-center ">
+    <!-- Header Section -->
+    <div class="d-flex justify-content-center align-items-center mb-4">
+      <!-- Aquí puedes colocar un icono -->
+      <!-- <i class="tu-icono-clase"></i> -->
+      <h1 class="ms-2">MASTER</h1>
+    </div>
+  
+    <!-- General Info Section -->
+    <div class="row text-black mb-4 justify-content-center">
+      <div class="col-10 col-sm-4">
+        <div class="bg-secondary p-3 m-1 rounded">
+          <h2>{{usuarios.length}}</h2>
+          <p class="fw-bold">USUARIOS</p>
+        </div>
+      </div>
+      <div class="col-10 col-sm-4">
+        <div class="bg-secondary p-3 m-1 rounded">
+          <h2>{{entidades.length}}</h2>
+          <p class="fw-bold">ENTIDADES</p>
+        </div>
+      </div>
+      <div class="col-10 col-sm-4">
+        <div class="bg-secondary p-3 m-1 rounded">
+          <h2>20</h2>
+          <p class="fw-bold">REGALOS</p>
+        </div>
+      </div>
+    </div>
+  
+    <!-- Top 5 Section -->
+    <div class="row justify-content-center">
+      <div class="col-10 col-sm-6 bg-light p-4 rounded text-black">
+      <h3 class="mb-4">TOP 5 <span class="text-green">ENTIDADES</span></h3>
+      <ul class="list-unstyled text-start" *ngFor="let entidad of entidades, let i = index">
+        <li>{{i+1}} - {{entidad.nombre}} <img src="../../../../assets/imagenes/landing/usuarios.png" width="20px" alt=""><span class="fw-bold text-green">45</span></li>
+       
+      </ul>
+    </div>
+  </div>
+  </div>
+  
+</body>

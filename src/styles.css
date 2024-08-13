@@ -1,1 +1,63 @@
-/* You can add global styles to this file, and also import other style files */
+@font-face {
+    font-family: 'OpenSans';
+    src: url("../src/assets/fonts/Open_Sans/OpenSans-VariableFont.ttf");
+}
+@font-face {
+    font-family: 'Sil';
+    src: url("../src/assets/fonts/Abyssinica_SIL/AbyssinicaSIL-Regular.ttf");
+}
+
+@font-face {
+    font-family: 'Digi';
+    src: url("../src/assets/fonts/ds_digital/DS-DIGIT.TTF");
+}
+
+@font-face {
+    font-family: 'Fidelity-r';
+    src: url("../src/assets/fonts/lemon_milk/LEMONMILK-Regular.otf");
+}
+
+@font-face {
+    font-family: 'Fidelity-b';
+    src: url("../src/assets/fonts/lemon_milk//LEMONMILK-Bold.otf");
+}
+
+@font-face {
+    font-family: 'Fidelity-m';
+    src: url("../src/assets/fonts/lemon_milk/LEMONMILK-Medium.otf");
+}
+
+@font-face {
+    font-family: 'Fidelity-l';
+    src: url("../src/assets/fonts/lemon_milk/LEMONMILK-Light.otf");
+}
+
+.bg-1{
+    background-color: #1b1b1b97;
+    background-image:    linear-gradient(rgba(0, 0, 0, 0.482), rgba(20, 20, 20, 0.586), rgba(0, 0, 0, 0.526)), url("./assets/imagenes/backGrounds/spaces.jpg");     
+    background-position: center;
+
+}
+
+.bg-2{
+  background-color: #AB835D;
+    background-image:   url("./assets/imagenes/backGrounds/backgroundHome1.png");    
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.bg-1-card {
+    background-color: #171717;
+    background-image:    linear-gradient(rgba(0, 0, 0, 0.723), rgba(20, 20, 20, 0.74), rgba(0, 0, 0, 0.674)), url("./assets/imagenes/backGrounds/local.jpg");        
+    
+   background-position: center;
+
+}
+
+.bg-2-card {
+    background-color: #171717;
+    background-image:  linear-gradient(rgba(0, 0, 0, 0.723), rgba(20, 20, 20, 0.74), rgba(0, 0, 0, 0.674)),  url("./assets/imagenes/backGrounds/cafetery.jpg"); 
+    
+   background-position: center;
+    /* background-repeat: no-repeat; */
+}

@@ -1,16 +1,17 @@
 body{
-    background-color: #171717;
+/*     background-color: #171717;
     background-image:   url("../../../../assets/imagenes/backgroundCard.png");
   
     
    background-position: center;
-    background-repeat: no-repeat;
+    background-repeat: no-repeat; */
     width: 100%;
 
     display: flex;
+}
 
-
-
+h2{
+    font-family: "Sil";
 }
 
 .upload{
@@ -19,23 +20,27 @@ body{
 
 .card-w{
     border-radius: 25px;
-    border: 2px solid white;
+    border: 2px solid rgba(255, 255, 255, 0.175);
     margin: 1rem 1rem 1rem 1rem;
     height: 12rem;
+    background-color: #00000066;
 }
 
 .card-wc{
     border-radius: 25px;
-    border: 2px solid white;
+    /* border: 2px solid white; */
     margin: 1rem 1rem 1rem 1rem;
+    background-color: #00000066;
+   /*  background-image: url("../../../../assets/imagenes/logos/FidelityCardBackground.png");  */
     /* height: 12rem; */
 }
 
 .card-ww{
     border-radius: 25px;
-    border: 2px solid #FFB64A;
+    border: 2px solid #ffb74a3d;
     margin: 1rem 1rem 1rem 1rem;
     height: 12rem;
+    background-color: #00000066;
 }
 
 .card-w-in{
@@ -45,13 +50,45 @@ body{
 
 .circle {
     margin: 2px;
-    width: 23px;
-    height: 23px;
-    border: 1px solid #DDAA45;
+    width: 26px;
+    height: 26px;
+    border: 1.3px dashed #ffffff;
     border-radius: 50%;
   }
   
   .filled {
-    background-color: #DDAA45;
+    background-color: #ffffff;
+    border: 1px solid #ffffff;
+  }
+
+  .sombra{
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
+  }
+
+  @keyframes parpadeo {
+    0%, 100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0;
+    }
   }
   
+  .flecha-parpadeo {
+    margin-left: 0.5rem;
+    animation: parpadeo 1s infinite;
+  }
+  
+  
+
+  @media (max-width: 400px) { 
+    
+    .circle {
+        margin: 2px;
+        width: 23px;
+        height: 23px;
+        border: 1.2px dashed #ffffff;
+        border-radius: 50%;
+      }
+   
+  }
