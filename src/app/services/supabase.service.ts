@@ -242,10 +242,10 @@ export class SupabaseService {
       .select();
   }
 
-  async updateUser(id: string, waitlist: boolean) {
+  async updateInformacion(id: string, informacion: string) {
     return await this.supabase
-      .from('usuarios')
-      .update({ waitlist: waitlist })
+      .from('entidades')
+      .update({ informacion: informacion })
       .eq('id', id)
       .select();
   }

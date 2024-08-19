@@ -223,5 +223,12 @@ export class EntidadAdminComponent implements OnInit {
     this.activeTab = tabName;
   }
 
+ async updateInfo(id:string, info:string){
+  const response:any = (await this.supabaseService.updateInformacion(id, info)).data;
+  this.entidad.informacion = info;
+  this.internoService.setEntidad(this.entidad)
+  console.log(response)
+  }
+
   
 }

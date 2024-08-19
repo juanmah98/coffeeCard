@@ -1,149 +1,194 @@
 <body class="">
-    <div class="container-fluid">
-        <div class="row justify-content-end text-end">
-            <div class="col-12">
-                <button class="btn btn-black m-2" (click)="clearStorage()"><img class=" pb-1" src="../../../../assets/imagenes/cards/out.png" width="18px" alt=""></button>
-            </div>
+  <div class="container-fluid">
+    <div class="row justify-content-end text-end">
+      <div class="col-12">
+        <button class="btn btn-black m-2" (click)="clearStorage()"><img class=" pb-1"
+            src="../../../../assets/imagenes/cards/out.png" width="18px" alt=""></button>
+      </div>
+    </div>
+    <div class="row text-light justify-content-center mt-1">
+      <div class="col-12 text-center pb-3">
+        <h3 style="text-transform: uppercase;">{{entidad.nombre}}</h3>
+      </div>
+
+      <div class="col-8 col-sm-6 col-md-3">
+        <div class="admin-card text-dark">
+          <p>Usuarios activos</p>
+          <h5>{{usuarios.length}}</h5>
         </div>
-        <div class="row text-light justify-content-center mt-1">
-            <div class="col-12 text-center pb-3">
-                <h3 style="text-transform: uppercase;">{{entidad.nombre}}</h3>
+      </div>
+
+      <div class="col-8 col-sm-6 col-md-3">
+        <div class="admin-card text-dark">
+          <p>Tarjetas regaladas</p>
+          <h5>{{tarjetas}}</h5>
+        </div>
+      </div>
+
+      <div class="col-8 col-sm-6 col-md-3">
+        <div class="admin-card text-dark">
+          <p>Usuarios de este mes</p>
+          <h5>{{nuevos}}</h5>
+        </div>
+      </div>
+
+      <div class="col-12 col-sm-11 col-md-9 mt-0">
+        <div class="text-center">
+          <img src="../../../../assets/imagenes/image 46.png" width="150px" alt="">
+        </div>
+
+        <div class="d-flex mb-1">
+          <button class="btn btn-outline-light fw-bold fs-5" (click)="statusChange('1')">Admins</button>
+          <!-- <h4 class="mx-2">Admins</h4> -->
+          <button class="btn btn-outline-light fw-bold fs-5 "
+            (click)="statusChange('2')">Ajustes</button><!-- <h4 class="mx-2">waitlist</h4> -->
+          <!--  <button class="btn btn-outline-light fw-bold fs-5 " (click)="statusChange('3')">Card edit</button> -->
+        </div>
+        <!-- Campo de entrada de texto para el nuevo correo electrónico -->
+
+        <div [ngSwitch]="status">
+
+          <div *ngSwitchCase="'1'" class="text-center">
+
+            <table class="table table-dark table-striped">
+              <thead>
+                <tr>
+                  <th scope="col">#</th>
+                  <th scope="col">Nombre</th>
+                  <th scope="col">Correo</th>
+                  <th scope="col">Roles</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let admin of rolesAdmins; let index = index">
+                  <th scope="row">{{ index + 1 }}</th>
+                  <td>{{ admin.nombre }}</td>
+                  <td>{{ admin.email }}</td>
+                  <td (click)="toggleSoloLectura(admin)"
+                    [ngClass]="{'editable': !admin.soloLectura, 'editableFalse': admin.soloLectura}">
+                    {{ admin.soloLectura ? 'Scanner' : 'Admin' }}
+                  </td>
+                </tr>
+              </tbody>
+
+            </table>
+
+
+            <div [formGroup]="adminForm" class="input-group mb-3">
+              <input type="text" class="form-control" formControlName="nombre" placeholder="Nombre">
+              <input type="email" class="form-control mx-1" formControlName="email" placeholder="Correo electrónico">
+              <div class="input-group-append mx-2">
+                <button class="btn btn-primary" type="button" (click)="agregarAdmin()">Agregar</button>
+              </div>
             </div>
 
-            <div class="col-8 col-sm-6 col-md-3">
-                <div class="admin-card text-dark">
-                    <p>Usuarios activos</p>
-                    <h5>{{usuarios.length}}</h5>
+          </div>
+
+          <div *ngSwitchCase="'2'" class="text-center">
+
+            <div class="container-fluid">
+              <div class="row justify-content-center align-items-start pt-2 pb-5 text-light">
+                <h4 class="text-center">Panel de ajustes</h4>
+
+                <div class="col-12 col-md-3 mb-3">
+                  <div class="bg-setting rounded text-start p-3">
+                    <ul class="nav flex-column" style="list-style: none; padding-left: 0;">
+                      <li class="nav-item mb-2">
+                        <a class="nav-link" (click)="setActiveTab('informacion')">Información</a>
+                      </li>
+                      <li class="nav-item mb-2">
+                        <a class="nav-link" (click)="setActiveTab('diseño')">Diseño</a>
+                      </li>
+                      <li class="nav-item mb-2">
+                        <a class="nav-link" (click)="setActiveTab('usuario')">Usuario</a>
+                      </li>
+                    </ul>
+                  </div>
                 </div>
+
+                <div class="col-12 col-md-9 text-start">
+                  <div class="row" *ngIf="activeTab === 'informacion'">
+                    <div class="col-12">
+                      <span class="fs-5 fw-bold">Información</span>
+                      <p>{{entidad.informacion}}</p>
+                      <button class="btn btn-black align-items-center justify-content-center" data-bs-toggle="modal"
+                        data-bs-target="#exampleModal"><img src="../../../../assets/imagenes/cards/editarNaranja.png"
+                          width="22px" alt=""></button>
+                    </div>
+                  </div>
+                  <div class="row" *ngIf="activeTab === 'diseño'">
+                    <div class="col-12">
+                    <span class="fs-5 fw-bold">Diseño</span>
+                    <img class="bg-1" src="" width="50px" alt="">
+                    <!-- contenido de configuración -->
+                  </div>
+                  </div>
+                  <div *ngIf="activeTab === 'usuario'">
+                    <p class="fs-5 fw-bold">Usuario</p>
+                    <!-- contenido de seguridad -->
+                  </div>
+                </div>
+              </div>
             </div>
 
-            <div class="col-8 col-sm-6 col-md-3">
-                <div class="admin-card text-dark">
-                    <p>Tarjetas regaladas</p>
-                    <h5>{{tarjetas}}</h5>
-                </div>
+
+
+          </div>
+
+
+          <div *ngSwitchCase="'3'" class="text-center">
+
+
+
+          </div>
+
+
+        </div>
+
+
+
+
+
+      </div>
+
+      <div class="col-12 text-center mt-2 mb-5">
+        <button class="btn btn-light " (click)="scan()">ESCANER</button>
+        <button *ngIf="admin.email == 'juanmah1998@gmail.com'" class="btn btn-warning mx-2"
+          (click)="master()">MASTER</button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Modal -->
+  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="exampleModalLabel">Editar Información</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form>
+            <div class="form-group">
+              <label for="textInput">Información</label>
+              <textarea id="textInput" class="form-control" [(ngModel)]="entidad.informacion" name="textInput" rows="3" style="resize: both;"></textarea>
             </div>
+          </form>
 
-            <div class="col-8 col-sm-6 col-md-3">
-                <div class="admin-card text-dark">
-                    <p>Usuarios de este mes</p>
-                    <h5>{{nuevos}}</h5>
-                </div>
-            </div>
-
-            <div class="col-12 col-sm-11 col-md-9 mt-0">
-                <div class="text-center">
-                    <img src="../../../../assets/imagenes/image 46.png" width="150px" alt="">
-                </div>
-
-                <div class="d-flex mb-1">
-                   <button class="btn btn-outline-light fw-bold fs-5" (click)="statusChange('1')">Admins</button> <!-- <h4 class="mx-2">Admins</h4> -->
-                   <button class="btn btn-outline-light fw-bold fs-5 " (click)="statusChange('2')">Ajustes</button><!-- <h4 class="mx-2">waitlist</h4> -->
-                  <!--  <button class="btn btn-outline-light fw-bold fs-5 " (click)="statusChange('3')">Card edit</button> -->
-                </div>
-                <!-- Campo de entrada de texto para el nuevo correo electrónico -->
-
-               <div [ngSwitch]="status">
-
-                <div *ngSwitchCase="'1'" class="text-center">
-                         
-                    <table class="table table-dark table-striped">
-                        <thead>
-                            <tr>
-                                <th scope="col">#</th>
-                                <th scope="col">Nombre</th>
-                                <th scope="col">Correo</th>
-                                <th scope="col">Roles</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr *ngFor="let admin of rolesAdmins; let index = index">
-                              <th scope="row">{{ index + 1 }}</th>
-                              <td>{{ admin.nombre }}</td>
-                              <td>{{ admin.email }}</td>
-                              <td (click)="toggleSoloLectura(admin)" [ngClass]="{'editable': !admin.soloLectura, 'editableFalse': admin.soloLectura}">
-                                {{ admin.soloLectura ? 'Scanner' : 'Admin' }}
-                              </td>
-                            </tr>
-                          </tbody>
-                          
-                    </table>
-                        
-
-                    <div [formGroup]="adminForm" class="input-group mb-3">
-                        <input type="text" class="form-control" formControlName="nombre" placeholder="Nombre">
-                        <input type="email" class="form-control mx-1" formControlName="email" placeholder="Correo electrónico">
-                        <div class="input-group-append mx-2">
-                          <button class="btn btn-primary" type="button" (click)="agregarAdmin()">Agregar</button>
-                        </div>
-                      </div>
-
-                </div>
-
-                <div *ngSwitchCase="'2'" class="text-center">
-                         
-                    <div class="container-fluid">
-                        <div class="row justify-content-center align-items-start pt-2 pb-5 text-light">
-                          <h4 class="text-center">Panel de ajustes</h4>
-                      
-                          <div class="col-12 col-md-3 mb-3">
-                            <div class="bg-setting rounded text-start p-3">
-                              <ul class="nav flex-column" style="list-style: none; padding-left: 0;">
-                                <li class="nav-item mb-2">
-                                  <a class="nav-link" (click)="setActiveTab('informacion')">Información</a>
-                                </li>
-                                <li class="nav-item mb-2">
-                                  <a class="nav-link" (click)="setActiveTab('diseño')">Diseño</a>
-                                </li>
-                                <li class="nav-item mb-2">
-                                  <a class="nav-link" (click)="setActiveTab('usuario')">Usuario</a>
-                                </li>
-                              </ul>
-                            </div>
-                          </div>
-                      
-                          <div class="col-12 col-md-9 text-start">
-                            <div *ngIf="activeTab === 'informacion'">
-                              <p class="fs-5 fw-bold">Información</p>
-                              <p>{{entidad.informacion}}</p>
-                            </div>
-                            <div *ngIf="activeTab === 'diseño'">
-                                <p class="fs-5 fw-bold">Diseño</p>
-                              <!-- contenido de configuración -->
-                            </div>
-                            <div *ngIf="activeTab === 'usuario'">
-                                <p class="fs-5 fw-bold">Usuario</p>
-                              <!-- contenido de seguridad -->
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      
-                    
-                        
-                </div>
-
-
-                 <div *ngSwitchCase="'3'" class="text-center">
-                         
-                    
-                        
-                </div>
-
-                
-                </div>
-                
-           
-
-                
-                  
-            </div>            
-
-        <div class="col-12 text-center mt-2 mb-5">
-            <button class="btn btn-light " (click)="scan()">ESCANER</button>
-            <button *ngIf="admin.email == 'juanmah1998@gmail.com'" class="btn btn-warning mx-2" (click)="master()">MASTER</button>
+          <div class="mt-2 text-end">
+          <!-- <button type="button" class="btn btn-secondary mx-1" data-bs-dismiss="modal">Cerrar</button> -->
+          <button type="button" class="btn btn-warning" (click)="updateInfo(entidad.id,entidad.informacion)" data-bs-dismiss="modal">Guardar</button>
+        </div>
         </div>
         
-        </div>
+        
+        <!-- <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+          <button type="button" class="btn btn-primary">Guardar</button>
+        </div> -->
+      </div>
     </div>
+  </div>
+
 </body>
