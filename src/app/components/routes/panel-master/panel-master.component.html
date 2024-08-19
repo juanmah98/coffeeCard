@@ -23,7 +23,7 @@
       </div>
       <div class="col-10 col-sm-4">
         <div class="bg-secondary p-3 m-1 rounded">
-          <h2>20</h2>
+          <h2>{{totalRegalos}}</h2>
           <p class="fw-bold">REGALOS</p>
         </div>
       </div>
@@ -34,7 +34,7 @@
       <div class="col-10 col-sm-6 bg-light p-4 rounded text-black">
       <h3 class="mb-4">TOP <span class="text-green">ENTIDADES</span></h3>
       <ul class="list-unstyled text-start" *ngFor="let entidad of usuariosAdmin, let i = index">
-        <li>{{i+1}} - {{entidad.nombre}} <img src="../../../../assets/imagenes/landing/usuarios.png" width="20px" alt=""><span class="fw-bold text-green">{{entidad.usuarios}}</span></li>
+        <li>{{i+1}} - {{entidad.nombre}} <img src="../../../../assets/imagenes/landing/usuarios.png" width="20px" alt=""><span class="fw-bold text-green">{{entidad.usuarios}}</span><span class="fw-bold text-green"> - </span><img src="../../../../assets/imagenes/landing/regalo.png" class="" width="20px" alt=""><span class="fw-bold text-green">{{entidad.regalo}}</span></li>
        
       </ul>
     </div>

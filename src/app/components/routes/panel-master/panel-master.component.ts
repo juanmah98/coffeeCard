@@ -17,9 +17,11 @@ export class PanelMasterComponent implements OnInit {
   entidades: Entidades[] = [];
   i = 0;
   usuariosAdmin:any[] = [
-    {nombre: '', usuarios: ''},
+    {nombre: '', usuarios: '', regalo: ''},
   ];
   displayedColumns: string[] = ['id', 'email', 'name', 'fecha_creacion', 'pais'];
+  regalos: string[] = [];
+  totalRegalos = 0;
 
   constructor(private supabaseService: SupabaseService,
     private router: Router,
@@ -50,21 +52,21 @@ export class PanelMasterComponent implements OnInit {
       const response = await this.supabaseService.getEntidades();
       const entidad:any = response.data;
       this.entidades = entidad;
-      this.for();
+      await this.for();
     } catch (error) {
       console.error('Error al cargar usuarios:', error);
       throw error;
     }
   }
 
-  async getEntidadesUsers(tabla: string, nombre: string) {
+  async getEntidadesUsers(tabla: string, nombre: string, regalos:number) {
     try {
       const response = await this.supabaseService.getTablasTotalUsuarios(tabla);
       const entidad:any = response.data;
 /*       console.log(entidad) */
-      this.agregarUsuario(nombre,entidad.length)
-       console.log("this.usuariosAdmin")
-    console.log(this.usuariosAdmin)
+      this.agregarUsuario(nombre,entidad.length, regalos)
+       /* console.log("this.usuariosAdmin") */
+    /* console.log(this.usuariosAdmin) */
     } catch (error) {
       console.error('Error al cargar usuarios:', error);
       throw error;
@@ -73,23 +75,51 @@ export class PanelMasterComponent implements OnInit {
   }
 
   async for(){
-    
+    let regalos = 0;
     this.entidades.forEach(async data => {
-    await this.getEntidadesUsers(data.tabla_contador, data.nombre)
-     
+    regalos = await this.getRegalosTablas(data.tabla_contador)
+    await this.getEntidadesUsers(data.tabla_contador, data.nombre, regalos)
+    
     })
   }
 
-agregarUsuario(nombre: string, usuario: string) {
+agregarUsuario(nombre: string, usuario: string, regalo:number) {
     // Verifica si el primer elemento tiene valores vacíos
     if (this.usuariosAdmin.length > 0 && this.usuariosAdmin[0].nombre === '' && this.usuariosAdmin[0].usuarios === '') {
         this.usuariosAdmin.shift(); // Elimina el primer elemento si está vacío
     }
 
     // Agrega el nuevo usuario
-    this.usuariosAdmin.push({ nombre, usuarios: usuario });
+    this.usuariosAdmin.push({ nombre, usuarios: usuario , regalo:regalo});
     this.usuariosAdmin.sort((a, b) => {
       return Number(b.usuarios) - Number(a.usuarios);
     });
 }
+
+async getRegalosTablas(tabla: string) {
+  let regaloReturn:number;
+  try {
+    const response = await this.supabaseService.getTablaContadorData('cantidad_gratis', tabla );
+    const regalos:any = response.data;
+   /*  console.log(regalos)  */
+    regaloReturn = await this.suma(regalos);
+    /*  console.log("this.Regalos") */
+  } catch (error) {
+    console.error('Error al cargar usuarios:', error);
+    throw error;
+  }
+  this.cdr.detectChanges();
+  return regaloReturn
+}
+
+ async suma(contadores: any){
+  let total:number = 0;
+  contadores.forEach((element: any) => {
+    total = total + parseInt(element.cantidad_gratis);
+    this.totalRegalos =  this.totalRegalos + parseInt(element.cantidad_gratis)
+/*     console.log("this.totalRegalos " + this.totalRegalos) */
+  });
+  this.cdr.detectChanges();
+  return total
+ }
 }
