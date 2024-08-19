@@ -36,6 +36,12 @@ export class EntidadAdminComponent implements OnInit {
     informacion: 'Aquí va la información de la entidad...'
     // Añade más propiedades según sea necesario
   };
+  backgrounds = [
+    { id: 1, imageUrl: '../../../../assets/imagenes/backGrounds/spaces.jpg' },
+    { id: 2, imageUrl: '../../../../assets/imagenes/backGrounds/doodleblack.jpg' },
+    { id: 3, imageUrl: '../../../../assets/imagenes/backGrounds/food.jpg' },
+    // Agrega más backgrounds según sea necesario
+  ];
 
   constructor(
     private supabaseService: SupabaseService,
