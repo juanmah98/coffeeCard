@@ -83,7 +83,7 @@ private userAll = new BehaviorSubject<Usuarios[]>([]);
     }
     if (userAdminString) {
       const userAdmin = JSON.parse(userAdminString);
-      this.logged.next(userAdmin);
+      this.userAdmin.next(userAdmin);
     }
 
      if (entidadString) {
