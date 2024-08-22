@@ -31,6 +31,7 @@ const routes: Routes = [
   { path: 'landing', component: LandingComponent },
   { path: 'master', component: PanelMasterComponent, canActivate: [AuthGuard]  },
   { path: 'pagos', component: EmployeeSalaryComponent },
+  { path: 'registro', component: RegistroEmpresasComponent },
 ];
 
 @NgModule({
