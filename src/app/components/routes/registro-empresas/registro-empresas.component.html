@@ -14,6 +14,16 @@
       <label for="contactEmail">Correo Electrónico</label>
       <input type="email" id="contactEmail" class="form-control" [(ngModel)]="company.contactEmail" name="contactEmail" required>
     </div>
+
+    <div class="form-group pt-1">
+      <label for="category">Categoría del Comercio</label>
+      <select id="category" class="form-control" [(ngModel)]="company.category" name="category" required>
+        <option value="restaurant">Restaurante</option>
+        <option value="shop">Tienda</option>
+        <!-- Agrega más categorías según sea necesario -->
+      </select>
+    </div> 
+    
     <div class="form-group pt-1">
       <label for="address">Dirección del Comercio</label>
       <input type="text" id="address" class="form-control" [(ngModel)]="company.address" name="address" required>
