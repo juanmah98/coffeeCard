@@ -30,6 +30,7 @@ export class InternoService {
       "fecha_creacion": new Date(),
       "pais": '',
       "informacion":'',
+      "direccion":'',
       "text_card":''
   });
 

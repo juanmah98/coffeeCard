@@ -115,6 +115,13 @@ export class SupabaseService {
       .select();
   }
 
+  async postNewEntity(data: any) {
+    return await this.supabase
+      .from("entidades")
+      .insert(data)
+      .select();
+  }
+
   async updateOpcion(id: string, tabla: string, opcion: number) {
     return await this.supabase
       .from(tabla)

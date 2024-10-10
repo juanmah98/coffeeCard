@@ -1,54 +1,93 @@
 <body class="container-fluid">
   <div class="row justify-content-center">
     <div class="col-12">
-  <h2 class="pt-5 text-light text-center" style="font-family: 'OpenSans';">Registro de <b>empresas</b></h2>
-</div>
-
-<div class="col-12 col-md-6">
-<form (ngSubmit)="onSubmit()" class="text-light">
-    <div class="form-group pt-1">
-      <label for="companyName">Nombre de la Empresa</label>
-      <input type="text" id="companyName" class="form-control" [(ngModel)]="company.name" name="name" required>
-    </div>
-    <div class="form-group pt-1">
-      <label for="contactEmail">Correo Electrónico</label>
-      <input type="email" id="contactEmail" class="form-control" [(ngModel)]="company.contactEmail" name="contactEmail" required>
+      <h2 class="pt-5 text-light text-center" style="font-family: 'OpenSans';">Registro de <b>empresas</b></h2>
     </div>
 
-    <div class="form-group pt-1">
-      <label for="category">Categoría del Comercio</label>
-      <select id="category" class="form-control" [(ngModel)]="company.category" name="category" required>
-        <option value="restaurant">Restaurante</option>
-        <option value="shop">Tienda</option>
-        <!-- Agrega más categorías según sea necesario -->
-      </select>
-    </div> 
-    
-    <div class="form-group pt-1">
-      <label for="address">Dirección del Comercio</label>
-      <input type="text" id="address" class="form-control" [(ngModel)]="company.address" name="address" required>
+    <div class="col-12 col-md-6">
+      <form [formGroup]="companyForm" (ngSubmit)="onSubmit()" class="text-light">
+        <div class="form-group pt-1">
+          <label for="nombre">Nombre de la Empresa</label>
+          <input
+            type="text"
+            id="nombre"
+            class="form-control"
+            formControlName="nombre"
+            required
+          />
+        </div>
+
+        <div class="form-group pt-1">
+          <label for="email">Correo Electrónico</label>
+          <input
+            type="email"
+            id="email"
+            class="form-control"
+            formControlName="email"
+            required
+          />
+        </div>
+
+        <div class="form-group pt-1">
+          <label for="pais">Seleccione su país</label>
+          <select
+            id="pais"
+            class="form-control"
+            formControlName="pais"
+            required
+          >
+            <option value="" disabled selected>Seleccione un país</option>
+            <option value="Argentina">Argentina</option>
+            <option value="España">España</option>
+            <!-- Agrega más países según sea necesario -->
+          </select>
+        </div>
+
+        <div class="form-group pt-1">
+          <label for="direccion">Dirección del Comercio</label>
+          <input
+            type="text"
+            id="direccion"
+            class="form-control"
+            formControlName="direccion"
+            required
+          />
+        </div>
+
+        <div class="form-group pt-1">
+          <label for="descripcion">Descripción del Comercio</label>
+          <textarea
+            id="descripcion"
+            class="form-control"
+            formControlName="descripcion"
+            required
+          ></textarea>
+        </div>
+
+        <div class="form-group pt-1">
+          <label for="categoria">Categoría del Comercio</label>
+          <select
+            id="categoria"
+            class="form-control"
+            formControlName="categoria"
+            required
+          >
+            <option value="" disabled selected>Seleccione una categoría</option>
+            <option value="restaurant">Restaurante</option>
+            <option value="shop">Tienda</option>
+            <!-- Agrega más categorías según sea necesario -->
+          </select>
+        </div>
+
+       <!--  <div class="form-group pt-1">
+          <label for="logo">Logo de la Empresa (opcional)</label>
+          <input type="file" id="logo" class="form-control" (change)="onLogoSelected($event)" />
+        </div> -->
+
+        <div class="text-center pt-2">
+          <button type="submit" class="btn btn-warning" [disabled]="companyForm.invalid" >Registrarse</button>
+        </div>
+      </form>
     </div>
-    <div class="form-group pt-1">
-      <label for="description">Descripción del Comercio</label>
-      <textarea id="description" class="form-control" [(ngModel)]="company.description" name="description" required></textarea>
-    </div>
-    <div class="form-group pt-1">
-      <label for="category">Categoría del Comercio</label>
-      <select id="category" class="form-control" [(ngModel)]="company.category" name="category" required>
-        <option value="restaurant">Restaurante</option>
-        <option value="shop">Tienda</option>
-        <!-- Agrega más categorías según sea necesario -->
-      </select>
-    </div> 
-    <div class="form-group pt-1">
-      <label for="logo">Logo de la Empresa (opcional)</label>
-      <input type="file" id="logo" class="form-control">
-    </div>
-    <div class="text-center pt-2">
-      <button type="button" class="btn btn-warning">Registrarse</button>
-    </div>
-    
-  </form>
-</div>
-</div>
+  </div>
 </body>

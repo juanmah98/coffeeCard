@@ -13,6 +13,7 @@ export interface Entidades {
     fecha_creacion: Date;
     pais:string;
     informacion: string;
+    direccion: string;
     text_card: string;
 }
 
