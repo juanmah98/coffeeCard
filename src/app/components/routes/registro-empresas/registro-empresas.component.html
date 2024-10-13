@@ -6,87 +6,131 @@
 
     <div class="col-12 col-md-6">
       <form [formGroup]="companyForm" (ngSubmit)="onSubmit()" class="text-light">
-        <div class="form-group pt-1">
-          <label for="nombre">Nombre de la Empresa</label>
-          <input
-            type="text"
-            id="nombre"
-            class="form-control"
-            formControlName="nombre"
-            required
-          />
-        </div>
 
-        <div class="form-group pt-1">
-          <label for="email">Correo Electrónico</label>
-          <input
-            type="email"
-            id="email"
-            class="form-control"
-            formControlName="email"
-            required
-          />
-        </div>
+        <div [ngSwitch]="status">
 
-        <div class="form-group pt-1">
-          <label for="pais">Seleccione su país</label>
-          <select
-            id="pais"
-            class="form-control"
-            formControlName="pais"
-            required
-          >
-            <option value="" disabled selected>Seleccione un país</option>
-            <option value="Argentina">Argentina</option>
-            <option value="España">España</option>
-            <!-- Agrega más países según sea necesario -->
-          </select>
-        </div>
+          <div *ngSwitchCase="'1'" class="text-center">
 
-        <div class="form-group pt-1">
-          <label for="direccion">Dirección del Comercio</label>
-          <input
-            type="text"
-            id="direccion"
-            class="form-control"
-            formControlName="direccion"
-            required
-          />
-        </div>
+            <div class="form-group pt-1">
+              <label for="nombre">Nombre de la Empresa</label>
+              <input
+                type="text"
+                id="nombre"
+                class="form-control"
+                formControlName="nombre"
+                required
+              />
+            </div>
+    
+            <div class="form-group pt-1">
+              <label for="email">Correo Electrónico</label>
+              <input
+                type="email"
+                id="email"
+                class="form-control"
+                formControlName="email"
+                required
+              />
+            </div>
+    
+            <div class="form-group pt-1">
+              <label for="pais">Seleccione su país</label>
+              <select
+                id="pais"
+                class="form-control"
+                formControlName="pais"
+                required
+              >
+                <option value="" disabled selected>Seleccione un país</option>
+                <option value="Argentina">Argentina</option>
+                <option value="España">España</option>
+                <!-- Agrega más países según sea necesario -->
+              </select>
+            </div>
+    
+            <div class="form-group pt-1">
+              <label for="direccion">Dirección del Comercio</label>
+              <input
+                type="text"
+                id="direccion"
+                class="form-control"
+                formControlName="direccion"
+                required
+              />
+            </div>
+    
+            <div class="form-group pt-1">
+              <label for="descripcion">Descripción del Comercio</label>
+              <textarea
+                id="descripcion"
+                class="form-control"
+                formControlName="descripcion"
+                required
+              ></textarea>
+            </div>
+    
+            <div class="form-group pt-1">
+              <label for="categoria">Categoría del Comercio</label>
+              <select
+                id="categoria"
+                class="form-control"
+                formControlName="categoria"
+                required
+              >
+                <option value="" disabled selected>Seleccione una categoría</option>
+                <option value="restaurant">Restaurante</option>
+                <option value="shop">Tienda</option>
+                <!-- Agrega más categorías según sea necesario -->
+              </select>
+            </div>
+    
+           <!--  <div class="form-group pt-1">
+              <label for="logo">Logo de la Empresa (opcional)</label>
+              <input type="file" id="logo" class="form-control" (change)="onLogoSelected($event)" />
+            </div> -->
+    
+            <div class="text-center pt-3">
+              <button type="submit" class="btn btn-warning" (click)="statusChange('2')" >Siguiente</button>
+            </div>
 
-        <div class="form-group pt-1">
-          <label for="descripcion">Descripción del Comercio</label>
-          <textarea
-            id="descripcion"
-            class="form-control"
-            formControlName="descripcion"
-            required
-          ></textarea>
-        </div>
+          </div>
 
-        <div class="form-group pt-1">
-          <label for="categoria">Categoría del Comercio</label>
-          <select
-            id="categoria"
-            class="form-control"
-            formControlName="categoria"
-            required
-          >
-            <option value="" disabled selected>Seleccione una categoría</option>
-            <option value="restaurant">Restaurante</option>
-            <option value="shop">Tienda</option>
-            <!-- Agrega más categorías según sea necesario -->
-          </select>
-        </div>
+          <div *ngSwitchCase="'2'" class="text-center">
 
-       <!--  <div class="form-group pt-1">
-          <label for="logo">Logo de la Empresa (opcional)</label>
-          <input type="file" id="logo" class="form-control" (change)="onLogoSelected($event)" />
-        </div> -->
+            <div class="text-center pt-5">
+              <h4>Datos para la tarjeta</h4>
+            </div>
 
-        <div class="text-center pt-2">
-          <button type="submit" class="btn btn-warning" [disabled]="companyForm.invalid" >Registrarse</button>
-        </div>
+            <div class="form-group pt-1">
+              <label for="nombre">Titulo</label>
+              <input
+                type="text"
+                id="titulo"
+                class="form-control"
+                formControlName="titulo"
+                required
+              />
+            </div>
+    
+            <div class="form-group pt-1">
+              <label for="descripcion">Premio a regalar</label>
+              <textarea
+                id="informacion"
+                class="form-control"
+                formControlName="informacion"
+                required
+              ></textarea>
+            </div>
+
+            <div class="text-center pt-3">
+              <button type="submit" class="btn btn-warning" [disabled]="companyForm.invalid">Registrarse</button>
+            </div>
+
+            
+          </div>
+          </div>
+
+
       </form>
     </div>
   </div>

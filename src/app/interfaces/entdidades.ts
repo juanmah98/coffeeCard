@@ -14,6 +14,7 @@ export interface Entidades {
     pais:string;
     informacion: string;
     direccion: string;
+    logo: string;
     text_card: string;
 }
 

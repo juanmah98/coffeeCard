@@ -31,6 +31,7 @@ export class InternoService {
       "pais": '',
       "informacion":'',
       "direccion":'',
+      "logo":'',
       "text_card":''
   });
 
