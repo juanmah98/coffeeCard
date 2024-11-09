@@ -34,7 +34,7 @@
                   <ng-container *ngFor="let entidad of entidades">
                       <div class="card col-md-4 col-sm-6 col-10" *ngIf="usuario.pais == entidad.pais || usuario.pais == 'todos'" (click)="run(entidad)">
                           <div class="w-50 m-auto">
-                              <img *ngIf="entidad.logo; else nombreTemplate" [src]="'../../../../assets/imagenes/Clients/SpaceWhite.png'" width="50%" class="img-fluid" alt="{{ entidad.nombre }}">
+                              <img *ngIf="entidad.logo; else nombreTemplate" [src]="entidad.logo" width="50%" class="img-fluid" alt="{{ entidad.nombre }}">
                               <ng-template #nombreTemplate>
                                   <h4 class="text-center text-white custom-shadow" style="font-family: Sil;">
                                       <span *ngFor="let palabra of entidad.nombre.split(' '); let last = last">

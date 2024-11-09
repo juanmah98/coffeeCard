@@ -97,29 +97,46 @@
                         <a class="nav-link" (click)="setActiveTab('informacion')">Información</a>
                       </li>
                       <li class="nav-item mb-2">
-                        <a class="nav-link" (click)="setActiveTab('diseño')">Diseño</a>
+                        <a class="nav-link" (click)="setActiveTab('logo')">Logo</a>
                       </li>
                       <li class="nav-item mb-2">
-                        <a class="nav-link" (click)="setActiveTab('usuario')">Usuario</a>
+                        <a class="nav-link" (click)="setActiveTab('diseño')">Diseño</a>
                       </li>
                     </ul>
                   </div>
                 </div>
 
                 <div class="col-12 col-md-9 text-start">
+
                   <div class="row" *ngIf="activeTab === 'informacion'">
                     <div class="col-12">
+                      <span class="fs-5 fw-bold">Titulo</span>
+                      <p>{{entidad.text_card}}</p>                      
                       <span class="fs-5 fw-bold">Información</span>
                       <p>{{entidad.informacion}}</p>
                       <button class="btn btn-black align-items-center justify-content-center" data-bs-toggle="modal"
                         data-bs-target="#exampleModal"><img src="../../../../assets/imagenes/cards/editarNaranja.png"
-                          width="22px" alt=""></button>
+                          width="22px" alt="" (click)="editInfo()"></button>
                     </div>
                   </div>
-                  <div class="row" *ngIf="activeTab === 'diseño'">
+
+                  <div class="row" *ngIf="activeTab === 'logo'">
                     <div class="col-12">
-                    <span class="fs-5 fw-bold">Diseño</span>
-                    <span>Proximamente</span>
+                    <span class="fs-5 fw-bold">Logo</span><br>
+
+                    <div *ngIf="entidad.logo">
+                      <label>Logo actual:</label>
+                      <img [src]="entidad.logo" alt="Logo de la entidad" style="max-width: 100px; max-height: 100px;">
+                    </div> 
+
+                    <div *ngIf="entidad.logo == ''">
+                      <label>No existe logo</label>                      
+                    </div> 
+        
+                    <button class="btn btn-black align-items-center justify-content-center" data-bs-toggle="modal"
+                        data-bs-target="#logoModal"><img src="../../../../assets/imagenes/cards/editarNaranja.png"
+                          width="22px" alt="" (click)="editInfo()"></button>
+                    
                     <!-- <div id="backgroundCarousel" class="carousel slide" data-bs-ride="carousel">
                       <div class="carousel-inner">
                         <div *ngFor="let background of backgrounds; let i = index" class="carousel-item" [ngClass]="{'active': i === 0}">
@@ -139,8 +156,8 @@
                     <!-- contenido de configuración -->
                   </div>
                   </div>
-                  <div *ngIf="activeTab === 'usuario'">
-                    <span class="fs-5 fw-bold">Usuario</span>
+                  <div *ngIf="activeTab === 'diseño'">
+                    <span class="fs-5 fw-bold">Diseño</span><br>
                     <span>Proximamente</span>
                     <!-- contenido de seguridad -->
                   </div>
@@ -177,7 +194,7 @@
     </div>
   </div>
 
-  <!-- Modal -->
+  <!-- Modal Info -->
   <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content">
@@ -188,16 +205,22 @@
         <div class="modal-body">
           <form>
             <div class="form-group">
+              <label for="titelInput">Titulo</label>
+              <input id="titelInput" class="form-control" [(ngModel)]="entidad.text_card" name="titelInput" rows="3" style="resize: both;">
+            </div>
+        
+            <div class="form-group">
               <label for="textInput">Información</label>
               <textarea id="textInput" class="form-control" [(ngModel)]="entidad.informacion" name="textInput" rows="3" style="resize: both;"></textarea>
             </div>
-          </form>
 
+          </form>
+        
           <div class="mt-2 text-end">
-          <!-- <button type="button" class="btn btn-secondary mx-1" data-bs-dismiss="modal">Cerrar</button> -->
-          <button type="button" class="btn btn-warning" (click)="updateInfo(entidad.id,entidad.informacion)" data-bs-dismiss="modal">Guardar</button>
+            <button type="button" class="btn btn-warning" (click)="updateInfo(entidad.id, entidad.informacion, entidad.text_card)" data-bs-dismiss="modal">Guardar</button>
+          </div>
         </div>
-        </div>
+        
         
         
         <!-- <div class="modal-footer">
@@ -207,5 +230,54 @@
       </div>
     </div>
   </div>
+
+
+  <!-- Modal Logo -->
+  <div class="modal fade" id="logoModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="exampleModalLabel">Editar logo</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form>
+           
+
+           <div *ngIf="entidad.logo">
+              <label>Logo actual:</label>
+              <img [src]="entidad.logo" alt="Logo de la entidad" style="max-width: 100px; max-height: 100px;">
+            </div> 
+
+             <div class="form-group">
+              <label for="logoInput">Actualizar logo</label>
+              <input type="file" id="logoInput" class="form-control" (change)="onLogoChange($event)">
+            </div> 
+            
+          
+        
+          </form>
+        
+          <div class="mt-2 text-end" *ngIf="logoCargado">
+            <button type="button" class="btn btn-warning" (click)="remplazarLogo(entidad.id)" data-bs-dismiss="modal">Guardar</button>
+          </div>
+
+          <div class="mt-2 text-end" *ngIf="logoCargado == ''">
+            <button type="button" class="btn btn-warning" (click)="subirLogo(entidad.id)" data-bs-dismiss="modal">Subir</button>
+          </div>
+        </div>
+        
+        
+        
+        <!-- <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+          <button type="button" class="btn btn-primary">Guardar</button>
+        </div> -->
+      </div>
+    </div>
+  </div>
+
+
+
 
 </body>

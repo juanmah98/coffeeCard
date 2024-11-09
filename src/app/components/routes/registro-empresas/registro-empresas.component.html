@@ -59,7 +59,7 @@
               />
             </div>
     
-            <div class="form-group pt-1">
+           <!--  <div class="form-group pt-1">
               <label for="descripcion">Descripción del Comercio</label>
               <textarea
                 id="descripcion"
@@ -67,7 +67,7 @@
                 formControlName="descripcion"
                 required
               ></textarea>
-            </div>
+            </div> -->
     
             <div class="form-group pt-1">
               <label for="categoria">Categoría del Comercio</label>
@@ -84,10 +84,11 @@
               </select>
             </div>
     
-           <!--  <div class="form-group pt-1">
-              <label for="logo">Logo de la Empresa (opcional)</label>
+            <div class="form-group pt-1">
+              <label for="logo">Logo de la Empresa en negativo(opcional)</label>
               <input type="file" id="logo" class="form-control" (change)="onLogoSelected($event)" />
-            </div> -->
+            </div> 
+            
     
             <div class="text-center pt-3">
               <button type="submit" class="btn btn-warning" (click)="statusChange('2')" >Siguiente</button>

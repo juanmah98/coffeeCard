@@ -17,6 +17,7 @@ import { SupabaseService } from 'src/app/services/supabase.service';
 export class EntidadAdminComponent implements OnInit {
 
   entidad!: Entidades;
+  logoFile!: File | null;
   usuariosAdmin: Usuarios_admins[] = [];
   usuarios: Usuarios[] = [];
   rolesAdmins: Usuarios_admins[] = [];
@@ -26,6 +27,7 @@ export class EntidadAdminComponent implements OnInit {
   opcion: boolean = false;
   allUsers: Usuarios[] = [];
   status: string = '1';
+  logoCargado:string = '';
   adminForm = new FormGroup({
     nombre: new FormControl('', Validators.required),
     email: new FormControl('', [Validators.required, Validators.email]),
@@ -60,6 +62,7 @@ export class EntidadAdminComponent implements OnInit {
     }
 
     this.entidad = this.internoService.getEntidad();
+    this.logoCargado = this.entidad.logo;
     this.opcion = false;
     console.log(this.admin)
     try {
@@ -229,12 +232,91 @@ export class EntidadAdminComponent implements OnInit {
     this.activeTab = tabName;
   }
 
- async updateInfo(id:string, info:string){
-  const response:any = (await this.supabaseService.updateInformacion(id, info)).data;
-  this.entidad.informacion = info;
-  this.internoService.setEntidad(this.entidad)
-  console.log(response)
+   // Método que actualiza la información de la entidad
+   async updateInfo(id: string, info: string, text_card: string) {
+   
+
+    // Actualizar la información de la entidad
+   
+    const response: any = await this.supabaseService.updateInformacion(id, info, text_card);
+    this.entidad.informacion = info;
+    this.entidad.text_card = text_card;
+    this.internoService.setEntidad(this.entidad);
+    console.log(response);
+
   }
 
+  async subirLogo(id: string){
+ // Si hay un logo nuevo, subirlo al servidor
+    if (this.logoFile) {
+      await this.uploadLogo(id);
+    }
+
+    const logoUrl: any = await this.supabaseService.getPublicImageUrl(this.entidad.nombre)
+    console.log(logoUrl)
+     const response: any = await this.supabaseService.updateLogoEntidad(id, logoUrl);
+     this.entidad.logo = logoUrl;
+    this.internoService.setEntidad(this.entidad);
+    console.log(response); 
+  }
+
+  async remplazarLogo(id: string){
+    // Si hay un logo nuevo, subirlo al servidor
+       if (this.logoFile) {
+         await this.updateLogo(id);
+       }
+   
+       const logoUrl: any = await this.supabaseService.getPublicImageUrl(this.entidad.nombre)
+       console.log(logoUrl)
+        const response: any = await this.supabaseService.updateLogoEntidad(id, logoUrl);
+        this.entidad.logo = logoUrl;
+       this.internoService.setEntidad(this.entidad);
+       console.log(response); 
+     }
+
+  
+
+  editInfo(){
+    console.log(this.entidad)
+  }
+
+  onLogoChange(event: any) {
+    const file = event.target.files[0];  // Obtiene el archivo seleccionado
+    if (file) {
+      this.logoFile = file;
+
+      // Mostrar una vista previa de la imagen en la interfaz
+      const reader = new FileReader();
+      reader.onload = (e: any) => {
+        this.entidad.logo = e.target.result;  // Asigna la vista previa en Base64 para mostrar en la interfaz
+      };
+      console.log("LOGO: " + this.logoCargado)
+      reader.readAsDataURL(file);  // Esto solo afecta a la vista previa, no al envío del archivo
+    }
+  }
+
+   // Método para subir el logo al servidor
+   async uploadLogo(id: string) {
+    if (this.logoFile) {
+      try {
+        const response = await this.supabaseService.uploadImage(this.logoFile, "logos_fidelity", this.entidad.nombre);  // Aquí subimos el archivo real
+        console.log('Logo subido con exito', response);
+        this.logoCargado = 'si'
+      } catch (error) {
+        console.error('Error al subir el logo:', error);
+      }
+    }
+  }
+
+  async updateLogo(id: string) {
+    if (this.logoFile) {
+      try {
+        const response = await this.supabaseService.updateImage(this.logoFile, "logos_fidelity", this.entidad.nombre);  // Aquí subimos el archivo real
+        console.log('Logo actualizado con exito', response);
+      } catch (error) {
+        console.error('Error al subir el logo:', error);
+      }
+    }
+  }
   
 }

@@ -20,7 +20,7 @@ export class RegistroEmpresasComponent implements OnInit {
       email: ['', [Validators.required, Validators.email]],
       pais: ['', Validators.required],
       direccion: ['', Validators.required],
-      descripcion: ['', Validators.required],
+      /* descripcion: ['', Validators.required], */
       categoria: ['', Validators.required],
       logo: [''], // Se usará para almacenar el archivo de logo
       informacion:['', Validators.required],
@@ -49,14 +49,30 @@ export class RegistroEmpresasComponent implements OnInit {
       informacion: this.companyForm.value.informacion,
       direccion: this.companyForm.value.direccion.toLowerCase(),
       text_card: this.companyForm.value.titulo.toLowerCase(),
+      logo: ''
     }; 
    console.log(entidad)
-     /*  const responseUser:any = (await this._supaServices.postNewEntity(entidad)).data; */
+   await this.uploadLogo( this.companyForm.value.logo,  this.companyForm.value.nombre)
+   console.log("antes de logo")
+   const logoUrl: any = await this._supaServices.getPublicImageUrl(this.companyForm.value.nombre)
+  entidad.logo = logoUrl;
+      const responseUser:any = (await this._supaServices.postNewEntity(entidad)).data;
       this.redirect()
      // Muestra los datos en consola
     /*  this.router.navigate(['/welcome']); */ 
 
     
+  }
+
+  async uploadLogo(file: File, nombre: string) {
+    console.log("en logos")
+    
+      try {
+        const response = await this._supaServices.uploadImage(file, "logos_fidelity", nombre);  // Aquí subimos el archivo real
+        console.log('Logo subido con exito', response);
+      } catch (error) {
+        console.error('Error al subir el logo:', error);
+      }
   }
 
   redirect(): void {

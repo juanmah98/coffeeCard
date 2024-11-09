@@ -249,10 +249,18 @@ export class SupabaseService {
       .select();
   }
 
-  async updateInformacion(id: string, informacion: string) {
+  async updateInformacion(id: string, informacion: string, text_card: string) {
     return await this.supabase
       .from('entidades')
-      .update({ informacion: informacion })
+      .update({ informacion: informacion, text_card: text_card},)
+      .eq('id', id)
+      .select();
+  }
+
+  async updateLogoEntidad(id: string, logo:string) {
+    return await this.supabase
+      .from('entidades')
+      .update({ logo:logo},)
       .eq('id', id)
       .select();
   }
@@ -263,4 +271,68 @@ export class SupabaseService {
       .insert(data)
       .select();
   }
+
+
+  /* METODO DE IMAGENES */
+
+  async uploadImage(file: File, folderName: string, fileName: string): Promise<any> {
+    try {
+      // Crear una ruta dentro del bucket
+      const filePath = `${folderName}/${fileName}`;
+      
+      // Subir la imagen
+      const { data, error } = await this.supabase.storage
+        .from('logos') // Nombre del bucket
+        .upload(filePath, file, {
+          cacheControl: '3600', // Opcional
+          upsert: false // Evitar sobrescribir archivos existentes
+        });
+      
+      if (error) {
+        throw error;
+      }
+
+      return data;
+    } catch (error) {
+      console.error('Error al subir la imagen: ', error);
+      throw error;
+    }
+  }
+
+  // Método para obtener la URL pública de la imagen
+  async getPublicImageUrl(filePath: string): Promise<string> {
+    const { data } = this.supabase.storage
+      .from('logos/logos_fidelity')
+      .getPublicUrl(filePath);
+
+    return data?.publicUrl || '';
+  }
+
+  async updateImage(file: File, folderName: string, fileName: string): Promise<any> {
+    try {
+      // Crear una ruta dentro del bucket
+      const filePath = `${folderName}/${fileName}`;
+      
+      // Subir la imagen
+      const { data, error } = await this.supabase.storage
+        .from('logos') // Nombre del bucket
+        .update(filePath, file, {
+          cacheControl: '3600', // Opcional
+          upsert: false // Evitar sobrescribir archivos existentes
+        });
+      
+      if (error) {
+        throw error;
+      }
+
+      return data;
+    } catch (error) {
+      console.error('Error al subir la imagen: ', error);
+      throw error;
+    }
+  }
+
+  
+  
+  
 }
