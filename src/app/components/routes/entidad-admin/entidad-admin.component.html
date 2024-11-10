@@ -156,11 +156,29 @@
                     <!-- contenido de configuración -->
                   </div>
                   </div>
-                  <div *ngIf="activeTab === 'diseño'">
-                    <span class="fs-5 fw-bold">Diseño</span><br>
-                    <span>Proximamente</span>
-                    <!-- contenido de seguridad -->
+                  <div class="row" *ngIf="activeTab === 'diseño'">
+                    <div class="col-12">
+                      <span class="fs-4 fw-bold text-warning">EN DESARROLLO</span><br>
+                      <span class="fs-5 fw-bold">Diseño</span><br>
+                      <span>Background actual:</span>
+                      <div [ngClass]="selectedBackground" class="p-3 mt-2 bg-actual">                      
+                       
+                      </div>
+                  
+                      <div class="row mt-3">
+                        <span class="fs-6">Selecciona un fondo:</span>
+                        <div class="col-4 col-md-2" *ngFor="let bgClass of backgroundClasses">
+                          <div [ngClass]="bgClass"
+                               class="bg-thumbnail p-3 rounded mb-2"
+                               (click)="showPreview(bgClass)" 
+                               data-bs-toggle="modal" 
+                               data-bs-target="#previewModal">
+                          </div>
+                        </div>
+                      </div>
+                    </div>
                   </div>
+                  
                 </div>
               </div>
             </div>
@@ -277,7 +295,22 @@
     </div>
   </div>
 
-
+<!-- Modal para previsualizar el fondo en tamaño completo -->
+<div class="modal fade" id="previewModal" tabindex="-1" aria-labelledby="previewModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="previewModalLabel">Vista previa del fondo</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div [ngClass]="previewBackground" class="modal-preview">
+          <!-- Contenedor que muestra el fondo seleccionado en tamaño completo -->
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 
 
 </body>

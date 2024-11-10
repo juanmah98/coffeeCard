@@ -1,4 +1,4 @@
-import { Component, NgZone, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, NgZone, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { CafeData } from 'src/app/interfaces/cafes_data';
@@ -33,6 +33,10 @@ export class EntidadAdminComponent implements OnInit {
     email: new FormControl('', [Validators.required, Validators.email]),
   });
 
+  selectedBackground: string = 'bg'; // Fondo inicial
+  backgroundClasses: string[] = ['bg-1-card', 'bg-2-card', 'bg-3-card']; // Lista de opciones
+  previewBackground: string = '';
+
   activeTab: string = 'informacion'; // Pestaña activa por defecto
   entidadSettings = {
     informacion: 'Aquí va la información de la entidad...'
@@ -50,7 +54,8 @@ export class EntidadAdminComponent implements OnInit {
     private router: Router,
     private internoService: InternoService,
     private ngZone: NgZone,
-    private authService:AuthService
+    private authService:AuthService,
+    private cdr: ChangeDetectorRef
   ) { }
 
   async ngOnInit(): Promise<void> {
@@ -61,6 +66,7 @@ export class EntidadAdminComponent implements OnInit {
       console.log(a)
     }
 
+    this.selectedBackground = `bg-${this.internoService.getEntidad().background}-card`;
     this.entidad = this.internoService.getEntidad();
     this.logoCargado = this.entidad.logo;
     this.opcion = false;
@@ -80,6 +86,20 @@ export class EntidadAdminComponent implements OnInit {
    /*  console.log("Admin:", this.admin);
     console.log("Entidad:", this.entidad);
     console.log(`Cantidad de usuarios nuevos del mes: ${this.nuevos}`); */
+  }
+
+  cambiarBg(valor: string): void {
+    this.selectedBackground = valor;
+    this.cdr.detectChanges(); // Forzar la detección de cambios si es necesario
+  }
+
+  changeBackground(bgClass: string) {
+    this.selectedBackground = bgClass;
+    // Aquí podrías guardar el fondo seleccionado en el backend o en el almacenamiento local
+  }
+
+  showPreview(bgClass: string) {
+    this.previewBackground = bgClass;
   }
 
   async loadAdmins(): Promise<void> {

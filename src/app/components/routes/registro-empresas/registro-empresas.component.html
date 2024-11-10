@@ -9,7 +9,7 @@
 
         <div [ngSwitch]="status">
 
-          <div *ngSwitchCase="'1'" class="text-center">
+          <div *ngSwitchCase="'1'" class="text-start">
 
             <div class="form-group pt-1">
               <label for="nombre">Nombre de la Empresa</label>
@@ -80,25 +80,26 @@
                 <option value="" disabled selected>Seleccione una categoría</option>
                 <option value="restaurant">Restaurante</option>
                 <option value="shop">Tienda</option>
+                <option value="shop">Otro</option>
                 <!-- Agrega más categorías según sea necesario -->
               </select>
             </div>
     
             <div class="form-group pt-1">
-              <label for="logo">Logo de la Empresa en negativo(opcional)</label>
+              <label for="logo">Logo (opcional)</label>
               <input type="file" id="logo" class="form-control" (change)="onLogoSelected($event)" />
             </div> 
             
     
             <div class="text-center pt-3">
-              <button type="submit" class="btn btn-warning" (click)="statusChange('2')" >Siguiente</button>
+              <button type="submit" class="btn btn-outline-warning" (click)="statusChange('2')" >Siguiente</button>
             </div>
 
           </div>
 
-          <div *ngSwitchCase="'2'" class="text-center">
+          <div *ngSwitchCase="'2'" class="text-start">
 
-            <div class="text-center pt-5">
+            <div class="text-start pt-5">
               <h4>Datos para la tarjeta</h4>
             </div>
 
@@ -124,6 +125,7 @@
             </div>
 
             <div class="text-center pt-3">
+              <button type="submit" class="btn btn-outline-warning mx-2" (click)="statusChange('1')">Atras</button>
               <button type="submit" class="btn btn-warning" [disabled]="companyForm.invalid">Registrarse</button>
             </div>
 
