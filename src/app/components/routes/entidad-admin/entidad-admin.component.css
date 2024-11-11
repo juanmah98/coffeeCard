@@ -56,7 +56,9 @@ body {
   }
 
   .bg-actual{
-  height: 35vh;
+  height: 45vh;
+  background-position: center;
+  background-size: cover;
   }
 
   .bg-thumbnail {

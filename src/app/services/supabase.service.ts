@@ -265,6 +265,14 @@ export class SupabaseService {
       .select();
   }
 
+  async updateBackgroundEntidad(id: string, background:string) {
+    return await this.supabase
+      .from('entidades')
+      .update({ background:background},)
+      .eq('id', id)
+      .select();
+  }
+
   async postNewAdmin(data: any) {
     return await this.supabase
       .from("usuarios_admin")

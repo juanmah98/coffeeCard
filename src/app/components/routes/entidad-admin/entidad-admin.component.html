@@ -158,15 +158,14 @@
                   </div>
                   <div class="row" *ngIf="activeTab === 'diseño'">
                     <div class="col-12">
-                      <span class="fs-4 fw-bold text-warning">EN DESARROLLO</span><br>
                       <span class="fs-5 fw-bold">Diseño</span><br>
-                      <span>Background actual:</span>
+                      <span>Fondo actual:</span>
                       <div [ngClass]="selectedBackground" class="p-3 mt-2 bg-actual">                      
                        
                       </div>
                   
                       <div class="row mt-3">
-                        <span class="fs-6">Selecciona un fondo:</span>
+                        <span class="fs-6">Selección de fondo:</span>
                         <div class="col-4 col-md-2" *ngFor="let bgClass of backgroundClasses">
                           <div [ngClass]="bgClass"
                                class="bg-thumbnail p-3 rounded mb-2"
@@ -307,6 +306,9 @@
         <div [ngClass]="previewBackground" class="modal-preview">
           <!-- Contenedor que muestra el fondo seleccionado en tamaño completo -->
         </div>
+      </div>
+      <div class="modal-footer">       
+        <button type="button" class="btn btn-warning" (click)="guardarBackground(entidad.id, previewBackground)" data-bs-dismiss="modal">Guardar</button>
       </div>
     </div>
   </div>

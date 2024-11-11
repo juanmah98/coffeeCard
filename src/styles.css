@@ -64,7 +64,32 @@
 
 .bg-3-card {
     background-color: #1b1b1b97;
-    background-image:    linear-gradient(rgba(0, 0, 0, 0.482), rgba(20, 20, 20, 0.586), rgba(0, 0, 0, 0.526)), url("./assets/imagenes/backGrounds/spaces.jpg");   
+    background-image:    linear-gradient(rgba(0, 0, 0, 0.482), rgba(20, 20, 20, 0.586), rgba(0, 0, 0, 0.526)), url("./assets/imagenes/backGrounds/dark_lightt.jpg");   
+    
+   background-position: center;
+    /* background-repeat: no-repeat; */
+}
+
+.bg-4-card {
+    background-color: #1b1b1b97;
+    background-image:    linear-gradient(rgba(0, 0, 0, 0.482), rgba(20, 20, 20, 0.586), rgba(0, 0, 0, 0.526)), url("./assets/imagenes/backGrounds/ondas.jpg");   
+    
+   background-position: center;
+    /* background-repeat: no-repeat; */
+}
+
+.bg-5-card {
+    background-color: #1b1b1b97;
+    background-image:    linear-gradient(rgba(0, 0, 0, 0.482), rgba(20, 20, 20, 0.586), rgba(0, 0, 0, 0.526)), url("./assets/imagenes/backGrounds/dark_city2.jpg");   
+    background-size: cover;
+   background-position: center;
+   
+    /* background-repeat: no-repeat; */
+}
+
+.bg-6-card {
+    background-color: #1b1b1b97;
+    background-image:    linear-gradient(rgba(0, 0, 0, 0.482), rgba(20, 20, 20, 0.586), rgba(0, 0, 0, 0.526)), url("./assets/imagenes/backGrounds/black_green.jpg");   
     
    background-position: center;
     /* background-repeat: no-repeat; */

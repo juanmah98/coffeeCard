@@ -34,8 +34,9 @@ export class EntidadAdminComponent implements OnInit {
   });
 
   selectedBackground: string = 'bg'; // Fondo inicial
-  backgroundClasses: string[] = ['bg-1-card', 'bg-2-card', 'bg-3-card']; // Lista de opciones
+  backgroundClasses: string[] = ['bg-1-card', 'bg-2-card', 'bg-3-card', 'bg-4-card', 'bg-5-card' ,'bg-6-card']; // Lista de opciones
   previewBackground: string = '';
+  backgroundNumber: number | null = null;
 
   activeTab: string = 'informacion'; // Pestaña activa por defecto
   entidadSettings = {
@@ -100,6 +101,23 @@ export class EntidadAdminComponent implements OnInit {
 
   showPreview(bgClass: string) {
     this.previewBackground = bgClass;
+  }
+
+  async guardarBackground(id: string, bg: string){
+    const match = bg.match(/bg-(\d+)-card/);
+    
+    if (match) {
+      this.backgroundNumber = parseInt(match[1], 10); // Almacena el número en `backgroundNumber`
+    } else {
+      this.backgroundNumber = null; // En caso de que el formato de la clase sea diferente
+    }
+    const number: any= this.backgroundNumber;
+    const response: any = await this.supabaseService.updateBackgroundEntidad(id, number);
+    this.entidad.background = number;
+    this.internoService.setEntidad(this.entidad);
+    console.log(response);
+
+    this.cambiarBg(bg)
   }
 
   async loadAdmins(): Promise<void> {
