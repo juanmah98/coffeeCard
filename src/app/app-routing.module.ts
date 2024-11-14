@@ -15,6 +15,7 @@ import { LandingComponent } from './components/routes/landing/landing.component'
 import { EmployeeSalaryComponent } from './components/routes/employee-salary/employee-salary.component';
 import { RegistroEmpresasComponent } from './components/routes/registro-empresas/registro-empresas.component';
 import { PanelMasterComponent } from './components/routes/panel-master/panel-master.component';
+import { ActivateComponent } from './components/routes/activate/activate.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' }, // Redirigir a '/home' en la ruta raíz
@@ -32,6 +33,7 @@ const routes: Routes = [
   { path: 'master', component: PanelMasterComponent, canActivate: [AuthGuard]  },
   { path: 'pagos', component: EmployeeSalaryComponent },
   { path: 'registro', component: RegistroEmpresasComponent },
+  { path: 'activate', component: ActivateComponent },
 ];
 
 @NgModule({
