@@ -1,10 +1,10 @@
 <body class="container-fluid">
   <div class="row justify-content-center">
     <div class="col-12">
-      <h2 class="pt-5 text-light text-center" style="font-family: 'OpenSans';">Registro de <b>empresas</b></h2>
+      <h2 class="pt-5 text-light text-center" style="font-family: 'OpenSans';">Registro de empresas</h2>
     </div>
 
-    <div class="col-12 col-md-6">
+    <div class="col-12 col-md-6 pt-2">
       <form [formGroup]="companyForm" (ngSubmit)="onSubmit()" class="text-light">
 
         <div [ngSwitch]="status">
@@ -12,7 +12,7 @@
           <div *ngSwitchCase="'1'" class="text-start">
 
             <div class="form-group pt-1">
-              <label for="nombre">Nombre de la Empresa</label>
+              <label for="nombre">Nombre de la empresa</label>
               <input
                 type="text"
                 id="nombre"
@@ -23,7 +23,7 @@
             </div>
     
             <div class="form-group pt-1">
-              <label for="email">Correo Electrónico (gmail)</label>
+              <label for="email">Correo electrónico (gmail)</label>
               <input
                 type="email"
                 id="email"
@@ -34,7 +34,7 @@
             </div>
     
             <div class="form-group pt-1">
-              <label for="pais">Seleccione su país</label>
+              <label for="pais">Seleccióne su país</label>
               <select
                 id="pais"
                 class="form-control"
@@ -49,7 +49,7 @@
             </div>
     
             <div class="form-group pt-1">
-              <label for="direccion">Dirección del Comercio</label>
+              <label for="direccion">Dirección de empresa</label>
               <input
                 type="text"
                 id="direccion"
@@ -70,7 +70,7 @@
             </div> -->
     
             <div class="form-group pt-1">
-              <label for="categoria">Categoría del Comercio</label>
+              <label for="categoria">Categoría</label>
               <select
                 id="categoria"
                 class="form-control"
