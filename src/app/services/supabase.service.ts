@@ -241,6 +241,13 @@ export class SupabaseService {
       .select('*');
   }
 
+  async getEntidadesTrue() {
+    return await this.supabase
+      .from('entidades')
+      .select('*')
+      .is('is_active', true)
+  }
+
   getEntidadRealtime(id: string) {
     const changes = new Subject();
   

@@ -26,7 +26,7 @@ export class PrincipalComponent implements OnInit {
 
   async getEntidades() {
     try {
-      const response:any = await this._supabaseServices.getEntidades();
+      const response:any = await this._supabaseServices.getEntidadesTrue();
       console.log('entidades', response.data);
       this.entidades = response.data;
       // Continúa aquí con lo que necesites hacer con la respuesta
