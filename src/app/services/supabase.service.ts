@@ -241,6 +241,40 @@ export class SupabaseService {
       .select('*');
   }
 
+  getEntidadRealtime(id: string) {
+    const changes = new Subject();
+  
+    // Usamos el canal 'room1' (puedes elegir otro nombre para el canal)
+    this.supabase.channel('room1').on('postgres_changes', 
+      { 
+        event: '*', 
+        schema: 'public', 
+        table: 'entidades', 
+        filter: `id=eq.${id}`  // Puedes ajustar esto si el campo es otro
+      }, 
+      payload => {
+        changes.next(payload);
+      }
+    ).subscribe();
+  
+    return changes.asObservable();
+  }
+
+  async activateEntity(token: string): Promise<any> {
+    const { data, error } = await this.supabase
+      .from('entidades')  // Asegúrate de que esta es la tabla correcta
+      .update({ is_active: true })  // Actualizamos el campo 'activo' a true
+      .eq('activation_token', token);  // Aseguramos que el 'token' coincida con el proporcionado
+
+    if (error) {
+      console.error('Error al activar la entidad:', error);
+      return { error: 'Activación fallida' };
+    }
+
+    return { data };
+  }
+  
+
   async updateAdmin(id: string, soloLectura: boolean) {
     return await this.supabase
       .from('usuarios_admin')
