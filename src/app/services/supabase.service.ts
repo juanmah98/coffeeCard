@@ -17,6 +17,7 @@ export class SupabaseService {
   private apiUrlUsers = 'https://rwttebejxwncpurszzld.supabase.co/rest/v1/usuarios';
   private apiUrlCafes = 'https://rwttebejxwncpurszzld.supabase.co/rest/v1/contador_cafe';
   private apiUrl = 'https://rwttebejxwncpurszzld.supabase.co/rest/v1';
+  private functionUrl = 'https://rwttebejxwncpurszzld.supabase.co/functions/v1';
   private apiKey = environment.supabaseKey;
 
   private supabase: SupabaseClient;
@@ -248,26 +249,37 @@ export class SupabaseService {
       .is('is_active', true)
   }
 
-  getEntidadRealtime(id: string) {
-    const changes = new Subject();
+  async activateEntityViaEdgeFunction(token: string): Promise<boolean> {
+    try {
+      const response = await fetch(`${this.functionUrl}/entidadToken?token=${token}`); // Llama a la Edge Function
+      if (!response.ok) {
+        console.error('Activation request failed with status:', response.status);
+        return false; // Indica al componente que la activación falló
+      }
+      return true; // Activación exitosa
+    } catch (error) {
+      console.error('Error during activation request:', error);
+      return false; // Indica un error en la activación
+    }
+  }
   
-    // Usamos el canal 'room1' (puedes elegir otro nombre para el canal)
-    this.supabase.channel('room1').on('postgres_changes', 
-      { 
-        event: '*', 
-        schema: 'public', 
-        table: 'entidades', 
-        filter: `id=eq.${id}`  // Puedes ajustar esto si el campo es otro
-      }, 
+  getEntidadRealtime(id: string): Observable<any> {
+    const changes = new Subject<any>();
+    this.supabase.channel('room1').on(
+      'postgres_changes',
+      {
+        event: '*',
+        schema: 'public',
+        table: 'entidades',
+        filter: `id=eq.${id}` // Filtrar por el ID de la entidad
+      },
       payload => {
         changes.next(payload);
       }
     ).subscribe();
-  
     return changes.asObservable();
   }
-
-  async activateEntity(token: string): Promise<any> {
+  /* async activateEntity(token: string): Promise<any> {
     const { data, error } = await this.supabase
       .from('entidades')  // Asegúrate de que esta es la tabla correcta
       .update({ is_active: true })  // Actualizamos el campo 'activo' a true
@@ -279,7 +291,7 @@ export class SupabaseService {
     }
 
     return { data };
-  }
+  } */
   
 
   async updateAdmin(id: string, soloLectura: boolean) {
