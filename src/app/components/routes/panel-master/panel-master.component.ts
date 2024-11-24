@@ -122,4 +122,11 @@ async getRegalosTablas(tabla: string) {
   this.cdr.detectChanges();
   return total
  }
+
+ back(): void {
+  console.log("back: ")
+  this.ngZone.run(() => {
+    this.router.navigate(['/admin']);
+  });
+}
 }

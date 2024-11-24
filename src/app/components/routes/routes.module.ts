@@ -18,6 +18,7 @@ import { EmployeeSalaryComponent } from './employee-salary/employee-salary.compo
 import { RegistroEmpresasComponent } from './registro-empresas/registro-empresas.component';
 import { PanelMasterComponent } from './panel-master/panel-master.component';
 import { ActivateComponent } from './activate/activate.component';
+import { GeneradorQrsComponent } from './generador-qrs/generador-qrs.component';
 
 
 
@@ -35,7 +36,8 @@ import { ActivateComponent } from './activate/activate.component';
     EmployeeSalaryComponent,
     RegistroEmpresasComponent,
     PanelMasterComponent,
-    ActivateComponent
+    ActivateComponent,
+    GeneradorQrsComponent
    
     
   ],

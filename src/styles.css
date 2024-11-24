@@ -94,3 +94,31 @@
    background-position: center;
     /* background-repeat: no-repeat; */
 }
+
+
+@media print {
+    /* Ocultar el footer y otros componentes durante la impresión */
+    app-footer, app-banner-policy {
+      display: none !important; /* No se muestra en la impresión */
+    }
+  
+    /* Si hay otros componentes que también necesitas ocultar, agrégalos aquí */
+    .navbar, .header, .form-group {
+      display: none !important;
+    }
+  
+    /* Aseguramos que el resto del contenido sea visible y se ajuste bien */
+    body {
+      visibility: visible;
+    }
+  
+    .qr-container, .qr-container * {
+      visibility: visible; /* Solo muestra el contenido de los QR */
+    }
+  
+    /* Configuraciones adicionales de impresión */
+    @page {
+      margin: 0;
+    }
+  }
+  

@@ -393,6 +393,60 @@ export class SupabaseService {
     }
   }
 
+
+// Generar múltiples QR para una entidad
+async generateQRCodes(entidadId: string, quantity: number): Promise<any[]> {
+  const qrCodes = Array.from({ length: quantity }, () => ({
+    qr_code: `${entidadId}-${Math.random().toString(36).substr(2, 10)}`,
+    entidad_id: entidadId,
+  }));
+
+  // Insertar los QR en la base de datos
+  const { data, error } = await this.supabase.from('qrs').insert(qrCodes).select();
+
+  if (error) {
+    console.error('Error al generar QR:', error);
+    throw error;
+  }
+
+  // Retornar los datos insertados (QR generados)
+  return data || [];
+}
+
+
+
+  // Validar un QR al ser escaneado
+  async validateQRCode(qrCode: string, userId: string): Promise<any> {
+    const { data, error } = await this.supabase
+      .from('qrs')
+      .update({ is_used: true, used_at: new Date() })
+      .eq('qr_code', qrCode)
+      .eq('is_used', false);
+
+    if (error) {
+      if (error.code === 'PGRST116') {
+        return { success: false, message: 'El QR ya fue usado o no existe.' };
+      }
+      throw error;
+    }
+
+    return { success: true, message: 'Punto sumado con éxito.', data };
+  }
+
+  async getEntidadName(entidadId: string): Promise<string> {
+    const { data, error } = await this.supabase
+      .from('entidades') // Reemplaza con tu tabla
+      .select('nombre')  // Asegúrate de que 'name' sea el campo correcto
+      .eq('id', entidadId)
+      .single();
+  
+    if (error) {
+      console.error('Error al obtener nombre de la entidad:', error);
+      throw error;
+    }
+  
+    return data?.nombre || 'Entidad desconocida';  // Si no se encuentra nombre, retornar uno por defecto
+  }
   
   
   

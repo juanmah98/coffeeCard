@@ -16,6 +16,7 @@ import { EmployeeSalaryComponent } from './components/routes/employee-salary/emp
 import { RegistroEmpresasComponent } from './components/routes/registro-empresas/registro-empresas.component';
 import { PanelMasterComponent } from './components/routes/panel-master/panel-master.component';
 import { ActivateComponent } from './components/routes/activate/activate.component';
+import { GeneradorQrsComponent } from './components/routes/generador-qrs/generador-qrs.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' }, // Redirigir a '/home' en la ruta raíz
@@ -34,6 +35,7 @@ const routes: Routes = [
   { path: 'pagos', component: EmployeeSalaryComponent },
   { path: 'registro', component: RegistroEmpresasComponent },
   { path: 'activate', component: ActivateComponent },
+  { path: 'qrsgenerate', component: GeneradorQrsComponent, canActivate: [AuthGuard] },
 ];
 
 @NgModule({

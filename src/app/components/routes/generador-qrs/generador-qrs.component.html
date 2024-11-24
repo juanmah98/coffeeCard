@@ -1,0 +1,49 @@
+<body>   
+    
+    <div class="col-12">
+        <button  class="btn btn m-2" (click)="back()"><img class=" pb-1" src="../../../../assets/imagenes/cards/back2.png" width="18px" alt=""></button>
+    </div>
+
+<div class="container mt-4 text-light p-4 rounded">
+    <h2>Generar QR Codes</h2>
+  
+    <!-- Formulario para ingresar la cantidad -->
+    <form (ngSubmit)="generateQRCodes()">
+      <div class="form-group">
+        <label for="quantity">Cantidad de QR:</label>
+        <input
+          type="number"
+          id="quantity"
+          class="form-control"
+          [(ngModel)]="quantity"
+          name="quantity"
+          min="1"
+          required
+        />
+      </div>
+      <button type="submit" class="btn btn-primary mt-2">Generar QR</button>
+    </form>
+  
+   
+<!-- Vista previa de los QR generados -->
+<div *ngIf="qrCodes.length > 0" class="mt-4">
+    <h3>QR Codes Generados</h3>
+    <div class="qr-container row">
+       
+        
+        <div *ngFor="let qr of qrCodes" class="col-3">
+            <h3>{{ entidadName }}</h3> <!-- Nombre de la entidad -->
+          <qrcode [qrdata]="qr.qr_code" [width]="150" [errorCorrectionLevel]="'L'"></qrcode>
+          <p>Escanea para sumar 1 punto</p>
+          <a href="https://fidecards.com" class="url" target="_blank">fidecards.com</a>
+        </div>
+      </div>
+      
+  </div>
+  
+  <!-- Botón de impresión -->
+  <button *ngIf="qrCodes.length > 0" class="btn btn-success mt-4" (click)="printQRCodes()">Imprimir QR</button>
+
+  
+  </div>
+</body>
