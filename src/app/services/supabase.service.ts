@@ -85,6 +85,7 @@ export class SupabaseService {
       .from(tabla)
       .select('*')
   }
+  
 
   async getUsuariosId(id: string) {
     return await this.supabase

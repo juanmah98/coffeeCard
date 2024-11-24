@@ -22,6 +22,8 @@ export class PanelMasterComponent implements OnInit {
   displayedColumns: string[] = ['id', 'email', 'name', 'fecha_creacion', 'pais'];
   regalos: string[] = [];
   totalRegalos = 0;
+  totalQrs = 0;
+  totalAdmins = 0;
 
   constructor(private supabaseService: SupabaseService,
     private router: Router,
@@ -30,7 +32,7 @@ export class PanelMasterComponent implements OnInit {
     private authService:AuthService,
     private cdr: ChangeDetectorRef) {}
 
-  ngOnInit(): void {
+  async ngOnInit(): Promise<void> {
     this.getUsuarios();
     this.getEntidades();
     this.cdr.detectChanges();
@@ -39,8 +41,14 @@ export class PanelMasterComponent implements OnInit {
   async getUsuarios() {
     try {
       const response = await this.supabaseService.getUsersTable();
+      const response2 = await this.supabaseService.getTablasTotalUsuarios('qrs');
+      const response3 = await this.supabaseService.getTablasTotalUsuarios('usuarios_admin');
       const users:any = response.data;
+      const qrs:any = response2.data;
+      const admins:any = response3.data;
       this.usuarios = users;
+      this.totalQrs = qrs.length;
+      this.totalAdmins = admins.length;
     } catch (error) {
       console.error('Error al cargar usuarios:', error);
       throw error;
