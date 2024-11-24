@@ -17,6 +17,7 @@ import { RegistroEmpresasComponent } from './components/routes/registro-empresas
 import { PanelMasterComponent } from './components/routes/panel-master/panel-master.component';
 import { ActivateComponent } from './components/routes/activate/activate.component';
 import { GeneradorQrsComponent } from './components/routes/generador-qrs/generador-qrs.component';
+import { LectorQrUsuarioComponent } from './components/routes/lector-qr-usuario/lector-qr-usuario.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' }, // Redirigir a '/home' en la ruta raíz
@@ -36,6 +37,7 @@ const routes: Routes = [
   { path: 'registro', component: RegistroEmpresasComponent },
   { path: 'activate', component: ActivateComponent },
   { path: 'qrsgenerate', component: GeneradorQrsComponent, canActivate: [AuthGuard] },
+  { path: 'qrscanuser', component: LectorQrUsuarioComponent, canActivate: [AuthGuard] },
 ];
 
 @NgModule({

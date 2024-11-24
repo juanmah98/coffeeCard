@@ -306,6 +306,13 @@ back(): void {
     }); 
 }
 
+qrscanuser(): void {
+  this._dataInterna.setDataContador(this.data_contador);
+  this.ngZone.run(() => {   
+    this.router.navigate(['/qrscanuser']);
+  });
+}
+
 /* onPopupTouch() {
   this.popupService.actualizarMostrar(true)
 } */

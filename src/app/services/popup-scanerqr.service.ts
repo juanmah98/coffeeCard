@@ -22,7 +22,7 @@ export class PopupScanerqrService {
 
   actualizarMostrar(valor: boolean) {
     this.mostrar = valor;
-    console.log("valor: ", valor)
+    /* console.log("valor: ", valor) */
   }
 
   setData(data: string): void {

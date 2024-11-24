@@ -416,22 +416,51 @@ async generateQRCodes(entidadId: string, quantity: number): Promise<any[]> {
 
 
   // Validar un QR al ser escaneado
-  async validateQRCode(qrCode: string, userId: string): Promise<any> {
-    const { data, error } = await this.supabase
-      .from('qrs')
-      .update({ is_used: true, used_at: new Date() })
-      .eq('qr_code', qrCode)
-      .eq('is_used', false);
-
-    if (error) {
-      if (error.code === 'PGRST116') {
-        return { success: false, message: 'El QR ya fue usado o no existe.' };
+  async validateQRCode(qrCode: string, userId: string, usuario:string): Promise<any> {
+    try {
+      // Verificar si el QR existe
+      const { data: qrData, error: qrError } = await this.supabase
+        .from('qrs')
+        .select('*')
+        .eq('qr_code', qrCode)
+        .single(); // Obtén un único registro
+  
+      if (qrError) {
+        console.error('Error buscando el QR:', qrError);
+        return { success: false, message: 'Error al buscar el QR.' };
       }
-      throw error;
+  
+      if (!qrData) {
+        return { success: false, message: 'El QR no existe en la base de datos.' };
+      }
+  
+      // Verificar si el QR ya fue usado
+      if (qrData.is_used) {
+        return { success: false, message: 'El QR ya fue usado.' };
+      }
+  
+      // Actualizar el registro del QR
+      const { data: updateData, error: updateError } = await this.supabase
+        .from('qrs')
+        .update({ is_used: true, used_at: new Date(), usuario: usuario })
+        .eq('qr_code', qrCode);
+  
+      if (updateError) {
+        console.error('Error actualizando el QR:', updateError);
+        return { success: false, message: 'No se pudo actualizar el QR.' };
+      }
+  
+      return {
+        success: true,
+        message: 'Punto sumado con éxito.',
+        data: updateData,
+      };
+    } catch (error) {
+      console.error('Error en validateQRCode:', error);
+      return { success: false, message: 'Ocurrió un error inesperado.' };
     }
-
-    return { success: true, message: 'Punto sumado con éxito.', data };
   }
+  
 
   async getEntidadName(entidadId: string): Promise<string> {
     const { data, error } = await this.supabase

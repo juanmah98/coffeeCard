@@ -19,6 +19,7 @@ import { RegistroEmpresasComponent } from './registro-empresas/registro-empresas
 import { PanelMasterComponent } from './panel-master/panel-master.component';
 import { ActivateComponent } from './activate/activate.component';
 import { GeneradorQrsComponent } from './generador-qrs/generador-qrs.component';
+import { LectorQrUsuarioComponent } from './lector-qr-usuario/lector-qr-usuario.component';
 
 
 
@@ -37,7 +38,8 @@ import { GeneradorQrsComponent } from './generador-qrs/generador-qrs.component';
     RegistroEmpresasComponent,
     PanelMasterComponent,
     ActivateComponent,
-    GeneradorQrsComponent
+    GeneradorQrsComponent,
+    LectorQrUsuarioComponent
    
     
   ],
