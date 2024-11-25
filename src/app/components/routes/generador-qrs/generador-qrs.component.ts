@@ -1,7 +1,8 @@
 import { Component, NgZone, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { SupabaseService } from 'src/app/services/supabase.service';
-import { jsPDF } from 'jspdf';
+import jsPDF from 'jspdf';
+
 
 @Component({
   selector: 'app-generador-qrs',
