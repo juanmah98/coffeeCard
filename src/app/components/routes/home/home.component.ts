@@ -458,6 +458,12 @@ back(){
   this.ngOnInit()
 }
 
+landing(){
+  this.ngZone.run(() => { 
+    this.router.navigate(['/landing']);
+}); 
+}
+
 
 }
 
