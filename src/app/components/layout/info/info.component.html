@@ -3,7 +3,8 @@
       <div class="container__title">Información <img src="../../../../assets/imagenes/cards/info-dark.png" width="20px" alt=""></div>
 
        <div class="container__maps">
-        {{info_data}}
+        <p [innerHTML]="formatText(info_data)"></p>
+        <!-- {{info_data}} -->
       </div> 
     </div>
   

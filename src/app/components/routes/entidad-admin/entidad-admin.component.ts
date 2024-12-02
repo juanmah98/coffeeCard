@@ -362,5 +362,16 @@ export class EntidadAdminComponent implements OnInit {
       }
     }
   }
+
+  formatText(text: string): string {
+    // Reemplazar caracteres específicos con etiquetas <br>
+    return text
+    .replace(/•\s*(\w)/g, (match, p1) => `<br>• ${p1.toUpperCase()}`) // Agregar <br> y poner en mayúscula la primera letra después de •
+      .replace(/\//g, '<br>') // Reemplazar / con <br>
+      .replace(/-/g, '<br>-') // Agregar <br> antes de guiones
+      .replace(/["“”](.*?)["“”]/g, '<strong>$1</strong>')// Aplica negrita al texto entre comillas
+      
+  }
+  
   
 }
