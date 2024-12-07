@@ -8,22 +8,22 @@
           </div>
       </div>
 
-      <div class="row justify-content-center text-center pt-3">
+      <div class="row justify-content-center text-center pt-0 pt-sm-3">
           <div class="col-12 text-center justify-content-center">
-              <img class="pb-1" src="../../../../assets/imagenes/logos/GiftNew.gif" width="210px" alt="">
-              <h3 class="text-white mt-2 mt-3" style="font-family: 'Courier New', Courier, monospace">Selecciona tu tarjeta favorita</h3>
+              <img class="pb-1 gift" src="../../../../assets/imagenes/logos/GiftNew.gif" alt="">
+              <h4 class="text-white mt-3 titulo" style="font-family: 'Courier New', Courier, monospace">Selecciona tu tarjeta favorita</h4>
           </div>
 
-          <div>
-              <button class="btn text-center" (click)="usuario.pais='argentina'">
-                  <img src="../../../../assets/imagenes/paises/argentina.png" width="55px" alt="">
-              </button>
-              <button class="btn text-center" (click)="usuario.pais='españa'">
-                  <img src="../../../../assets/imagenes/paises/españa.png" width="55px" alt="">
-              </button>
-              <button class="btn text-center" (click)="usuario.pais='todos'">
-                  <img src="../../../../assets/imagenes/paises/todos.png" width="55px" alt="">
-              </button>
+          <div class="col-12 justify-content-center mt-0 pt-0">
+              <a class="text-center mx-2" >
+                  <img class="paises" (click)="usuario.pais='argentina'" src="../../../../assets/imagenes/paises/argentina.png" alt="">
+              </a>
+              <a class="text-center mx-2" (click)="usuario.pais='españa'">
+                  <img class="paises" src="../../../../assets/imagenes/paises/españa.png" alt="">
+              </a>
+              <a class=" text-center mx-2" (click)="usuario.pais='todos'">
+                  <img class="paises " src="../../../../assets/imagenes/paises/todos.png" alt="">
+              </a>
           </div>
       </div>
 
