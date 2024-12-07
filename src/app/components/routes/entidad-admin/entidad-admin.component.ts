@@ -277,18 +277,29 @@ export class EntidadAdminComponent implements OnInit {
   }
 
    // Método que actualiza la información de la entidad
-   async updateInfo(id: string, info: string, text_card: string) {
+   async updateInfo(id: string, info: string) {
    
 
     // Actualizar la información de la entidad
    
-    const response: any = await this.supabaseService.updateInformacion(id, info, text_card);
+    const response: any = await this.supabaseService.updateInformacion(id, info);
     this.entidad.informacion = info;
-    this.entidad.text_card = text_card;
+  
     this.internoService.setEntidad(this.entidad);
     console.log(response);
 
   }
+
+    // Método que actualiza el contador de la entidad
+    async updateContadorNumero(id: string, numero_contador: number) {
+     
+      const response: any = await this.supabaseService.updateContadorNumero(id, numero_contador);
+      this.entidad.numero_contador = numero_contador;
+    
+      this.internoService.setEntidad(this.entidad);
+      console.log(response);
+  
+    }
 
   async subirLogo(id: string){
  // Si hay un logo nuevo, subirlo al servidor

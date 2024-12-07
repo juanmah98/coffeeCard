@@ -34,8 +34,8 @@
             </div>
             <!-- <p>Cantidad de tarjetas gratis <b>{{data_cafe.cantidad_gratis}}</b></p> -->
             <p *ngIf="data_cafe.gratis==true">Gratis</p>
-            <button *ngIf="data_cafe.gratis==false && data_cafe.contador<10" type="button" class="btn btn-warning" (click)="sumar()">Sumar +1</button>
-            <button *ngIf="data_cafe.gratis==true || data_cafe.contador==10" type="button" class="btn btn-danger" (click)="sumar()">Canje gratis</button>
+            <button *ngIf="data_cafe.gratis==false && data_cafe.contador<entidad.numero_contador" type="button" class="btn btn-warning" (click)="sumar()">Sumar +1</button>
+            <button *ngIf="data_cafe.gratis==true || data_cafe.contador==entidad.numero_contador" type="button" class="btn btn-danger" (click)="sumar()">Canje gratis</button>
            
           </div>
 

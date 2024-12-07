@@ -303,10 +303,18 @@ export class SupabaseService {
       .select();
   }
 
-  async updateInformacion(id: string, informacion: string, text_card: string) {
+  async updateInformacion(id: string, informacion: string) {
     return await this.supabase
       .from('entidades')
-      .update({ informacion: informacion, text_card: text_card},)
+      .update({ informacion: informacion},)
+      .eq('id', id)
+      .select();
+  }
+
+  async updateContadorNumero(id: string, numero_contador: number) {
+    return await this.supabase
+      .from('entidades')
+      .update({ numero_contador: numero_contador},)
       .eq('id', id)
       .select();
   }

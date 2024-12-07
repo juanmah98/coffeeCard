@@ -76,7 +76,7 @@
 
             <div [formGroup]="adminForm" class="input-group mb-3">
               <input type="text" class="form-control" formControlName="nombre" placeholder="Nombre">
-              <input type="email" class="form-control mx-1" formControlName="email" placeholder="Correo electrónico">
+              <input type="email" class="form-control mx-1" formControlName="email" placeholder="Correo de gmail">
               <div class="input-group-append mx-2">
                 <button class="btn btn-primary" type="button" (click)="agregarAdmin()">Agregar</button>
               </div>
@@ -110,13 +110,21 @@
 
                   <div class="row" *ngIf="activeTab === 'informacion'">
                     <div class="col-12">
-                      <span class="fs-5 fw-bold">Titulo</span>
-                      <p>{{entidad.text_card}}</p>                      
-                      <span class="fs-5 fw-bold">Información</span>
+                      <div class="mb-3">
+                       <span class="fs-5 fw-bold">Contador de tarjeta</span> 
+                       <p>{{entidad.numero_contador}}</p>
+                       <a class="align-items-center justify-content-center" data-bs-toggle="modal"
+                        data-bs-target="#contadorModal"><img src="../../../../assets/imagenes/cards/editarNaranja.png"
+                          width="22px" alt="" (click)="editInfo()"></a>
+                          <br> 
+                      </div>  
+                      <div>                  
+                      <span class="fs-5 fw-bold">Información</span> 
                       <p [innerHTML]="formatText(entidad.informacion)"></p>
-                      <button class="btn btn-black align-items-center justify-content-center" data-bs-toggle="modal"
+                      <a class="align-items-center justify-content-center" data-bs-toggle="modal"
                         data-bs-target="#exampleModal"><img src="../../../../assets/imagenes/cards/editarNaranja.png"
-                          width="22px" alt="" (click)="editInfo()"></button>
+                          width="22px" alt="" (click)="editInfo()"></a>
+                      </div> 
                     </div>
                   </div>
 
@@ -133,9 +141,9 @@
                       <label>No existe logo</label>                      
                     </div> 
         
-                    <button class="btn btn-black align-items-center justify-content-center" data-bs-toggle="modal"
+                    <a class=" align-items-center justify-content-center" data-bs-toggle="modal"
                         data-bs-target="#logoModal"><img src="../../../../assets/imagenes/cards/editarNaranja.png"
-                          width="22px" alt="" (click)="editInfo()"></button>
+                          width="22px" alt="" (click)="editInfo()"></a>
                     
                     <!-- <div id="backgroundCarousel" class="carousel slide" data-bs-ride="carousel">
                       <div class="carousel-inner">
@@ -225,10 +233,10 @@
         </div>
         <div class="modal-body">
           <form>
-            <div class="form-group">
+            <!-- <div class="form-group">
               <label for="titelInput">Titulo</label>
               <input id="titelInput" class="form-control" [(ngModel)]="entidad.text_card" name="titelInput" rows="3" style="resize: both;">
-            </div>
+            </div> -->
         
             <div class="form-group">
               <label for="textInput">Información</label>
@@ -243,7 +251,7 @@
           </form>
         
           <div class="mt-2 text-end">
-            <button type="button" class="btn btn-warning" (click)="updateInfo(entidad.id, entidad.informacion, entidad.text_card)" data-bs-dismiss="modal">Guardar</button>
+            <button type="button" class="btn btn-warning" (click)="updateInfo(entidad.id, entidad.informacion)" data-bs-dismiss="modal">Guardar</button>
           </div>
         </div>
         
@@ -253,6 +261,32 @@
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
           <button type="button" class="btn btn-primary">Guardar</button>
         </div> -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Contador -->
+  <div class="modal fade" id="contadorModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="exampleModalLabel">Editar contador</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form>
+            <div class="form-group">
+              <label for="titelInput">Contador de tarjeta</label>
+              <input type="number" id="titelInput" class="form-control" [(ngModel)]="entidad.numero_contador" name="titelInput" rows="3" style="resize: both;">
+            </div> 
+
+          </form>
+        
+          <div class="mt-2 text-end">
+            <button type="button" class="btn btn-warning" (click)="updateContadorNumero(entidad.id, entidad.numero_contador)" data-bs-dismiss="modal">Guardar</button>
+          </div>
+        </div>
+        
       </div>
     </div>
   </div>

@@ -15,7 +15,7 @@ export interface Entidades {
     informacion: string;
     direccion: string;
     logo: string;
-    text_card: string;
+    numero_contador: number;
 }
 
 // Converts JSON strings to/from your types

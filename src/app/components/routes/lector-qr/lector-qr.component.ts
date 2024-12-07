@@ -179,7 +179,7 @@ export class LectorQrComponent implements OnInit {
   }
 
   async sumar(): Promise<void> {
-    if (this.data_cafe.contador === 10) {
+    if (this.data_cafe.contador === this.entidad.numero_contador) {
       this.data_cafe.contador = 0;
       this.data_cafe.opcion = 0;
       this.data_cafe.cantidad_gratis = this.data_cafe.cantidad_gratis + 1;

@@ -25,7 +25,7 @@ export class CardSelectionComponent implements OnInit, OnDestroy  {
   upload:boolean = false;
   nombre:any = '';
   foto:any='';
-  contadorArray: number[] = Array(10).fill(0).map((x, i) => i);
+  contadorArray: number[] = Array(0).fill(0).map((x, i) => i);
   @ViewChild('toast') toast!: ToastComponent; // ViewChild está aquí
 
   dataUser:Usuarios = {
@@ -70,6 +70,7 @@ export class CardSelectionComponent implements OnInit, OnDestroy  {
     }); */
     
     this.entidad= this._dataInterna.getEntidad()
+    this.contadorArray = Array(this.entidad.numero_contador).fill(0).map((x, i) => i);
    /*  console.log("USUARIOS US:", this.users);  */
     this.bgClass = `bg-${this._dataInterna.getEntidad().background}-card`;
     this.entidadOpcion = this._dataInterna.getEntidad().background;
@@ -200,7 +201,7 @@ export class CardSelectionComponent implements OnInit, OnDestroy  {
   }
 
   async sumar(){
-    if(this.data_contador.contador==10){
+    if(this.data_contador.contador==this.entidad.numero_contador){
 
       this.data_contador.contador=0;
       this.data_contador.opcion=0;
@@ -287,7 +288,7 @@ onPopupTouch() {
 
   this.popupService.setData(this.uuidCifrado);
   this.popupService.actualizarMostrar(true)
-  if(this.data_contador.contador==10){
+  if(this.data_contador.contador==this.entidad.numero_contador){
     this.popupService.setGratis(true)
   }else{
     this.popupService.setGratis(false)
