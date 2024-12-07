@@ -1,8 +1,7 @@
 import { Component, NgZone, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { SupabaseService } from 'src/app/services/supabase.service';
-import jsPDF from 'jspdf';
-
+import { QzTrayService } from 'src/app/services/qz-tray.service';
 
 @Component({
   selector: 'app-generador-qrs',
@@ -10,14 +9,40 @@ import jsPDF from 'jspdf';
   styleUrls: ['./generador-qrs.component.css']
 })
 export class GeneradorQrsComponent implements OnInit {
-
   quantity: number = 1; // Cantidad de QR a generar
   qrCodes: any[] = []; // QR generados
   entidadName: string = ''; // Nombre de la entidad
+  printers: string[] = []; // Lista de impresoras disponibles
+  selectedPrinter: string = ''; // Impresora seleccionada por el usuario
 
-  constructor(private qrService: SupabaseService, private router: Router, private ngZone: NgZone) {}
+  constructor(private qrService: SupabaseService, private router: Router, private ngZone: NgZone, private qzTrayService: QzTrayService) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.initializar();
+    
+    this.loadPrinters();
+  }
+
+  async initializar() {
+    let a;
+    try {
+      a = await this.qzTrayService.initialize();
+      console.log(a);
+    } catch (error) {
+      console.error('Error al cargar las impresoras:', error);
+    }
+  }
+
+  async loadPrinters() {
+    try {
+      this.printers = await this.qzTrayService.getPrinters();
+      if (this.printers.length > 0) {
+        this.selectedPrinter = this.printers[0]; // Seleccionamos la primera impresora disponible por defecto
+      }
+    } catch (error) {
+      console.error('Error al cargar las impresoras:', error);
+    }
+  }
 
   async generateQRCodes() {
     try {
@@ -30,49 +55,25 @@ export class GeneradorQrsComponent implements OnInit {
     }
   }
 
-  generatePDF() {
-    const doc = new jsPDF({
-      orientation: 'portrait',
-      unit: 'mm',
-      format: [80, this.qrCodes.length * 70 + 20], // Ajustamos el tamaño del papel dinámicamente
-    });
-  
-    let yOffset = 15; // Margen superior inicial más reducido
-  
-    this.qrCodes.forEach((qr, index) => {
-      // Añadir el título en negrita
-      doc.setFontSize(14);
-      doc.setFont('helvetica', 'bold');
-      doc.text(this.entidadName, 40, yOffset, { align: 'center' });
-      yOffset += 2; // Reducimos el espacio entre el título y el QR
-  
-      // Generar el QR
-      const qrCanvas = document.querySelectorAll('qrcode canvas')[index] as HTMLCanvasElement;
-      if (qrCanvas) {
-        const qrImageData = qrCanvas.toDataURL('image/png');
-        doc.addImage(qrImageData, 'PNG', 15, yOffset, 50, 50); // Centrado horizontalmente
-        yOffset += 55; // Dejar espacio después del QR
-      }
-  
-      // Añadir texto descriptivo debajo del QR
-      doc.setFontSize(10);
-      doc.setFont('helvetica', 'normal');
-      doc.text('Escanea para sumar 1 punto', 40, yOffset, { align: 'center' });
-      yOffset += 6;
-      doc.text('https://fidecards.com', 40, yOffset, { align: 'center' });
-      yOffset += 15; // Separación entre QR y el siguiente
-  
-      // Si el contenido excede el límite de la página, crear una nueva
-      if (yOffset > 270 && index < this.qrCodes.length - 1) {
-        doc.addPage();
-        yOffset = 15; // Reiniciamos el margen superior
-      }
-    });
-  
-    // Descargar el archivo PDF
-    doc.save('qrcodes.pdf');
+  // Método para imprimir los QR generados
+  async printQRCodes() {
+    if (!this.selectedPrinter) {
+      console.error('No se ha seleccionado ninguna impresora.');
+      return;
+    }
+
+    try {
+      await this.qzTrayService.setPrinter(this.selectedPrinter); // Configurar la impresora seleccionada
+      const dataToPrint = this.qrCodes.map((qr) => {
+        return `Entidad: ${this.entidadName}\nQR: ${qr.qr_code}\nEscanea para sumar 1 punto\nhttps://fidecards.com`;
+      });
+
+      await this.qzTrayService.print(dataToPrint); // Imprimir los QR
+      console.log('QRs enviados a la impresora');
+    } catch (err) {
+      console.error('Error al imprimir los QR:', err);
+    }
   }
-  
 
   back(): void {
     console.log("back: ");
