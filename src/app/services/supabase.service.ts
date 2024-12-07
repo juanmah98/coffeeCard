@@ -17,6 +17,7 @@ export class SupabaseService {
   private apiUrlUsers = 'https://rwttebejxwncpurszzld.supabase.co/rest/v1/usuarios';
   private apiUrlCafes = 'https://rwttebejxwncpurszzld.supabase.co/rest/v1/contador_cafe';
   private apiUrl = 'https://rwttebejxwncpurszzld.supabase.co/rest/v1';
+  private functionUrl = 'https://rwttebejxwncpurszzld.supabase.co/functions/v1';
   private apiKey = environment.supabaseKey;
 
   private supabase: SupabaseClient;
@@ -79,6 +80,13 @@ export class SupabaseService {
       .select(column);
   }
 
+  async getTablasTotalUsuarios(tabla: string) {
+    return await this.supabase
+      .from(tabla)
+      .select('*')
+  }
+  
+
   async getUsuariosId(id: string) {
     return await this.supabase
       .from(USERS_TABLE)
@@ -105,6 +113,13 @@ export class SupabaseService {
   async postNewUser(data: any) {
     return await this.supabase
       .from("usuarios")
+      .insert(data)
+      .select();
+  }
+
+  async postNewEntity(data: any) {
+    return await this.supabase
+      .from("entidades")
       .insert(data)
       .select();
   }
@@ -228,6 +243,58 @@ export class SupabaseService {
       .select('*');
   }
 
+  async getEntidadesTrue() {
+    return await this.supabase
+      .from('entidades')
+      .select('*')
+      .is('is_active', true)
+  }
+
+  async activateEntityViaEdgeFunction(token: string): Promise<boolean> {
+    try {
+      const response = await fetch(`${this.functionUrl}/entidadToken?token=${token}`); // Llama a la Edge Function
+      if (!response.ok) {
+        console.error('Activation request failed with status:', response.status);
+        return false; // Indica al componente que la activación falló
+      }
+      return true; // Activación exitosa
+    } catch (error) {
+      console.error('Error during activation request:', error);
+      return false; // Indica un error en la activación
+    }
+  }
+  
+  getEntidadRealtime(id: string): Observable<any> {
+    const changes = new Subject<any>();
+    this.supabase.channel('room1').on(
+      'postgres_changes',
+      {
+        event: '*',
+        schema: 'public',
+        table: 'entidades',
+        filter: `id=eq.${id}` // Filtrar por el ID de la entidad
+      },
+      payload => {
+        changes.next(payload);
+      }
+    ).subscribe();
+    return changes.asObservable();
+  }
+  /* async activateEntity(token: string): Promise<any> {
+    const { data, error } = await this.supabase
+      .from('entidades')  // Asegúrate de que esta es la tabla correcta
+      .update({ is_active: true })  // Actualizamos el campo 'activo' a true
+      .eq('activation_token', token);  // Aseguramos que el 'token' coincida con el proporcionado
+
+    if (error) {
+      console.error('Error al activar la entidad:', error);
+      return { error: 'Activación fallida' };
+    }
+
+    return { data };
+  } */
+  
+
   async updateAdmin(id: string, soloLectura: boolean) {
     return await this.supabase
       .from('usuarios_admin')
@@ -236,10 +303,26 @@ export class SupabaseService {
       .select();
   }
 
-  async updateUser(id: string, waitlist: boolean) {
+  async updateInformacion(id: string, informacion: string, text_card: string) {
     return await this.supabase
-      .from('usuarios')
-      .update({ waitlist: waitlist })
+      .from('entidades')
+      .update({ informacion: informacion, text_card: text_card},)
+      .eq('id', id)
+      .select();
+  }
+
+  async updateLogoEntidad(id: string, logo:string) {
+    return await this.supabase
+      .from('entidades')
+      .update({ logo:logo},)
+      .eq('id', id)
+      .select();
+  }
+
+  async updateBackgroundEntidad(id: string, background:string) {
+    return await this.supabase
+      .from('entidades')
+      .update({ background:background},)
       .eq('id', id)
       .select();
   }
@@ -250,4 +333,151 @@ export class SupabaseService {
       .insert(data)
       .select();
   }
+
+
+  /* METODO DE IMAGENES */
+
+  async uploadImage(file: File, folderName: string, fileName: string): Promise<any> {
+    try {
+      // Crear una ruta dentro del bucket
+      const filePath = `${folderName}/${fileName}`;
+      
+      // Subir la imagen
+      const { data, error } = await this.supabase.storage
+        .from('logos') // Nombre del bucket
+        .upload(filePath, file, {
+          cacheControl: '3600', // Opcional
+          upsert: false // Evitar sobrescribir archivos existentes
+        });
+      
+      if (error) {
+        throw error;
+      }
+
+      return data;
+    } catch (error) {
+      console.error('Error al subir la imagen: ', error);
+      throw error;
+    }
+  }
+
+  // Método para obtener la URL pública de la imagen
+  async getPublicImageUrl(filePath: string): Promise<string> {
+    const { data } = this.supabase.storage
+      .from('logos/logos_fidelity')
+      .getPublicUrl(filePath);
+
+    return data?.publicUrl || '';
+  }
+
+  async updateImage(file: File, folderName: string, fileName: string): Promise<any> {
+    try {
+      // Crear una ruta dentro del bucket
+      const filePath = `${folderName}/${fileName}`;
+      
+      // Subir la imagen
+      const { data, error } = await this.supabase.storage
+        .from('logos') // Nombre del bucket
+        .update(filePath, file, {
+          cacheControl: '3600', // Opcional
+          upsert: false // Evitar sobrescribir archivos existentes
+        });
+      
+      if (error) {
+        throw error;
+      }
+
+      return data;
+    } catch (error) {
+      console.error('Error al subir la imagen: ', error);
+      throw error;
+    }
+  }
+
+
+// Generar múltiples QR para una entidad
+async generateQRCodes(entidadId: string, quantity: number): Promise<any[]> {
+  const qrCodes = Array.from({ length: quantity }, () => ({
+    qr_code: `${entidadId}-${Math.random().toString(36).substr(2, 10)}`,
+    entidad_id: entidadId,
+  }));
+
+  // Insertar los QR en la base de datos
+  const { data, error } = await this.supabase.from('qrs').insert(qrCodes).select();
+
+  if (error) {
+    console.error('Error al generar QR:', error);
+    throw error;
+  }
+
+  // Retornar los datos insertados (QR generados)
+  return data || [];
+}
+
+
+
+  // Validar un QR al ser escaneado
+  async validateQRCode(qrCode: string, userId: string, usuario:string): Promise<any> {
+    try {
+      // Verificar si el QR existe
+      const { data: qrData, error: qrError } = await this.supabase
+        .from('qrs')
+        .select('*')
+        .eq('qr_code', qrCode)
+        .single(); // Obtén un único registro
+  
+      if (qrError) {
+        console.error('Error buscando el QR:', qrError);
+        return { success: false, message: 'Error al buscar el QR.' };
+      }
+  
+      if (!qrData) {
+        return { success: false, message: 'El QR no existe en la base de datos.' };
+      }
+  
+      // Verificar si el QR ya fue usado
+      if (qrData.is_used) {
+        return { success: false, message: 'El QR ya fue usado.' };
+      }
+  
+      // Actualizar el registro del QR
+      const { data: updateData, error: updateError } = await this.supabase
+        .from('qrs')
+        .update({ is_used: true, used_at: new Date(), usuario: usuario })
+        .eq('qr_code', qrCode);
+  
+      if (updateError) {
+        console.error('Error actualizando el QR:', updateError);
+        return { success: false, message: 'No se pudo actualizar el QR.' };
+      }
+  
+      return {
+        success: true,
+        message: 'Punto sumado con éxito.',
+        data: updateData,
+      };
+    } catch (error) {
+      console.error('Error en validateQRCode:', error);
+      return { success: false, message: 'Ocurrió un error inesperado.' };
+    }
+  }
+  
+
+  async getEntidadName(entidadId: string): Promise<string> {
+    const { data, error } = await this.supabase
+      .from('entidades') // Reemplaza con tu tabla
+      .select('nombre')  // Asegúrate de que 'name' sea el campo correcto
+      .eq('id', entidadId)
+      .single();
+  
+    if (error) {
+      console.error('Error al obtener nombre de la entidad:', error);
+      throw error;
+    }
+  
+    return data?.nombre || 'Entidad desconocida';  // Si no se encuentra nombre, retornar uno por defecto
+  }
+  
+  
+  
 }

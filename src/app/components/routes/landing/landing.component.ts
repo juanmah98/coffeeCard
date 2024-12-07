@@ -18,4 +18,10 @@ export class LandingComponent implements OnInit {
       this.router.navigate(['/home'])
       }); 
   }
+
+  accionComercio(){
+    this.ngZone.run(() => {   
+      this.router.navigate(['/registro'])
+      }); 
+  }
 }

@@ -30,6 +30,8 @@ export class InternoService {
       "fecha_creacion": new Date(),
       "pais": '',
       "informacion":'',
+      "direccion":'',
+      "logo":'',
       "text_card":''
   });
 
@@ -44,7 +46,7 @@ export class InternoService {
 
 private coockies = new BehaviorSubject<boolean>(true);
 private onlyScaner = new BehaviorSubject<boolean>(false);
-
+private dataContador: any;
 private userAll = new BehaviorSubject<Usuarios[]>([]);
 
   miControl$ = this.logged.asObservable();
@@ -83,7 +85,7 @@ private userAll = new BehaviorSubject<Usuarios[]>([]);
     }
     if (userAdminString) {
       const userAdmin = JSON.parse(userAdminString);
-      this.logged.next(userAdmin);
+      this.userAdmin.next(userAdmin);
     }
 
      if (entidadString) {
@@ -152,5 +154,13 @@ private userAll = new BehaviorSubject<Usuarios[]>([]);
   setEntidad(valor: Entidades): void {
     this.entidad.next(valor);
     localStorage.setItem('entidad', JSON.stringify(valor));
+  }
+
+  setDataContador(data: any): void {
+    this.dataContador = data;
+  }
+
+  getDataContador(): any {
+    return this.dataContador;
   }
 }

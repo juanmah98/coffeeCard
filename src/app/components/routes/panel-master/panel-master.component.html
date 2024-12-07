@@ -1,4 +1,7 @@
 <body class="container-fluid pt-5">
+  <div class="col-12">
+    <button  class="btn btn m-2" (click)="back()"><img class=" pb-1" src="../../../../assets/imagenes/cards/back2.png" width="18px" alt=""></button>
+</div>
   <div class="container text-center ">
     <!-- Header Section -->
     <div class="d-flex justify-content-center align-items-center mb-4">
@@ -23,18 +26,31 @@
       </div>
       <div class="col-10 col-sm-4">
         <div class="bg-secondary p-3 m-1 rounded">
-          <h2>20</h2>
+          <h2>{{totalAdmins}}</h2>
+          <p class="fw-bold">ADMINS</p>
+        </div>
+      </div>
+      <div class="col-10 col-sm-4">
+        <div class="bg-secondary p-3 m-1 rounded">
+          <h2>{{totalRegalos}}</h2>
           <p class="fw-bold">REGALOS</p>
         </div>
       </div>
+      <div class="col-10 col-sm-4">
+        <div class="bg-secondary p-3 m-1 rounded">
+          <h2>{{totalQrs}}</h2>
+          <p class="fw-bold">QR GENERADOS</p>
+        </div>
+      </div>
+      
     </div>
   
     <!-- Top 5 Section -->
     <div class="row justify-content-center">
       <div class="col-10 col-sm-6 bg-light p-4 rounded text-black">
-      <h3 class="mb-4">TOP 5 <span class="text-green">ENTIDADES</span></h3>
-      <ul class="list-unstyled text-start" *ngFor="let entidad of entidades, let i = index">
-        <li>{{i+1}} - {{entidad.nombre}} <img src="../../../../assets/imagenes/landing/usuarios.png" width="20px" alt=""><span class="fw-bold text-green">45</span></li>
+      <h3 class="mb-4">TOP <span class="text-green">ENTIDADES</span></h3>
+      <ul class="list-unstyled text-start" *ngFor="let entidad of usuariosAdmin, let i = index">
+        <li>{{i+1}} - {{entidad.nombre}} <img src="../../../../assets/imagenes/landing/usuarios.png" width="20px" alt=""><span class="fw-bold text-green">{{entidad.usuarios}}</span><span class="fw-bold text-green"> - </span><img src="../../../../assets/imagenes/landing/regalo.png" class="" width="20px" alt=""><span class="fw-bold text-green">{{entidad.regalo}}</span></li>
        
       </ul>
     </div>

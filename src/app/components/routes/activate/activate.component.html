@@ -1,0 +1,8 @@
+<div class="activation-container">
+  <div class="col">
+    <h2>{{ activationStatus }}</h2>
+    
+    <!-- El botón solo se muestra si la entidad fue activada correctamente -->
+    <button *ngIf="activo" class="btn btn-dark" (click)="redirect()">Ingresar</button>
+  </div>
+</div>

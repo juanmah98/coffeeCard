@@ -1,0 +1,7 @@
+body{
+    min-height: 100vh;
+    background-image: linear-gradient(rgba(11, 11, 11, 0.596), rgba(31, 31, 31, 0.568)), url("../../../../assets/imagenes/backGrounds/registro2.jpg");
+
+
+    background-position: center; /* Centra la imagen en el contenedor */
+  }

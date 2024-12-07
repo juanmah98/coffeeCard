@@ -1,5 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, NgZone, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { SupabaseService } from 'src/app/services/supabase.service';
+import { Entidades } from 'src/app/interfaces/entdidades';
 
 @Component({
   selector: 'app-registro-empresas',
@@ -8,33 +11,85 @@ import { Router } from '@angular/router';
 })
 export class RegistroEmpresasComponent implements OnInit {
 
-  company = {
-    name: '',
-    contactEmail: '',
-    phone: '',
-    address: '',
-    description: '',
-    category: '',
-    logo: null
-  };
+  companyForm: FormGroup;
+  status:string = '1';
+  constructor(private router: Router, private fb: FormBuilder, private _supaServices: SupabaseService, private ngZone: NgZone,) {
+    // Inicializa el formulario
+    this.companyForm = this.fb.group({
+      nombre: ['', Validators.required],
+      email: ['', [Validators.required, Validators.email]],
+      pais: ['', Validators.required],
+      direccion: ['', Validators.required],
+      /* descripcion: ['', Validators.required], */
+      categoria: ['', Validators.required],
+      logo: [''], // Se usará para almacenar el archivo de logo
+      informacion:['', Validators.required],
+      titulo:['', Validators.required],
 
-  constructor(private router: Router) {}
-  ngOnInit(): void {
-    throw new Error('Method not implemented.');
+    });
   }
 
-
-
+  ngOnInit(): void {}
 
   onSubmit() {
-    // Enviar los datos del formulario al backend
-    this.registerCompany();
+    if (this.companyForm.valid) {
+      this.registerCompany();
+    }
   }
 
-  registerCompany() {
-    // Lógica para enviar los datos de la empresa al backend
-    console.log(this.company);
-    // Ejemplo de redirección después del registro
-    this.router.navigate(['/welcome']);
+  async registerCompany() {
+    // Muestra los datos en consola
+    const entidad: any = {
+      nombre: this.companyForm.value.nombre.toLowerCase(),
+      email: this.companyForm.value.email.toLowerCase(),
+      background: '1',
+      tabla_contador: '',
+      fecha_creacion: new Date(),
+      pais: this.companyForm.value.pais.toLowerCase(),
+      informacion: this.companyForm.value.informacion,
+      direccion: this.companyForm.value.direccion.toLowerCase(),
+      text_card: this.companyForm.value.titulo.toLowerCase(),
+      logo: ''
+    }; 
+   console.log(entidad)
+   await this.uploadLogo( this.companyForm.value.logo,  this.companyForm.value.nombre)
+   console.log("antes de logo")
+   const logoUrl: any = await this._supaServices.getPublicImageUrl(this.companyForm.value.nombre)
+  entidad.logo = logoUrl;
+      const responseUser:any = (await this._supaServices.postNewEntity(entidad)).data;
+      this.redirect()
+     // Muestra los datos en consola
+    /*  this.router.navigate(['/welcome']); */ 
+
+    
+  }
+
+  async uploadLogo(file: File, nombre: string) {
+    console.log("en logos")
+    
+      try {
+        const response = await this._supaServices.uploadImage(file, "logos_fidelity", nombre);  // Aquí subimos el archivo real
+        console.log('Logo subido con exito', response);
+      } catch (error) {
+        console.error('Error al subir el logo:', error);
+      }
+  }
+
+  redirect(): void {
+    this.companyForm.reset();
+    this.ngZone.run(() => {   
+      this.router.navigate(['/home']);
+      }); 
+  }
+
+  onLogoSelected(event: Event) {
+    const fileInput = event.target as HTMLInputElement;
+    if (fileInput.files && fileInput.files.length > 0) {
+      this.companyForm.patchValue({ logo: fileInput.files[0] });
+    }
+  }
+
+  statusChange(dato:string){
+    this.status = dato;
   }
 }

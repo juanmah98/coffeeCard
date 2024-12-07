@@ -17,6 +17,9 @@ import { LandingComponent } from './landing/landing.component';
 import { EmployeeSalaryComponent } from './employee-salary/employee-salary.component';
 import { RegistroEmpresasComponent } from './registro-empresas/registro-empresas.component';
 import { PanelMasterComponent } from './panel-master/panel-master.component';
+import { ActivateComponent } from './activate/activate.component';
+import { GeneradorQrsComponent } from './generador-qrs/generador-qrs.component';
+import { LectorQrUsuarioComponent } from './lector-qr-usuario/lector-qr-usuario.component';
 
 
 
@@ -33,7 +36,10 @@ import { PanelMasterComponent } from './panel-master/panel-master.component';
     LandingComponent,
     EmployeeSalaryComponent,
     RegistroEmpresasComponent,
-    PanelMasterComponent
+    PanelMasterComponent,
+    ActivateComponent,
+    GeneradorQrsComponent,
+    LectorQrUsuarioComponent
    
     
   ],

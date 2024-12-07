@@ -2,7 +2,7 @@
 
     <div class="container-fluid">
         <div class="row justify-content-center">
-            <div class="col pb-5  d-flex justify-content-center align-items-center">
+            <div class="col-12 pb-5  d-flex justify-content-center align-items-center">
                 <div *ngIf="loading" class="col">
                     <div class="row justify-content-center">
                         <!-- <h1 class="text-center text-dark custom-shadow" style="font-family: Digi;">Fidelity</h1>   -->                      
@@ -10,6 +10,8 @@
                             <h3 class="pb-4">INGRESAR</h3> 
                             <button id="buttonDiv" class="googleButton text-center">INICIAR</button>                  
                         </div>
+
+                       
 
                         <div *ngIf="paisOpcion == true" class="col-4 loginContainer justify-content-center" style="font-family: OpenSans;">
                             <h5 class="pb-1 pt-1">Selecciona tu pais</h5> 
@@ -88,6 +90,10 @@
                     <img class="mb-2" src="../../../../assets/imagenes/logos/GIFT02.gif" width="40%" alt="">
                     <span class="mt-2"><p class="text-center text-light fs-5 custom-shadow" style="font-family: Fidelity-r;">CREANDO USUARIO...</p> </span>
                 </div>
+            </div>
+
+            <div class="col-10 text-center text-light " style="font-family: OpenSans;">
+                <p class="ref " (click)="landing()">¿Qué es Fidelity?</p>
             </div>
 
         </div>   

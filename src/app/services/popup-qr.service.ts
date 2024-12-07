@@ -18,7 +18,7 @@ export class PopupQrService {
 
   actualizarMostrar(valor: boolean) {
     this.mostrar = valor;
-    console.log("valor: ", valor)
+    /* console.log("valor: ", valor) */
   }
 
  /*  actualizarGratis(valor: boolean) {

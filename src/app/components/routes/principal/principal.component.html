@@ -1,51 +1,52 @@
 <body>
-    
-    <div class="container-fluid ">
-
-       <div class="row justify-content-end text-end">
-            <div class="col-12">
-                <button class="btn btn-black m-2" (click)="clearStorage()"><img class=" pb-1" src="../../../../assets/imagenes/cards/out.png" width="18px" alt=""></button>
-            </div>
-        </div>
-
-            <div class="row justify-content-center text-center pt-3">
-                
-                <div class="col-12 text-center justify-content-center">
-                   
-                   
-                        <img class="pb-1" src="../../../../assets/imagenes/logos/GiftNew.gif" width="210px" alt="">
-                       <!--  <h2 class="text-white mt-3" style="font-family: 'Courier New', Courier, monospace">WELCOME</h2> -->
-                   
-                    <h3 class="text-white mt-2 mt-3" style="font-family: 'Courier New', Courier, monospace">Selecciona tu tarjeta favorita</h3>
-                </div>
-               <!--  <div class="col-6 text-center">
-                    
-                    <h2 class="text-white mt-2" style="font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;">FIDELITY CARD</h2>
-                </div> -->
-
-                <div>
-                    <button class="btn text-center" (click)="usuario.pais='argentina'"><img src="../../../../assets/imagenes/paises/argentina.png" width="55px" alt=""></button>                  
-                    <button class="btn text-center"  (click)="usuario.pais='españa'"><img src="../../../../assets/imagenes/paises/españa.png" width="55px" alt=""></button>   
-                    <button class="btn text-center"  (click)="usuario.pais='todos'"><img src="../../../../assets/imagenes/paises/todos.png" width="55px" alt=""></button>   
-                </div>
-            </div>
-
-            <div class="container-fluid pt-2 mt-1">
-                <div class="container ">
-                    <div class="row text-center justify-content-center" *ngFor="let entidad of entidades">
-                      <div class="card col-md-4 col-sm-6 col-10 m-4" *ngIf="usuario.pais == entidad.pais || usuario.pais == 'todos'" (click)="run(entidad)">
-                        <div class="w-50 m-auto">
-                          <!--  <img src="../../../../assets/imagenes/Clients/SpaceWhite.png" class="img-fluid" alt="..."> -->
-                          <img *ngIf="(usuario.pais == 'argentina' || usuario.pais == 'todos') && entidad.pais == 'argentina'" src="../../../../assets/imagenes/Clients/SpaceWhite.png" class="img-fluid" alt="...">
-                          <h4 *ngIf="(usuario.pais == 'españa' || usuario.pais == 'todos') && entidad.pais == 'españa'" class="text-center text-white custom-shadow" style="font-family: Sil;">LA PIAZZETTA</h4>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  
+  <div class="container-fluid ">
+      <div class="row justify-content-end text-end">
+          <div class="col-12">
+              <button class="btn btn-black m-2" (click)="clearStorage()">
+                  <img class="pb-1" src="../../../../assets/imagenes/cards/out.png" width="18px" alt="">
+              </button>
           </div>
-          
-              
-    </div>
-    
+      </div>
+
+      <div class="row justify-content-center text-center pt-3">
+          <div class="col-12 text-center justify-content-center">
+              <img class="pb-1" src="../../../../assets/imagenes/logos/GiftNew.gif" width="210px" alt="">
+              <h3 class="text-white mt-2 mt-3" style="font-family: 'Courier New', Courier, monospace">Selecciona tu tarjeta favorita</h3>
+          </div>
+
+          <div>
+              <button class="btn text-center" (click)="usuario.pais='argentina'">
+                  <img src="../../../../assets/imagenes/paises/argentina.png" width="55px" alt="">
+              </button>
+              <button class="btn text-center" (click)="usuario.pais='españa'">
+                  <img src="../../../../assets/imagenes/paises/españa.png" width="55px" alt="">
+              </button>
+              <button class="btn text-center" (click)="usuario.pais='todos'">
+                  <img src="../../../../assets/imagenes/paises/todos.png" width="55px" alt="">
+              </button>
+          </div>
+      </div>
+
+      <div class="container-fluid pt-2 mt-1">
+          <div class="container">
+              <div class="row text-center justify-content-center">
+                  <!-- Añadido un div contenedor para usar *ngFor -->
+                  <ng-container *ngFor="let entidad of entidades">
+                      <div class="card col-md-4 col-sm-6 col-10" *ngIf="usuario.pais == entidad.pais || usuario.pais == 'todos'" (click)="run(entidad)">
+                          <div class="w-50 m-auto">
+                              <img *ngIf="entidad.logo; else nombreTemplate" [src]="entidad.logo" width="50%" class="img-fluid" alt="{{ entidad.nombre }}">
+                              <ng-template #nombreTemplate>
+                                  <h4 class="text-center text-white custom-shadow" style="font-family: Sil;">
+                                      <span *ngFor="let palabra of entidad.nombre.split(' '); let last = last">
+                                          {{ palabra }}<span *ngIf="!last"><br /></span>
+                                      </span>
+                                  </h4>
+                              </ng-template>
+                          </div>
+                      </div>
+                  </ng-container>
+              </div>
+          </div>
+      </div>
+  </div>
 </body>

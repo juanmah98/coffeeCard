@@ -1,12 +1,10 @@
 body {
-   background: rgb(0,0,0);  
+  background: rgb(0, 0, 0);
   background-image: linear-gradient(60deg, rgba(0, 0, 0, 0.421) 0%, rgba(0, 0, 0, 0.947) 35%, rgba(0, 0, 0, 0.903) 100%), url("../../../../assets/imagenes/logos/FidelityCardBackgroundBLANCO.png");
   min-height: 100vh;
   margin: 0;
   padding-top: 1rem;
   padding-bottom: 1.5rem;
-
-
   background-position: center; /* Centra la imagen en el contenedor */
 }
 
@@ -46,15 +44,26 @@ body {
   font-size: 16px;
 }
 
+/* Nuevos estilos para centrar las tarjetas */
+.row {
+  display: flex; /* Hacer que la fila use Flexbox */
+  justify-content: center; /* Centra las tarjetas en la fila */
+  flex-wrap: wrap; /* Permite que las tarjetas se ajusten a la siguiente línea si no hay espacio */
+}
+
 .card {
-  height: 200px;
-  background: transparent;
+  display: flex; /* Flexbox en la tarjeta para centrar el contenido */
+  flex-direction: column; /* Organiza el contenido en columna */
+  align-items: center; /* Centra horizontalmente el contenido */
+  justify-content: center; /* Centra verticalmente el contenido */
+  height: 200px; /* Establece una altura uniforme para todas las tarjetas */
+  margin: 1rem; /* Espacio entre tarjetas */
+  background: transparent; /* Fondo transparente para la tarjeta */
   transition: all 0.4s;
   border-radius: 10px;
   box-shadow: 0px 0px 10px 5px rgba(46, 46, 46, 0);
   font-size: 30px;
   font-weight: 900;
-  max-width: 300px;
 }
 
 .card:hover {
@@ -65,73 +74,18 @@ body {
   background: rgba(13, 13, 13, 0.584);
 }
 
-.first-content {
-  height: 100%;
-  width: 100%;
-  transition: all 0.4s;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  opacity: 1;
-  border-radius: 15px;
-}
-
-.card:hover .first-content {
-  height: 0px;
-  opacity: 0;
-}
-
-.second-content {
-  height: 0%;
-  width: 100%;
-  opacity: 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border-radius: 15px;
-  transition: all 0.4s;
-  font-size: 0px;
-  transform: rotate(90deg) scale(-1);
-}
-
-.card:hover .second-content {
-  opacity: 1;
-  height: 100%;
-  font-size: 1.8rem;
-  transform: rotate(0deg);
-}
-
-.mac {
-  width: 60%;
-}
-
-.move {
-  -webkit-animation-name: hvr-bob-float, hvr-bob;
-  animation-name: hvr-bob-float, hvr-bob;
-  -webkit-animation-duration: .3s, 1.5s;
-  animation-duration: .3s, 1.5s;
-  -webkit-animation-delay: 0s, .3s;
-  animation-delay: 0s, .3s;
-  -webkit-animation-timing-function: ease-out, ease-in-out;
-  animation-timing-function: ease-out, ease-in-out;
-  -webkit-animation-iteration-count: 1, infinite;
-  animation-iteration-count: 1, infinite;
-  -webkit-animation-fill-mode: forwards;
-  animation-fill-mode: forwards;
-  -webkit-animation-direction: normal, alternate;
-  animation-direction: normal, alternate;
+.text-center {
+  margin-bottom: 20px; /* Espacio para los elementos centrados */
 }
 
 @media (max-width: 596px) {
   body {
-   /*  height: 100vh; */
-    padding-bottom: 3rem;
+      padding-bottom: 3rem;
   }
 }
 
 @media (max-width: 500px) {
   body {
-    /* height: auto; */
-    padding-bottom: 3rem;
+      padding-bottom: 3rem;
   }
 }
