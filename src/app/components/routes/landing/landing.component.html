@@ -92,6 +92,17 @@
             <img src="../../../../assets/imagenes/landing/qr.png" alt="Registro" class="img-fluid mb-3 qr">
           </div>
         </div>
+
+        <div class="row mt-5">
+          <h4>Vistazo rapido de la app</h4>
+          <div class="d-flex overflow-auto mt-2 mb-5 pb-2">
+            <div *ngFor="let image of images" class="flex-shrink-0 me-3">
+                <span [innerHTML]="image.titulo"></span><br>
+                <img src="{{image.url}}" class="img-fluid" style="max-width: 200px;" alt="...">
+            </div>
+        </div>
+        
+        </div>
       </section>
 
 </body>
