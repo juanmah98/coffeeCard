@@ -24,7 +24,7 @@ export class RegistroEmpresasComponent implements OnInit {
       categoria: ['', Validators.required],
       logo: [''], // Se usará para almacenar el archivo de logo
       informacion:['', Validators.required],
-      titulo:['', Validators.required],
+      /* titulo:['', Validators.required], */
 
     });
   }
@@ -48,7 +48,7 @@ export class RegistroEmpresasComponent implements OnInit {
       pais: this.companyForm.value.pais.toLowerCase(),
       informacion: this.companyForm.value.informacion,
       direccion: this.companyForm.value.direccion.toLowerCase(),
-      text_card: this.companyForm.value.titulo.toLowerCase(),
+      /* text_card: this.companyForm.value.titulo.toLowerCase(), */
       logo: ''
     }; 
    console.log(entidad)
