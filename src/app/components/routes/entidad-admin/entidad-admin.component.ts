@@ -230,7 +230,12 @@ export class EntidadAdminComponent implements OnInit {
     /* console.log("Update rol", response); */  
   }
 
+  async eliminarAdmin(admin: Usuarios_admins) {
 
+    const response:any = (await this.supabaseService.deletedAdmin(admin.id)).data;
+    /*  console.log("Admin eliminado", response);   */
+     this.ngOnInit()
+  }
 
 
   async agregarAdmin() {

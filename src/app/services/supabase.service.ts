@@ -342,6 +342,13 @@ export class SupabaseService {
       .select();
   }
 
+  async deletedAdmin(id: any) {
+    return await this.supabase
+      .from("usuarios_admin")
+      .delete()
+      .eq('id', id)
+  }
+
 
   /* METODO DE IMAGENES */
 

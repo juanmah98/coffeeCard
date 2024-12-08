@@ -42,7 +42,7 @@ export class LectorQrComponent implements OnInit {
 
   constructor(private cdr: ChangeDetectorRef, private _SupabaseService: SupabaseService, private router: Router, private _InternoServices: InternoService, private ngZone: NgZone, private authService: AuthService) { }
 
-  ngOnInit(): void {
+  async ngOnInit(): Promise<void> {
     this.startCamera();
     this.initScanInterval();
     this.entidad = this._InternoServices.getEntidad();
