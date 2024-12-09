@@ -32,7 +32,9 @@ export class InternoService {
       "informacion":'',
       "direccion":'',
       "logo":'',
-      "numero_contador":0
+      "numero_contador":0,
+      "qr_digital": true,
+      "qr_papel": false
   });
 
   private userAdmin = new BehaviorSubject<Usuarios_admins>({

@@ -263,6 +263,15 @@ export class EntidadAdminComponent implements OnInit {
     }
   }
 
+  async toggQr_papel(entidad: Entidades) {
+    entidad.qr_papel = !entidad.qr_papel;
+    this.entidad.qr_papel = entidad.qr_papel;
+  
+    this.internoService.setEntidad(this.entidad);
+    const response:any = (await this.supabaseService.updateQr_papel(entidad.id, entidad.qr_papel)).data;
+     console.log("Update rol", response);
+  }
+
   clearStorage(): void {
    const coockies = this.internoService.getCoockes()
     localStorage.clear();

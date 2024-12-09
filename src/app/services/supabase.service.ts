@@ -319,6 +319,14 @@ export class SupabaseService {
       .select();
   }
 
+  async updateQr_papel(id: string, qr_papel: boolean) {
+    return await this.supabase
+      .from('entidades')
+      .update({ qr_papel: qr_papel })
+      .eq('id', id)
+      .select();
+  }
+
   async updateLogoEntidad(id: string, logo:string) {
     return await this.supabase
       .from('entidades')

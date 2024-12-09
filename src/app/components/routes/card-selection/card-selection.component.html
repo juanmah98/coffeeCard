@@ -93,7 +93,7 @@
                         <p *ngIf="data_contador.contador!=entidad.numero_contador" class="text-center fs-5 pt-3 mb-1">Total puntos: <b>{{data_contador.contador}}</b></p>
                         <p *ngIf="data_contador.contador==entidad.numero_contador" class="text-center fs-5 pt-3 mb-1">¡Reclama! <img src="../../../../assets/imagenes/cards/flecha-correcta.png" class="flecha-parpadeo" width="20px" alt=""></p>
                        <!--  <p *ngIf="entidadOpcion=='2'" class="text-center fs-5 pt-3 mb-1">Total puntos: <b>{{data_contador.contador}}</b></p> -->
-                       <div *ngIf="entidad.nombre == 'space burguer' && data_contador.contador!=entidad.numero_contador">
+                       <div *ngIf="entidad.qr_papel == true && data_contador.contador!=entidad.numero_contador">
 
                         <button class="btn btn-dark mt-2" (click)="qrscanuser()"><img src="../../../../assets/imagenes/cards/codigo-qr-scan.png" width="28px" alt=""></button>
                        </div>

@@ -16,6 +16,8 @@ export interface Entidades {
     direccion: string;
     logo: string;
     numero_contador: number;
+    qr_digital: boolean;
+    qr_papel: boolean
 }
 
 // Converts JSON strings to/from your types

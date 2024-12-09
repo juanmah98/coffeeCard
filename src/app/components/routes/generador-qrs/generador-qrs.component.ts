@@ -2,6 +2,8 @@ import { Component, NgZone, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { SupabaseService } from 'src/app/services/supabase.service';
 import { QzTrayService } from 'src/app/services/qz-tray.service';
+import { InternoService } from 'src/app/services/interno.service';
+import { Entidades } from 'src/app/interfaces/entdidades';
 
 @Component({
   selector: 'app-generador-qrs',
@@ -14,10 +16,12 @@ export class GeneradorQrsComponent implements OnInit {
   entidadName: string = ''; // Nombre de la entidad
   printers: string[] = []; // Lista de impresoras disponibles
   selectedPrinter: string = ''; // Impresora seleccionada por el usuario
+  entidad!: Entidades;
 
-  constructor(private qrService: SupabaseService, private router: Router, private ngZone: NgZone, private qzTrayService: QzTrayService) {}
+  constructor(private qrService: SupabaseService, private router: Router, private ngZone: NgZone, private qzTrayService: QzTrayService, private internoService: InternoService) {}
 
   ngOnInit(): void {
+    this.entidad = this.internoService.getEntidad();
     this.initializar();
     
     this.loadPrinters();
@@ -46,7 +50,7 @@ export class GeneradorQrsComponent implements OnInit {
 
   async generateQRCodes() {
     try {
-      const entidadId = 'acea5b45-6b7d-4464-bf68-e13fde1e7b97'; // Reemplaza con el UUID de la entidad actual
+      const entidadId = this.entidad.id; // Reemplaza con el UUID de la entidad actual
       this.entidadName = await this.qrService.getEntidadName(entidadId); // Obtener el nombre de la entidad
       this.qrCodes = await this.qrService.generateQRCodes(entidadId, this.quantity);
       console.log('QR Codes generados:', this.qrCodes);

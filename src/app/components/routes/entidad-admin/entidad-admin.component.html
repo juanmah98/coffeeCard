@@ -119,13 +119,19 @@
                           width="22px" alt="" (click)="editInfo()"></a>
                           <br> 
                       </div>  
-                      <div>                  
+                      <div class="mb-3">                  
                       <span class="fs-5 fw-bold">Información</span> 
                       <p [innerHTML]="formatText(entidad.informacion)"></p>
                       <a class="align-items-center justify-content-center" data-bs-toggle="modal"
                         data-bs-target="#exampleModal"><img src="../../../../assets/imagenes/cards/editarNaranja.png"
                           width="22px" alt="" (click)="editInfo()"></a>
                       </div> 
+
+                      <div *ngIf="entidad.nombre == 'space burguer' || entidad.nombre == 'lapiazzetta'">
+                        <span class="fs-5 fw-bold">Sumar punto con tickets</span><br>
+                        <span [ngClass]="{'editable': entidad.qr_papel, 'editableFalse': !entidad.qr_papel}" (click)="toggQr_papel(entidad)">
+                          {{ entidad.qr_papel ? 'Activado' : 'Desactivado' }}</span>
+                      </div>
                     </div>
                   </div>
 
