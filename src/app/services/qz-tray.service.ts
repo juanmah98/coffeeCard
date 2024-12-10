@@ -2,25 +2,21 @@ import { Injectable } from '@angular/core';
 import * as qz from 'qz-tray';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class QzTrayService {
-
-  constructor() {this.configureQZTraySecurity();}
-
-  // Inicializar QZ Tray
-  async initialize(): Promise<void> {
+  constructor() {
     this.configureQZTraySecurity();
-    try {
-      await qz.websocket.connect();
-      console.log("Conexión exitosa con QZ Tray");
-    } catch (err) {
-      console.error("Error al conectar con QZ Tray:", err);
-    }
   }
 
-   // Configura la seguridad de QZ Tray
-   private configureQZTraySecurity(): void {
+  // Configurar la seguridad de QZ Tray
+  private configureQZTraySecurity(): void {
+   
+   
+    
+  
+
+
     qz.security.setCertificatePromise((resolve, reject) => {
       resolve(`-----BEGIN CERTIFICATE-----
         MIIEDzCCAvegAwIBAgIUYaXhs8ECfY5lgbtYDkYQK1G7AyMwDQYJKoZIhvcNAQEL
@@ -45,41 +41,68 @@ export class QzTrayService {
         SE08/NdqF4A3tXyUxA+Uj0m6XTJdqLbdObijbdUprDbxNUKO+pgWiX2T+r7VY/+l
         gzKYb87Bj40JzD1fRQgtUR4JCwA6EeoxEICNInTGZgp4vWNM/bBDEGr3anNhR5AM
         dSfZfIGJJjsES0qFo+t0NEDhJbmI0qe4v+xXCPLmm7S8FJY=
-        -----END CERTIFICATE-----`);;
+        -----END CERTIFICATE-----`);
     });
 
-    qz.security.setSignatureAlgorithm("SHA512");
-    qz.api.setSha256Type(data => sha256(data));
-    qz.security.setSignaturePromise((toSign) => {
+    qz.security.setSignatureAlgorithm('SHA1');
+
+    qz.api.setSha256Type((data:any) => sha256(data));
+
+    
+   /*  qz.security.setSignaturePromise((toSign) => {
       return new Promise((resolve, reject) => {
-        try {
-          // Ensure that the 'resolve' function is correctly defined
-          resolve(toSign);
-        } catch (error) {
-          reject('Error in signing process: ' + error);
-        }
+          try {
+              const signature = this.simulateSigning(toSign);
+              resolve(signature);  // Promesa resuelta correctamente
+          } catch (error) {
+              reject('Error al firmar: ' + error);  // Promesa rechazada
+          }
       });
-    });
+  }); */
+  
+    
+   
+    
   }
 
-  // Desconectar QZ Tray
-  disconnect(): void {
-    qz.websocket.disconnect();
+ simulateSigning(toSign:string) {
+    // Aquí deberías generar una firma real con el certificado y la clave privada
+    return "simulated-signature"; // Esta es solo una simulación, reemplaza con lógica real
   }
+
+  // Inicializar QZ Tray
+  async initialize(): Promise<void> {
+    try {
+      await qz.websocket.connect();
+      console.log('Conexión exitosa con QZ Tray');
+    } catch (err) {
+      console.error('Error al conectar con QZ Tray:', err);
+    }
+  }
+
+  // Obtener lista de impresoras
+  async getPrinters(): Promise<string[]> {
+    try {
+        console.log('Buscando impresoras...');
+        const printers = await qz.printers.find();
+        console.log('Impresoras detectadas:', printers);
+        return typeof printers === 'string' ? [printers] : printers;
+    } catch (err) {
+        console.error('Error obteniendo impresoras:', err);
+        return [];
+    }
+}
+
 
   // Configurar impresora
-  setPrinter(printerName: string): void {
-    qz.printers.find(printerName).then((printer) => {
-      if (typeof printer === 'string') {
-        qz.configs.create(printer);
-      } else if (Array.isArray(printer)) {
-        console.error("Se encontraron múltiples impresoras. Por favor, especifique una.");
-      }
-    }).catch((err) => {
-      console.error("Impresora no encontrada:", err);
-    });
+  async setPrinter(printerName: string): Promise<void> {
+    try {
+      const config = qz.configs.create(printerName);
+      console.log(`Impresora configurada: ${printerName}`);
+    } catch (err) {
+      console.error('Error configurando la impresora:', err);
+    }
   }
-  
 
   // Imprimir datos
   async print(data: string[]): Promise<void> {
@@ -87,25 +110,20 @@ export class QzTrayService {
       const defaultPrinter = await qz.printers.getDefault();
       const config = qz.configs.create(defaultPrinter);
       await qz.print(config, data);
-      console.log("Impresión exitosa");
+      console.log('Impresión exitosa');
     } catch (err) {
-      console.error("Error durante la impresión:", err);
+      console.error('Error durante la impresión:', err);
     }
   }
-  
 
-  // Obtener lista de impresoras
-  async getPrinters(): Promise<string[]> {
-    const printers = await qz.printers.find();
-    console.log("Impresoras detectadas:", printers);
-    if (typeof printers === 'string') {
-      return [printers]; // Convertir a array si es un solo string
-    }
-    return printers;
+  // Desconectar QZ Tray
+  disconnect(): void {
+    qz.websocket.disconnect();
+    console.log('Desconectado de QZ Tray');
   }
-  
-}
-function sha256(data: (value?: any) => void): void {
-  throw new Error('Function not implemented.');
 }
 
+function sha256(data: string): string {
+  // Implementa una función sha256 adecuada aquí
+  return ''; // Devuelve el hash de `data`
+}
