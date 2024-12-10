@@ -39,7 +39,7 @@
     </div>
 
     <!-- Selección de impresora -->
-    <div *ngIf="qrCodes.length > 0" class="mt-4">
+    <div class="mt-4">
       <label for="printer">Seleccionar Impresora:</label>
       <select [(ngModel)]="selectedPrinter" id="printer" class="form-control">
         <option *ngFor="let printer of printers" [value]="printer">{{ printer }}</option>
@@ -47,6 +47,6 @@
     </div>
 
     <!-- Botón para imprimir los QR -->
-    <button *ngIf="qrCodes.length > 0 && selectedPrinter" class="btn btn-danger mt-4" (click)="printQRCodes()">Imprimir QR</button>
+    <button *ngIf="selectedPrinter" class="btn btn-danger mt-4" (click)="printQRCodes()">Imprimir QR</button>
   </div>
 </body>

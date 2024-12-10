@@ -44,7 +44,7 @@ export class GeneradorQrsComponent implements OnInit {
         this.selectedPrinter = this.printers[0]; // Seleccionamos la primera impresora disponible por defecto
       }
     } catch (error) {
-      console.error('Error al cargar las impresoras:', error);
+      console.error('Error al cargar las impresoras:');
     }
   }
 
