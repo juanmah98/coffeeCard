@@ -105,16 +105,33 @@ export class QzTrayService {
   }
 
   // Imprimir datos
-  async print(data: string[]): Promise<void> {
+  async print(data: string[], images: string[]): Promise<void> {
     try {
       const defaultPrinter = await qz.printers.getDefault();
       const config = qz.configs.create(defaultPrinter);
-      await qz.print(config, data);
+  
+      // Crear el arreglo de datos de impresión para texto
+      const textData = data.map((text) => ({ type: 'html', format: 'plain', data: text }));
+  
+      // Crear el arreglo de datos de impresión para imágenes
+      const imageData = images.map((image) => ({
+        type: 'image',
+        format: 'base64',
+        data: image,
+      }));
+  
+      // Combinar texto e imágenes
+      const printData: any[] = [...textData, ...imageData];
+  
+      // Enviar datos a imprimir
+      await qz.print(config, printData);
       console.log('Impresión exitosa');
     } catch (err) {
       console.error('Error durante la impresión:', err);
     }
   }
+  
+  
 
   // Desconectar QZ Tray
   disconnect(): void {

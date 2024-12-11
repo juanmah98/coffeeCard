@@ -9,9 +9,19 @@
     <h2>Generar QR Codes</h2>
 
     <!-- Formulario para ingresar la cantidad -->
+
+    
     <form (ngSubmit)="generateQRCodes()">
       <div class="form-group">
         <label for="quantity">Cantidad de QR:</label>
+        <div class="button-group mb-2 mt-1">
+          <button type="button" class="btn btn-lg btn-light mx-1" (click)="setQuantity(1)">1</button>
+          <button type="button" class="btn btn-lg btn-light mx-1" (click)="setQuantity(2)">2</button>
+          <button type="button" class="btn btn-lg btn-light mx-1" (click)="setQuantity(4)">4</button>
+          <button type="button" class="btn btn-lg btn-light mx-1" (click)="setQuantity(6)">6</button>
+          <button type="button" class="btn btn-lg btn-light mx-1" (click)="setQuantity(10)">10</button>
+          <button type="button" class="btn btn-lg btn-light mx-1" (click)="incrementQuantity()">+</button>
+        </div>
         <input
           type="number"
           id="quantity"
@@ -22,8 +32,12 @@
           required
         />
       </div>
-      <button type="submit" class="btn btn-primary mt-2">Generar QR</button>
+    
+     
+    
+      <button type="submit" class="btn btn-primary mt-3">Generar QR</button>
     </form>
+    
 
     <!-- Vista previa de los QR generados -->
     <div *ngIf="qrCodes.length > 0" class="mt-4">
@@ -45,7 +59,7 @@
         <option *ngFor="let printer of printers" [value]="printer">{{ printer }}</option>
       </select>
     </div>
-
+ 
     <!-- Botón para imprimir los QR -->
     <button *ngIf="qrCodes.length > 0 && selectedPrinter" class="btn btn-danger mt-4" (click)="printQRCodes()">Imprimir QR</button>
   </div>
