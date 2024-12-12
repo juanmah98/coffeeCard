@@ -5,6 +5,7 @@ import * as qz from 'qz-tray';
   providedIn: 'root',
 })
 export class QzTrayService {
+  private selectedPrinterName: string = ''; // Almacenar la impresora seleccionada
   constructor() {
     this.configureQZTraySecurity();
   }
@@ -97,39 +98,47 @@ export class QzTrayService {
   // Configurar impresora
   async setPrinter(printerName: string): Promise<void> {
     try {
+      // Guardar el nombre de la impresora seleccionada
+      this.selectedPrinterName = printerName;
+
+      // Configurar la impresora seleccionada
       const config = qz.configs.create(printerName);
-      console.log(`Impresora configurada: ${printerName}`);
+      console.log(`Impresora configurada correctamente: ${printerName}`);
     } catch (err) {
       console.error('Error configurando la impresora:', err);
     }
   }
 
   // Imprimir datos
-  async print(data: string[], images: string[]): Promise<void> {
+  async print(printData: any[]): Promise<void> {
+    try {
+      // Verificar que hay una impresora seleccionada
+      if (!this.selectedPrinterName) {
+        throw new Error('No hay una impresora configurada.');
+      }
+
+      // Configurar la impresora seleccionada para imprimir
+      const config = qz.configs.create(this.selectedPrinterName);
+      await qz.print(config, printData);
+
+      console.log('Impresión exitosa');
+    } catch (err) {
+      console.error('Error durante la impresión:', err);
+    }
+  }
+  
+
+  async printRaw(printData: any[]): Promise<void> {
     try {
       const defaultPrinter = await qz.printers.getDefault();
       const config = qz.configs.create(defaultPrinter);
-  
-      // Crear el arreglo de datos de impresión para texto
-      const textData = data.map((text) => ({ type: 'html', format: 'plain', data: text }));
-  
-      // Crear el arreglo de datos de impresión para imágenes
-      const imageData = images.map((image) => ({
-        type: 'image',
-        format: 'base64',
-        data: image,
-      }));
-  
-      // Combinar texto e imágenes
-      const printData: any[] = [...textData, ...imageData];
-  
-      // Enviar datos a imprimir
       await qz.print(config, printData);
       console.log('Impresión exitosa');
     } catch (err) {
       console.error('Error durante la impresión:', err);
     }
   }
+  
   
   
 

@@ -61,6 +61,9 @@
     </div>
  
     <!-- Botón para imprimir los QR -->
-    <button *ngIf="qrCodes.length > 0 && selectedPrinter" class="btn btn-danger mt-4" (click)="printQRCodes()">Imprimir QR</button>
+    <button *ngIf="qrCodes.length > 0 && selectedPrinter" class="btn btn-danger mt-4 mx-1" (click)="printQRCodes()">Imprimir QR 1</button>
+    <button *ngIf="qrCodes.length > 0 && selectedPrinter" class="btn btn-danger mt-4 mx-1" (click)="printQRImagen()">Imprimir QR Solo</button>
+    <button *ngIf="qrCodes.length > 0 && selectedPrinter" class="btn btn-danger mt-4 mx-1" (click)="printQRMultiples()">Imprimir QRs raw</button>
+    <button *ngIf="qrCodes.length > 0 && selectedPrinter" class="btn btn-danger mt-4 mx-1" (click)="printQRMultiples()">Imprimir QRs html</button>
   </div>
 </body>

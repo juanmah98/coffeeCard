@@ -83,40 +83,43 @@ export class GeneradorQrsComponent implements OnInit {
       // Configurar la impresora seleccionada
       await this.qzTrayService.setPrinter(this.selectedPrinter);
   
-      // Preparar los datos de texto e imágenes
-      const textData: string[] = this.qrCodes.map(
-        (qr) => `Entidad: ${this.entidadName}\nEscanea para sumar 1 punto\nhttps://fidecards.com`
-      );
+      for (const qr of this.qrCodes) {
+        // Enviar texto
+        const textData = [
+          {
+            type: 'raw',
+            format: 'plain',
+            data: `Entidad: ${this.entidadName}\nEscanea para sumar 1 punto\nhttps://fidecards.com\n\n`,
+          },
+        ];
+        await this.qzTrayService.print(textData);
+        console.log("datos: "+textData)
   
-      // Generar imágenes QR en base64
-      const imageData: string[] = await Promise.all(
-        this.qrCodes.map((qr) => this.generateQRCodeImage(qr.qr_code))
-      );
+        // Generar la imagen QR en base64
+        const imageBase64 = await this.generateQRCodeImage(qr.qr_code);
   
-      // Crear el arreglo de datos de impresión para texto
-      const textPrintData = textData.map((text) => ({
-        type: 'html',
-        format: 'plain',
-        data: text,
-      }));
-  
-      // Crear el arreglo de datos de impresión para imágenes
-      const imagePrintData = imageData.map((image) => ({
-        type: 'image',
-        format: 'base64',
-        data: image,
-      }));
-  
-      // Combinar texto e imágenes
-      const printData: any[] = [...textPrintData, ...imagePrintData];
-  
-      // Añadir comandos de corte de papel después de cada imagen
-      for (let i = 0; i < imagePrintData.length; i++) {
-        printData.push({ type: 'raw', format: 'command', data: '\x1D\x56\x42\x00' }); // Comando de corte de papel
+        // Enviar la imagen
+        const imageData = [
+          {
+            type: 'image',
+            format: 'base64',
+            data: imageBase64,
+          },
+        ];
+        await this.qzTrayService.print(imageData);
+        console.log("imagen: "+imageData)
+        // Añadir comando de corte de papel (opcional)
+        const cutCommand = [
+          {
+            type: 'raw',
+            format: 'command',
+            data: '\x1D\x56\x42\x00', // Ajustar comando según impresora
+          },
+        ];
+        await this.qzTrayService.print(cutCommand);
+        console.log("corte: "+cutCommand)
       }
   
-      // Enviar los datos a imprimir
-      await this.qzTrayService.print(textData, imageData); // Enviamos texto e imágenes por separado
       console.log('QR enviados a la impresora');
     } catch (error) {
       console.error('Error al imprimir los códigos QR:', error);
@@ -125,6 +128,145 @@ export class GeneradorQrsComponent implements OnInit {
   
   
 
+  async printQRImagen(): Promise<void> {
+    if (!this.selectedPrinter) {
+      console.error('No se ha seleccionado ninguna impresora.');
+      return;
+    }
+  
+    if (!this.qrCodes.length) {
+      console.error('No hay códigos QR generados para imprimir.');
+      return;
+    }
+  
+    try {
+      // Configurar la impresora seleccionada
+      await this.qzTrayService.setPrinter(this.selectedPrinter);
+  
+      // Generar imágenes QR en base64
+      const imageData: string[] = await Promise.all(
+        this.qrCodes.map((qr) => this.generateQRCodeImage(qr.qr_code))
+      );
+  
+      // Crear los datos de impresión para las imágenes
+      const printData = imageData.map((image) => ({
+        type: 'image',
+        format: 'base64',
+        data: image,
+      }));
+  
+      // Enviar los datos a imprimir
+      await this.qzTrayService.printRaw(printData);
+      console.log('QR enviados a la impresora');
+    } catch (error) {
+      console.error('Error al imprimir los códigos QR:', error);
+    }
+  }
+  
+  
+  async printQRMultiples(): Promise<void> {
+    if (!this.selectedPrinter) {
+      console.error('No se ha seleccionado ninguna impresora.');
+      return;
+    }
+  
+    if (!this.qrCodes.length) {
+      console.error('No hay códigos QR generados para imprimir.');
+      return;
+    }
+  
+    try {
+      // Configurar la impresora seleccionada
+      await this.qzTrayService.setPrinter(this.selectedPrinter);
+  
+      // Preparar datos para impresión combinada
+      const printData: any[] = [];
+  
+      for (const qr of this.qrCodes) {
+        // Texto descriptivo para el QR
+        printData.push({
+          type: 'raw',
+          format: 'plain',
+          data: `Entidad: ${this.entidadName}\nEscanea para sumar 1 punto\nhttps://fidecards.com\n\n`,
+        });
+  
+        // Generar la imagen QR en base64 y añadirla al trabajo de impresión
+        const imageBase64 = await this.generateQRCodeImage(qr.qr_code);
+        printData.push({
+          type: 'image',
+          format: 'base64',
+          data: imageBase64,
+        });
+  
+        // Añadir espacio entre QR (aproximadamente 2-3 cm de separación)
+        printData.push({
+          type: 'raw',
+          format: 'plain',
+          data: '\n\n\n\n\n\n', // Ajusta la cantidad de saltos según sea necesario
+        });
+      }
+
+      
+  
+      // Enviar el trabajo de impresión combinado
+      await this.qzTrayService.print(printData);
+      console.log('QR enviados a la impresora');
+      console.log('Datos enviados a imprimir:', printData);
+    } catch (error) {
+      console.error('Error al imprimir los códigos QR:', error);
+    }
+  }
+  
+  async printQRMultiplesHtml(): Promise<void> {
+    if (!this.selectedPrinter) {
+      console.error('No se ha seleccionado ninguna impresora.');
+      return;
+    }
+  
+    if (!this.qrCodes.length) {
+      console.error('No hay códigos QR generados para imprimir.');
+      return;
+    }
+  
+    try {
+      // Configurar la impresora seleccionada
+      await this.qzTrayService.setPrinter(this.selectedPrinter);
+  
+      // Preparar datos para impresión combinada
+      const printData: any[] = [];
+  
+      for (const qr of this.qrCodes) {
+        // Texto descriptivo para el QR
+        printData.push({
+          type: 'html',
+          format: 'plain',
+          data: `Entidad: ${this.entidadName}\nEscanea para sumar 1 punto\nhttps://fidecards.com\n\n`,
+        });
+  
+        // Generar la imagen QR en base64 y añadirla al trabajo de impresión
+        const imageBase64 = await this.generateQRCodeImage(qr.qr_code);
+        printData.push({
+          type: 'image',
+          format: 'base64',
+          data: imageBase64,
+        });
+  
+        // Añadir espacio entre QR (aproximadamente 2-3 cm de separación)
+        printData.push({
+          type: 'html',
+          format: 'plain',
+          data: '\n\n\n\n\n\n', // Ajusta la cantidad de saltos según sea necesario
+        });
+      }
+  
+      // Enviar el trabajo de impresión combinado
+      await this.qzTrayService.print(printData);
+      console.log('QR enviados a la impresora');
+      console.log('Datos enviados a imprimir:', printData);
+    } catch (error) {
+      console.error('Error al imprimir los códigos QR:', error);
+    }
+  }
 
   // Generar imagen QR en base64 a partir del código QR
   private async generateQRCodeImage(qrCode: string): Promise<string> {
