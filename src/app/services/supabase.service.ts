@@ -440,18 +440,19 @@ async generateQRCodes(entidadId: string, quantity: number): Promise<any[]> {
 
 
   // Validar un QR al ser escaneado
-  async validateQRCode(qrCode: string, userId: string, usuario:string): Promise<any> {
+  async validateQRCode(qrCode: string, entidad_id: string, usuario:string): Promise<any> {
     try {
       // Verificar si el QR existe
       const { data: qrData, error: qrError } = await this.supabase
         .from('qrs')
         .select('*')
-        .eq('qr_code', qrCode)
+        .match({ qr_code: qrCode, entidad_id: entidad_id })
+        /* .eq('qr_code', qrCode) */
         .single(); // Obtén un único registro
   
       if (qrError) {
         console.error('Error buscando el QR:', qrError);
-        return { success: false, message: 'Error al buscar el QR.' };
+        return { success: false, message: 'El QR es inválido' };
       }
   
       if (!qrData) {

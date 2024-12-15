@@ -144,7 +144,7 @@ dataUser:Usuarios = {
     if (code) {
      /*  console.log('Código QR escaneado:', code.data); */
 
-      const qrCodes = await this._SupabaseService.validateQRCode(code.data, this.entidad.tabla_contador, this.dataUser.name)
+      const qrCodes = await this._SupabaseService.validateQRCode(code.data, this.entidad.id, this.dataUser.name)
      /* console.log(qrCodes); */
      
       // Detener el escaneo después de leer un código QR
