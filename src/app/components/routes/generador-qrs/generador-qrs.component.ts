@@ -89,7 +89,7 @@ export class GeneradorQrsComponent implements OnInit {
           {
             type: 'raw',
             format: 'plain',
-            data: `Entidad: ${this.entidadName}\nEscanea para sumar 1 punto\nhttps://fidecards.com\n\n`,
+            data: `${this.entidadName}\nEscanea para sumar 1 punto\nhttps://fidecards.com\n`,
           },
         ];
         await this.qzTrayService.print(textData);
@@ -176,46 +176,48 @@ export class GeneradorQrsComponent implements OnInit {
     }
   
     try {
-      // Configurar la impresora seleccionada
       await this.qzTrayService.setPrinter(this.selectedPrinter);
   
-      // Preparar datos para impresión combinada
       const printData: any[] = [];
   
       for (const qr of this.qrCodes) {
-        // Texto descriptivo para el QR
+        // Añadir texto descriptivo
         printData.push({
           type: 'raw',
           format: 'plain',
           data: `Entidad: ${this.entidadName}\nEscanea para sumar 1 punto\nhttps://fidecards.com\n\n`,
         });
   
-        // Generar la imagen QR en base64 y añadirla al trabajo de impresión
+        // Convertir la imagen QR en formato ESC/POS
         const imageBase64 = await this.generateQRCodeImage(qr.qr_code);
-        printData.push({
-          type: 'image',
-          format: 'base64',
-          data: imageBase64,
-        });
+        const escPosData = await this.convertImageToEscPos(imageBase64);
   
-        // Añadir espacio entre QR (aproximadamente 2-3 cm de separación)
+        // Añadir imagen al trabajo de impresión
         printData.push({
           type: 'raw',
           format: 'plain',
-          data: '\n\n\n\n\n\n', // Ajusta la cantidad de saltos según sea necesario
+          data: escPosData,
+        });
+  
+        // Añadir espacio entre QR
+        printData.push({
+          type: 'raw',
+          format: 'plain',
+          data: '\n\n\n\n\n',
         });
       }
-
-      
   
-      // Enviar el trabajo de impresión combinado
+      // Enviar todos los datos en un solo trabajo de impresión
       await this.qzTrayService.print(printData);
+      console.log('Datos enviados:', printData);
+
       console.log('QR enviados a la impresora');
-      console.log('Datos enviados a imprimir:', printData);
     } catch (error) {
       console.error('Error al imprimir los códigos QR:', error);
     }
   }
+  
+  
   
   async printQRMultiplesHtml(): Promise<void> {
     if (!this.selectedPrinter) {
@@ -281,6 +283,58 @@ export class GeneradorQrsComponent implements OnInit {
       throw new Error('Error desconocido al generar QR');
     }
   }
+
+  async convertImageToEscPos(base64Image: string): Promise<string> {
+    return new Promise((resolve, reject) => {
+      const img = new Image();
+      img.src = `data:image/png;base64,${base64Image}`;
+  
+      img.onload = () => {
+        const canvas = document.createElement('canvas');
+        const ctx = canvas.getContext('2d');
+        if (!ctx) {
+          reject('Error al obtener el contexto del canvas');
+          return;
+        }
+  
+        canvas.width = img.width;
+        canvas.height = img.height;
+  
+        ctx.drawImage(img, 0, 0);
+        const imageData = ctx.getImageData(0, 0, img.width, img.height);
+        const pixels = imageData.data;
+  
+        // Comando inicial ESC/POS para gráficos
+        let escPosData = '\x1D\x76\x30\x00'; // ESC * raster command
+        escPosData += String.fromCharCode(canvas.width / 8); // Width in bytes (divided by 8 for 1-bit)
+        escPosData += '\x00'; // Width high byte
+        escPosData += String.fromCharCode(canvas.height & 0xFF); // Height low byte
+        escPosData += String.fromCharCode((canvas.height >> 8) & 0xFF); // Height high byte
+  
+        for (let y = 0; y < img.height; y++) {
+          let row = '';
+          for (let x = 0; x < img.width; x++) {
+            const i = (y * img.width + x) * 4;
+            const grayscale = 0.299 * pixels[i] + 0.587 * pixels[i + 1] + 0.114 * pixels[i + 2];
+            const bit = grayscale < 128 ? 1 : 0;
+            row += bit ? '1' : '0';
+            if (x % 8 === 7 || x === img.width - 1) {
+              escPosData += String.fromCharCode(parseInt(row, 2));
+              row = '';
+            }
+          }
+        }
+  
+        resolve(escPosData);
+      };
+  
+      img.onerror = (err) => {
+        reject('Error al cargar la imagen: ' + err);
+      };
+    });
+  }
+  
+  
   
    // Asignar un valor específico a la cantidad
    setQuantity(value: number): void {

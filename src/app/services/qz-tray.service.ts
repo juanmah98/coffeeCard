@@ -126,6 +126,16 @@ export class QzTrayService {
       console.error('Error durante la impresión:', err);
     }
   }
+
+  async getPrinterCapabilities(printerName: string): Promise<void> {
+    try {
+      const capabilities = await qz.printers.getDefault(printerName);
+      console.log(`Capacidades de la impresora ${printerName}:`, capabilities);
+    } catch (error) {
+      console.error('Error obteniendo capacidades de la impresora:', error);
+    }
+  }
+  
   
 
   async printRaw(printData: any[]): Promise<void> {
@@ -133,7 +143,7 @@ export class QzTrayService {
       const defaultPrinter = await qz.printers.getDefault();
       const config = qz.configs.create(defaultPrinter);
       await qz.print(config, printData);
-      console.log('Impresión exitosa');
+      console.log('Impresión exitosa' + defaultPrinter);
     } catch (err) {
       console.error('Error durante la impresión:', err);
     }
