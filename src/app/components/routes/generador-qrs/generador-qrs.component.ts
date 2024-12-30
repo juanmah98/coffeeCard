@@ -333,6 +333,57 @@ export class GeneradorQrsComponent implements OnInit {
       };
     });
   }
+
+  async printQRMultiplesPiazzetta2(): Promise<void> {
+    if (!this.selectedPrinter) {
+      console.error('No se ha seleccionado ninguna impresora.');
+      return;
+    }
+  
+    if (!this.qrCodes.length) {
+      console.error('No hay códigos QR generados para imprimir.');
+      return;
+    }
+  
+    try {
+      await this.qzTrayService.setPrinter(this.selectedPrinter);
+  
+      const printData: any[] = [];
+  
+      for (const qr of this.qrCodes) {
+        // Añadir texto descriptivo
+        printData.push({
+          type: 'raw',
+          format: 'plain',
+          data: `Entidad: ${this.entidadName}\nEscanea para sumar 1 punto\nhttps://fidecards.com\n\n`,
+        });
+  
+        // Generar imagen QR en base64
+        const imageBase64 = await this.generateQRCodeImage(qr.qr_code);
+  
+        // Enviar imagen en formato base64
+        printData.push({
+          type: 'image',
+          format: 'base64',
+          data: imageBase64,
+        });
+  
+        // Espaciado entre impresiones
+        printData.push({
+          type: 'raw',
+          format: 'plain',
+          data: '\n\n\n\n\n',
+        });
+      }
+  
+      // Enviar todo el trabajo de impresión
+      await this.qzTrayService.print(printData);
+      console.log('QR enviados a la impresora en formato base64');
+    } catch (error) {
+      console.error('Error al imprimir los códigos QR:', error);
+    }
+  }
+  
   
   
   
