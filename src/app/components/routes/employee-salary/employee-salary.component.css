@@ -1,11 +1,110 @@
-body{
-    min-height: 100vh;
-}
 .container {
-    max-width: 600px;
-  }
-  
-  h2, h3 {
-    text-align: center;
-  }
-  
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 5px;
+  margin-top: 20px;
+}
+
+.calendar-header {
+  font-weight: bold;
+  text-align: center;
+  background-color: #f8f9fa;
+  padding: 10px 0;
+  border: 1px solid #ddd;
+  color: #000; /* Asegurar que el texto es negro */
+}
+
+.calendar-day {
+  height: 60px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid #ddd;
+  background-color: #fff;
+  color: #000; /* Asegurar que el texto es negro */
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.calendar-day:hover {
+  background-color: #e9ecef;
+}
+
+.calendar-day.today {
+  background-color: #007bff;
+  color: #fff; /* El texto debe ser blanco para contraste */
+  font-weight: bold;
+}
+
+.calendar-day.selected {
+  background-color: #28a745;
+  color: #fff; /* El texto debe ser blanco para contraste */
+  font-weight: bold;
+}
+
+.calendar-day.empty {
+  background-color: #f8f9fa;
+  color: #ccc; /* Colorea los días vacíos como gris */
+  cursor: default;
+}
+
+.table {
+  text-align: center;
+}
+
+.table th {
+  background-color: #f8f9fa;
+  font-weight: bold;
+}
+
+.table td input {
+  width: 80px;
+  margin: 0 auto;
+}
+
+.calendar-navigation,
+.text-center.mt-2 {
+  display: flex;
+  justify-content: center;
+  gap: 10px; /* Espaciado entre las flechas */
+}
+
+.calendar-navigation button,
+.text-center.mt-2 button {
+  background-color: #6c757d; /* Gris */
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 8px 16px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px; /* Espaciado entre icono y texto */
+}
+
+.calendar-navigation button:hover,
+.text-center.mt-2 button:hover {
+  background-color: #5a6268; /* Gris más oscuro */
+  transform: translateY(-2px);
+}
+
+.calendar-navigation button:active,
+.text-center.mt-2 button:active {
+  background-color: #545b62; /* Gris aún más oscuro */
+  transform: translateY(0);
+}
+
+.calendar-navigation button svg,
+.text-center.mt-2 button svg {
+  width: 16px;
+  height: 16px;
+  fill: white; /* Asegurar que el icono sea blanco */
+}

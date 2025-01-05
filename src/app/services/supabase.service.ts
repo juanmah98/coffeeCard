@@ -4,6 +4,8 @@ import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { createClient, Session, SupabaseClient } from '@supabase/supabase-js';
 import { CafeData } from '../interfaces/cafes_data';
+import { Horarios } from '../interfaces/horarios';
+import { Empleados } from '../interfaces/empleados';
 
 export const USERS_TABLE = "usuarios";
 export const CONTADOR_TABLE_CAFE = "contador_cafe";
@@ -502,6 +504,110 @@ async generateQRCodes(entidadId: string, quantity: number): Promise<any[]> {
     return data?.nombre || 'Entidad desconocida';  // Si no se encuentra nombre, retornar uno por defecto
   }
   
+  async getEmpleados() {
+    return await this.supabase
+      .from('empleados')
+      .select('*');
+  }
+
+  async getHoras() {
+    return await this.supabase
+      .from('horarios')
+      .select('*');
+  }
+
+  // Obtener todos los empleados
+  async getEmployees() {
+    const { data, error } = await this.supabase.from('empleados').select('*');
+    if (error) {
+      console.error('Error al obtener empleados:', error);
+    }
+    return data || [];
+  }
+
+  // Obtener todos los horarios
+  async getSchedules() {
+    const { data, error } = await this.supabase.from('horarios').select('*');
+    if (error) {
+      console.error('Error al obtener horarios:', error);
+    }
+    return data || [];
+  }
+
+  // Guardar o actualizar un horario
+  // Guardar o actualizar un horario
+  async saveSchedule(schedule: any): Promise<{ error: any | null; data: any | null }> {
+    try {
+      // Buscar si ya existe un horario para el empleado y la fecha
+      const { data: existingSchedules, error: fetchError } = await this.supabase
+        .from('horarios')
+        .select('*')
+        .eq('empleado_id', schedule.empleado_id)
+        .eq('date', schedule.date);
   
+      if (fetchError) {
+        console.error('Error al verificar horarios existentes:', fetchError);
+        return { error: fetchError, data: null };
+      }
+  
+      if (existingSchedules && existingSchedules.length > 0) {
+        // Si existe un registro, verificar si hay diferencias en entry o exit
+        const existingSchedule = existingSchedules[0];
+  
+        const shouldUpdate =
+          existingSchedule.entry !== schedule.entry ||
+          existingSchedule.exit !== schedule.exit;
+  
+        if (shouldUpdate) {
+          // Actualizar si hay diferencias
+          const { error: updateError } = await this.supabase
+            .from('horarios')
+            .update({
+              entry: schedule.entry,
+              exit: schedule.exit,
+            })
+            .eq('id', existingSchedule.id);
+          if (updateError) {
+            console.error('Error al actualizar horario:', updateError);
+            return { error: updateError, data: null };
+          } else {
+            console.log('Horario actualizado:', existingSchedule.id);
+            return { error: null, data: { id: existingSchedule.id, ...schedule } };
+          }
+        } else {
+          console.log('No se realizaron cambios, el horario es el mismo.');
+          return { error: null, data: existingSchedule };
+        }
+      } else {
+        // Si no existe un registro, crear uno nuevo
+        const { data, error: insertError } = await this.supabase.from('horarios').insert(schedule).single();
+        if (insertError) {
+          console.error('Error al insertar nuevo horario:', insertError);
+          return { error: insertError, data: null };
+        } else {
+          console.log('Horario creado para empleado:', schedule.empleado_id);
+          return { error: null, data };
+        }
+      }
+    } catch (error) {
+      console.error('Error al guardar o actualizar horario:', error);
+      return { error, data: null };
+    }
+  }
+  
+  async addEmployee(employee: Empleados) {
+    return await this.supabase.from('empleados').insert(employee);
+  }
+  
+  async updateEmployee(employee: Empleados) {
+    return await this.supabase
+      .from('empleados')
+      .update({ name: employee.name, hourlyRate: employee.hourlyRate, activo: employee.activo })
+      .eq('id', employee.id);
+  }
+  
+
+
+
   
 }

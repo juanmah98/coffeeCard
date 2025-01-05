@@ -1,43 +1,227 @@
-<body class="container-fluid">
-    
-
 <div class="container mt-4">
-    <h2>Cálculo del Pago a Empleados</h2>
-    <form (ngSubmit)="calculateSalary()" #salaryForm="ngForm">
-      <div *ngFor="let day of workDays; let i = index" class="form-group row">
-        <label class="col-sm-2 col-form-label">{{ day }}</label>
-        <div class="col-sm-4">
-          <input type="time" class="form-control" [(ngModel)]="startTimes[i]" name="startTime{{i}}" required>
-        </div>
-        <div class="col-sm-4">
-          <input type="time" class="form-control" [(ngModel)]="endTimes[i]" name="endTime{{i}}" required>
-        </div>
-      </div>
-      
-      <div class="form-group row mt-3">
-        <label class="col-sm-2 col-form-label">Minutos para comer</label>
-        <div class="col-sm-4">
-          <input type="number" class="form-control" [(ngModel)]="breakMinutes" name="breakMinutes" required>
-        </div>
-      </div>
-      
-      <div class="form-group row mt-3">
-        <label class="col-sm-2 col-form-label">Pago por hora</label>
-        <div class="col-sm-4">
-          <input type="number" class="form-control" [(ngModel)]="hourlyRate" name="hourlyRate" required>
-        </div>
-      </div>
-      
-      <div class="form-group row mt-3">
-        <div class="col-sm-10">
-          <button type="submit" class="btn btn-primary">Calcular</button>
-        </div>
-      </div>
-    </form>
-    
-    <div *ngIf="totalHours !== null" class="mt-4">
-      <h3>Total de horas trabajadas: {{ totalHours | number:'1.2-2' }}</h3>
-      <h3>Total a pagar: {{ totalPay | currency }}</h3>
+  <h4 class="text-center mb-4">Calendario - {{ currentMonthName }} {{ currentYear }}</h4>
+  <div class="calendar-grid">
+    <div class="calendar-header" *ngFor="let day of weekDays">
+      {{ day }}
+    </div>
+
+    <div
+      class="calendar-day"
+      *ngFor="let day of daysInMonth"
+      [class.selected]="day.date === selectedDateCalendar"
+      [class.today]="day.isToday"
+      [class.empty]="!day.date"
+      (click)="day.date && selectDate(day.date)"
+    >
+      {{ day.dayNumber || '' }}
     </div>
   </div>
-</body>
+
+  <div class="calendar-navigation text-center mb-4 text-center mt-2">
+    <button (click)="navigateMonth(-1)">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi bi-arrow-left" viewBox="0 0 16 16">
+        <path fill-rule="evenodd" d="M15 8a.5.5 0 0 1-.5.5H2.707l3.147 3.146a.5.5 0 0 1-.708.708l-4-4a.5.5 0 0 1 0-.708l4-4a.5.5 0 1 1 .708.708L2.707 7.5H14.5a.5.5 0 0 1 .5.5z" />
+      </svg>
+      Anterior
+    </button>
+    <button (click)="navigateMonth(1)">
+      Siguiente
+      <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi bi-arrow-right" viewBox="0 0 16 16">
+        <path fill-rule="evenodd" d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 1 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 1 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8z" />
+      </svg>
+    </button>
+  </div>
+  
+
+  <div *ngIf="selectedDate" class="mt-4">
+    <h5>Horario del Día: {{ selectedDate | date: 'fullDate':'':'es' }}</h5>
+    <table class="table table-bordered">
+      <thead>
+        <tr>
+          <th>Nombre</th>
+          <th>Entrada</th>
+          <th>Salida</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let employee of activeEmployees">
+          <td>{{ employee.name }}</td>
+          <td>
+            <input
+              type="time"
+              [value]="getScheduleForDay(employee.id, selectedDate).entry | slice:0:5"
+              (change)="handleTimeChange($event, employee.id, selectedDate, 'entry')"
+            />
+          </td>
+          <td>
+            <input
+              type="time"
+              [value]="getScheduleForDay(employee.id, selectedDate).exit | slice:0:5"
+              (change)="handleTimeChange($event, employee.id, selectedDate, 'exit')"
+            />
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="mt-4">
+    <h5 class="text-center">Horario Semanal ({{ getWeekTitle() }})</h5>
+  
+    <table class="table table-bordered">
+      <thead>
+        <tr>
+          <th>Nombre</th>
+          <th *ngFor="let day of workDays">{{ day }}</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let employee of activeEmployees">
+          <td>{{ employee.name }}</td>
+          <td *ngFor="let day of workDays">
+            <div>
+              <span>ENT:</span>
+              <input
+                type="text"
+                class="form-control"
+                [value]="getWeeklySchedule(employee.id, day, 'entry') | slice:0:5"
+                (change)="updateWeeklySchedule($event, employee.id, day, 'entry')"
+              />
+              <span>SAL:</span>
+              <input
+                type="text"
+                class="form-control"
+                [value]="getWeeklySchedule(employee.id, day, 'exit') | slice:0:5"
+                (change)="updateWeeklySchedule($event, employee.id, day, 'exit')"
+              />
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  
+    <!-- Botones para navegar entre semanas -->
+    <div class="text-center mt-2">
+      <button (click)="navigateWeek(-1)">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi bi-arrow-left" viewBox="0 0 16 16">
+          <path fill-rule="evenodd" d="M15 8a.5.5 0 0 1-.5.5H2.707l3.147 3.146a.5.5 0 0 1-.708.708l-4-4a.5.5 0 0 1 0-.708l4-4a.5.5 0 1 1 .708.708L2.707 7.5H14.5a.5.5 0 0 1 .5.5z" />
+        </svg>
+        Semana Anterior
+      </button>
+      <button (click)="navigateWeek(1)">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi bi-arrow-right" viewBox="0 0 16 16">
+          <path fill-rule="evenodd" d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 1 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 1 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8z" />
+        </svg>
+        Semana Siguiente
+      </button>
+    </div>
+  
+    <!-- Resumen semanal -->
+    <div class="mt-4">
+      <h5 class="text-center">Resumen Semanal</h5>
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th>Nombre</th>
+            <th>Horas Totales</th>
+            <th>Tarifa por Hora</th>
+            <th>Total a Pagar</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let employee of employees">
+            <td>{{ employee.name }}</td>
+            <td>{{ calculateWeeklyHours(employee.id) | number:'1.2-2' }} horas</td>
+            <td>
+              <input
+                type="number"
+                class="form-control"
+                [(ngModel)]="employee.hourlyRate"
+                placeholder="Tarifa"
+              />
+            </td>
+            <td>
+              {{ (calculateWeeklyHours(employee.id) * (employee.hourlyRate || 0)) | currency:'USD':'symbol' }}
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  
+
+  <div class="mt-4">
+  <h5>Gestión de Empleados</h5>
+
+  <form (submit)="addEmployee()">
+    <div class="row mb-3">
+      <div class="col-md-4">
+        <input
+          type="text"
+          class="form-control"
+          [(ngModel)]="newEmployeeName"
+          placeholder="Nombre del empleado"
+          required
+          name="employeeName"
+        />
+      </div>
+      <div class="col-md-4">
+        <input
+          type="number"
+          class="form-control"
+          [(ngModel)]="newEmployeeRate"
+          placeholder="Tarifa por hora"
+          required
+          name="hourlyRate"
+        />
+      </div>
+      <div class="col-md-4">
+        <button class="btn btn-success" type="submit">Agregar Empleado</button>
+      </div>
+    </div>
+  </form>
+
+  <!-- Lista de empleados -->
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Nombre</th>
+        <th>Tarifa por Hora</th>
+        <th>Estado</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+   <!-- Lista de empleados ordenada -->
+<tbody>
+  <tr *ngFor="let employee of sortedEmployees">
+    <td>
+      <input
+        type="text"
+        [(ngModel)]="employee.name"
+        (blur)="updateEmployee(employee)"
+      />
+    </td>
+    <td>
+      <input
+        type="number"
+        [(ngModel)]="employee.hourlyRate"
+        (blur)="updateEmployee(employee)"
+      />
+    </td>
+    <td>{{ employee.activo ? 'Activo' : 'Inactivo' }}</td>
+    <td>
+      <button
+        class="btn btn-warning"
+        (click)="toggleEmployeeStatus(employee)"
+      >
+        {{ employee.activo ? 'Desactivar' : 'Activar' }}
+      </button>
+    </td>
+  </tr>
+</tbody>
+
+  </table>
+</div>
+
+  
+</div>

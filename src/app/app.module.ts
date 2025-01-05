@@ -12,7 +12,11 @@ import { LayoutModule } from './components/layout/layout.module';
 import { FormsModule } from '@angular/forms';
 import { SplineViewerComponent } from './components/routes/spline-viewer/spline-viewer.component';
 import { SplineViewrCardComponent } from './components/routes/spline-viewr-card/spline-viewr-card.component';
+import { registerLocaleData } from '@angular/common';
+import localeEs from '@angular/common/locales/es';
 
+// Registrar el locale español
+registerLocaleData(localeEs);
 @NgModule({
   declarations: [
     AppComponent,
