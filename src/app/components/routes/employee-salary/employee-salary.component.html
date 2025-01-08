@@ -35,7 +35,7 @@
 
   <div *ngIf="selectedDate" class="mt-4">
     <h5>Horario del Día: {{ selectedDate | date: 'fullDate':'':'es' }}</h5>
-    <table class="table table-bordered">
+    <table class="table table-striped">
       <thead>
         <tr>
           <th>Nombre</th>
@@ -66,9 +66,9 @@
   </div>
 
   <div class="mt-4">
-    <h5 class="text-center">Horario Semanal ({{ getWeekTitle() }})</h5>
+    <h5 class="text-start">Horario Semanal ({{ getWeekTitle() }})</h5>
   
-    <table class="table table-bordered">
+    <table class="table table-striped">
       <thead>
         <tr>
           <th>Nombre</th>
@@ -118,7 +118,7 @@
   
     <!-- Resumen semanal -->
     <div class="mt-4">
-      <h5 class="text-center">Resumen Semanal</h5>
+      <h5 class="text-start">Resumen Semanal</h5>
       <table class="table table-striped">
         <thead>
           <tr>

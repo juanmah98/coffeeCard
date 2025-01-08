@@ -1,6 +1,7 @@
 import { ChangeDetectorRef, Component, NgZone, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Entidades } from 'src/app/interfaces/entdidades';
+import { Qrs } from 'src/app/interfaces/qrs';
 import { Usuarios } from 'src/app/interfaces/usuarios';
 import { Usuarios_admins } from 'src/app/interfaces/usuarios_admin';
 import { AuthService } from 'src/app/services/auth.service.service';
@@ -23,7 +24,9 @@ export class PanelMasterComponent implements OnInit {
   regalos: string[] = [];
   totalRegalos = 0;
   totalQrs = 0;
+  totalQrsUsados = 0;
   totalAdmins = 0;
+  usadosPor:string[] = [];
 
   constructor(private supabaseService: SupabaseService,
     private router: Router,
@@ -49,10 +52,23 @@ export class PanelMasterComponent implements OnInit {
       this.usuarios = users;
       this.totalQrs = qrs.length;
       this.totalAdmins = admins.length;
+       await this.qrsUsados(qrs);
     } catch (error) {
       console.error('Error al cargar usuarios:', error);
       throw error;
     }
+
+    
+  }
+
+ async qrsUsados(qrs:Qrs[]){
+
+  qrs.forEach(element => {
+    if(element.is_used == true){
+      this.totalQrsUsados++;
+      this.usadosPor.push(element.usuario) 
+    }
+  });
   }
 
   async getEntidades() {

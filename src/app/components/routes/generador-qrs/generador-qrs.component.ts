@@ -176,41 +176,46 @@ export class GeneradorQrsComponent implements OnInit {
     }
   
     try {
+      // Configurar la impresora seleccionada
       await this.qzTrayService.setPrinter(this.selectedPrinter);
   
-      const printData: any[] = [];
-  
       for (const qr of this.qrCodes) {
-        // Añadir texto descriptivo
-        printData.push({
-          type: 'raw',
-          format: 'plain',
-          data: `Entidad: ${this.entidadName}\nEscanea para sumar 1 punto\nhttps://fidecards.com\n\n`,
-        });
+        // Enviar texto
+        const textData = [
+          {
+            type: 'raw',
+            format: 'plain',
+            data: `${this.entidadName}\nEscanea para sumar 1 punto\nhttps://fidecards.com\n\n\n`,
+          },
+        ];
+        await this.qzTrayService.print(textData);
+        console.log("datos: "+textData)
   
-        // Convertir la imagen QR en formato ESC/POS
+        // Generar la imagen QR en base64
         const imageBase64 = await this.generateQRCodeImage(qr.qr_code);
-        const escPosData = await this.convertImageToEscPos(imageBase64);
   
-        // Añadir imagen al trabajo de impresión
-        printData.push({
-          type: 'raw',
-          format: 'plain',
-          data: escPosData,
-        });
-  
-        // Añadir espacio entre QR
-        printData.push({
-          type: 'raw',
-          format: 'plain',
-          data: '\n\n\n\n\n',
-        });
+        // Enviar la imagen
+        const imageData = [
+          {
+            type: 'image',
+            format: 'base64',
+            data: imageBase64,
+          },
+        ];
+        await this.qzTrayService.print(imageData);
+        console.log("imagen: "+imageData)
+        // Añadir comando de corte de papel (opcional)
+        /* const cutCommand = [
+          {
+            type: 'raw',
+            format: 'command',
+            data: '\x1D\x56\x42\x00', // Ajustar comando según impresora
+          },
+        ]; */
+       /*  await this.qzTrayService.print(cutCommand);
+        console.log("corte: "+cutCommand) */
       }
   
-      // Enviar todos los datos en un solo trabajo de impresión
-      await this.qzTrayService.print(printData);
-      console.log('Datos enviados:', printData);
-
       console.log('QR enviados a la impresora');
     } catch (error) {
       console.error('Error al imprimir los códigos QR:', error);
@@ -333,6 +338,7 @@ export class GeneradorQrsComponent implements OnInit {
       };
     });
   }
+  
 
   async printQRMultiplesPiazzetta2(): Promise<void> {
     if (!this.selectedPrinter) {

@@ -42,6 +42,16 @@
           <p class="fw-bold">QR GENERADOS</p>
         </div>
       </div>
+
+      <div class="col-10 col-sm-6">
+        <div class="bg-secondary p-3 m-1 rounded">
+          <h2>{{totalQrsUsados}}</h2>
+          <div class="text-start" *ngFor="let qrs of usadosPor">
+            <h5>{{qrs}}</h5>
+          </div>
+          <p class="fw-bold">QR USADOS</p>
+        </div>
+      </div>
       
     </div>
   
