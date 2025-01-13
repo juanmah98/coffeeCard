@@ -605,6 +605,17 @@ async generateQRCodes(entidadId: string, quantity: number): Promise<any[]> {
       .update({ name: employee.name, hourlyRate: employee.hourlyRate, activo: employee.activo })
       .eq('id', employee.id);
   }
+
+  async deleteEmployeeById(employeeId: string): Promise<void> {
+    const { error } = await this.supabase
+      .from('empleados')
+      .delete()
+      .eq('id', employeeId);
+
+    if (error) {
+      throw new Error(error.message);
+    }
+  }
   
   async deleteUnusedQrs(): Promise<void> {
     try {

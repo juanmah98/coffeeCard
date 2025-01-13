@@ -129,7 +129,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let employee of employees">
+          <tr *ngFor="let employee of activeEmployees">
             <td>{{ employee.name }}</td>
             <td>{{ calculateWeeklyHours(employee.id) | number:'1.2-2' }} horas</td>
             <td>
@@ -192,33 +192,44 @@
       </tr>
     </thead>
    <!-- Lista de empleados ordenada -->
-<tbody>
-  <tr *ngFor="let employee of sortedEmployees">
-    <td>
-      <input
-        type="text"
-        [(ngModel)]="employee.name"
-        (blur)="updateEmployee(employee)"
-      />
-    </td>
-    <td>
-      <input
-        type="number"
-        [(ngModel)]="employee.hourlyRate"
-        (blur)="updateEmployee(employee)"
-      />
-    </td>
-    <td>{{ employee.activo ? 'Activo' : 'Inactivo' }}</td>
-    <td>
-      <button
-        class="btn btn-warning"
-        (click)="toggleEmployeeStatus(employee)"
-      >
-        {{ employee.activo ? 'Desactivar' : 'Activar' }}
-      </button>
-    </td>
-  </tr>
-</tbody>
+   <tbody>
+    <tr *ngFor="let employee of sortedEmployees">
+      <td>
+        <input
+          type="text"
+          [(ngModel)]="employee.name"
+          (blur)="updateEmployee(employee)"
+        />
+      </td>
+      <td>
+        <input
+          type="number"
+          [(ngModel)]="employee.hourlyRate"
+          (blur)="updateEmployee(employee)"
+        />
+      </td>
+      <td>{{ employee.activo ? 'Activo' : 'Inactivo' }}</td>
+      <td>
+        <button
+          class="btn btn-warning"
+          (click)="toggleEmployeeStatus(employee)"
+        >
+          {{ employee.activo ? 'Desactivar' : 'Activar' }}
+        </button>
+      </td>
+      <!-- Botón para eliminar empleado -->
+      <td>
+        <button
+          class="btn btn-danger"
+          (click)="deleteEmployee(employee)"
+          title="Eliminar empleado"
+        >
+          <i class="fas fa-trash"><img src="../../../../assets/imagenes/cards/basura.png" width="18px" alt=""></i> <!-- Ícono de basurero -->
+        </button>
+      </td>
+    </tr>
+  </tbody>
+  
 
   </table>
 </div>

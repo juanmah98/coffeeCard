@@ -400,6 +400,29 @@ newEmployeeRate: number = 0;
       console.error('Error inesperado al actualizar empleado:', error);
     }
   }
+
+  async deleteEmployee(employee: Empleados): Promise<void> {
+    const confirmDelete = confirm(
+      `¿Estás seguro de que deseas eliminar al empleado ${employee.name}?`
+    );
+
+    if (!confirmDelete) {
+      return; // Si el usuario cancela, no se realiza ninguna acción
+    }
+
+    try {
+      // Llamar al servicio para eliminar el empleado
+      await this._supabaseServices.deleteEmployeeById(employee.id);
+
+      // Actualizar la lista local de empleados
+      this.ngOnInit();
+
+      alert(`Empleado ${employee.name} eliminado con éxito.`);
+    } catch (error) {
+      console.error('Error al eliminar empleado:', error);
+      alert('Ocurrió un error al intentar eliminar al empleado. Por favor, intenta de nuevo.');
+    }
+  }
   
 
   async toggleEmployeeStatus(employee: Empleados) {
