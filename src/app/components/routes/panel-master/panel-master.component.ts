@@ -27,7 +27,8 @@ export class PanelMasterComponent implements OnInit {
   totalQrsUsados = 0;
   totalAdmins = 0;
   usadosPor:string[] = [];
-
+  usadosHoy:string[] = [];
+  hoy: Date = new Date()
   constructor(private supabaseService: SupabaseService,
     private router: Router,
     private internoService: InternoService,
@@ -52,7 +53,7 @@ export class PanelMasterComponent implements OnInit {
       this.usuarios = users;
       this.totalQrs = qrs.length;
       this.totalAdmins = admins.length;
-       await this.qrsUsados(qrs);
+      this.usadosHoy = await this.qrsUsados(qrs);
     } catch (error) {
       console.error('Error al cargar usuarios:', error);
       throw error;
@@ -61,15 +62,31 @@ export class PanelMasterComponent implements OnInit {
     
   }
 
- async qrsUsados(qrs:Qrs[]){
-
-  qrs.forEach(element => {
-    if(element.is_used == true){
-      this.totalQrsUsados++;
-      this.usadosPor.push(element.usuario) 
-    }
-  });
+  async qrsUsados(qrs: Qrs[]) {
+    const hoy = new Date(); // Obtiene la fecha actual
+    const usadosHoy: string[] = []; // Nuevo arreglo para los nombres de los usuarios que usaron hoy
+  
+    qrs.forEach(element => {
+      if (element.is_used === true) {
+        this.totalQrsUsados++;
+        this.usadosPor.push(element.usuario);
+  
+        // Convertir used_at a Date y comparar si es del mismo día
+        const fechaUsado = new Date(element.used_at);
+        if (
+          fechaUsado.getFullYear() === hoy.getFullYear() &&
+          fechaUsado.getMonth() === hoy.getMonth() &&
+          fechaUsado.getDate() === hoy.getDate()
+        ) {
+          usadosHoy.push(element.usuario); // Agregar el usuario al arreglo si es del día actual
+        }
+      }
+    });
+  
+    console.log('Usuarios que usaron hoy:', usadosHoy);
+    return usadosHoy; // Devuelve el arreglo por si lo necesitas
   }
+  
 
   async getEntidades() {
     try {
@@ -151,6 +168,14 @@ async getRegalosTablas(tabla: string) {
   console.log("back: ")
   this.ngZone.run(() => {
     this.router.navigate(['/admin']);
+  });
+}
+
+borrarQrs() {
+  this.supabaseService.deleteUnusedQrs().then(() => {
+    console.log('Operación completada');
+  }).catch(err => {
+    console.error('Error al eliminar filas:', err);
   });
 }
 }

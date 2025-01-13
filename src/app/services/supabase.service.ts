@@ -606,7 +606,23 @@ async generateQRCodes(entidadId: string, quantity: number): Promise<any[]> {
       .eq('id', employee.id);
   }
   
+  async deleteUnusedQrs(): Promise<void> {
+    try {
+      const { data, error } = await this.supabase
+        .from('qrs') // Nombre de la tabla
+        .delete()
+        .eq('is_used', false); // Condición para eliminar
 
+      if (error) {
+        console.error('Error eliminando filas:', error.message);
+        throw new Error('Error al eliminar filas: ' + error.message);
+      }
+
+      console.log('Filas eliminadas:', data);
+    } catch (err) {
+      console.error('Error ejecutando la operación:', err);
+    }
+  }
 
 
   

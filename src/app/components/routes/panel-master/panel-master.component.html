@@ -46,13 +46,19 @@
       <div class="col-10 col-sm-6">
         <div class="bg-secondary p-3 m-1 rounded">
           <h2>{{totalQrsUsados}}</h2>
-          <div class="text-start" *ngFor="let qrs of usadosPor">
-            <h5>{{qrs}}</h5>
-          </div>
           <p class="fw-bold">QR USADOS</p>
+          <div class="text-start" *ngFor="let qrs of usadosHoy">
+            <p class="fs-5 fw-bold">{{hoy | date: 'mediumDate':'':'es'}}</p>
+            <p class="fs-6">{{qrs}}</p>
+          </div>
+         
         </div>
       </div>
       
+
+      <div class="pt-2">
+        <button class="btn btn-primary" (click)="borrarQrs()">Borrar qrs sin uso</button>
+      </div>
     </div>
   
     <!-- Top 5 Section -->
