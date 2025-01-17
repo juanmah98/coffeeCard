@@ -89,7 +89,7 @@ export class GeneradorQrsComponent implements OnInit {
           {
             type: 'raw',
             format: 'plain',
-            data: `${this.entidadName}\nEscanea para sumar 1 punto\nhttps://fidecards.com\n`,
+            data: `Entidad: ${this.entidadName}\nEntra en la web\nhttps://fidecards.com\ny escanea para sumar 1 punto\n\n\n`,
           },
         ];
         await this.qzTrayService.print(textData);
@@ -108,16 +108,7 @@ export class GeneradorQrsComponent implements OnInit {
         ];
         await this.qzTrayService.print(imageData);
         console.log("imagen: "+imageData)
-        // Añadir comando de corte de papel (opcional)
-        const cutCommand = [
-          {
-            type: 'raw',
-            format: 'command',
-            data: '\x1D\x56\x42\x00', // Ajustar comando según impresora
-          },
-        ];
-        await this.qzTrayService.print(cutCommand);
-        console.log("corte: "+cutCommand)
+    
       }
   
       console.log('QR enviados a la impresora');
@@ -185,8 +176,11 @@ export class GeneradorQrsComponent implements OnInit {
           {
             type: 'raw',
             format: 'plain',
-            data: `${this.entidadName}\nEscanea para sumar 1 punto\nhttps://fidecards.com\n\n\n`,
-          },
+            data: `\x1b\x45\x01Entidad: ${this.entidadName}\x1b\x45\x00\n` + // Entidad en negrita
+          `Entra en la web\n` +
+          `\x1b\x45\x01https://fidecards.com\x1b\x45\x00\n` + // URL en negrita
+          `y escanea para sumar 1 punto\n\n\n`,
+  },
         ];
         await this.qzTrayService.print(textData);
         console.log("datos: "+textData)
@@ -204,16 +198,7 @@ export class GeneradorQrsComponent implements OnInit {
         ];
         await this.qzTrayService.print(imageData);
         console.log("imagen: "+imageData)
-        // Añadir comando de corte de papel (opcional)
-        /* const cutCommand = [
-          {
-            type: 'raw',
-            format: 'command',
-            data: '\x1D\x56\x42\x00', // Ajustar comando según impresora
-          },
-        ]; */
-       /*  await this.qzTrayService.print(cutCommand);
-        console.log("corte: "+cutCommand) */
+    
       }
   
       console.log('QR enviados a la impresora');
@@ -222,6 +207,95 @@ export class GeneradorQrsComponent implements OnInit {
     }
   }
   
+
+  async printQRMultiples2(): Promise<void> {
+    if (!this.selectedPrinter) {
+      console.error('No se ha seleccionado ninguna impresora.');
+      return;
+    }
+  
+    if (!this.qrCodes.length) {
+      console.error('No hay códigos QR generados para imprimir.');
+      return;
+    }
+  
+    try {
+      // Configurar la impresora seleccionada
+      await this.qzTrayService.setPrinter(this.selectedPrinter);
+  
+      for (const qr of this.qrCodes) {
+        // Generar la imagen QR en base64
+        const imageBase64 = await this.generateQRCodeImage(qr.qr_code);
+  
+        // Combinar texto e imagen en una sola solicitud de impresión
+        const printData = [
+          {
+            type: 'raw',
+            format: 'plain',
+            data: `${this.entidadName}\nEscanea para sumar 1 punto\nhttps://fidecards.com\n\n\n`,
+          },
+          {
+            type: 'image',
+            format: 'base64',
+            data: imageBase64,
+          },
+        ];
+  
+        // Enviar la solicitud de impresión
+        await this.qzTrayService.print(printData);
+      }
+  
+      console.log('QR enviados a la impresora');
+    } catch (error) {
+      console.error('Error al imprimir los códigos QR:', error);
+    }
+  }
+  
+  async printQRBatch(): Promise<void> {
+    if (!this.selectedPrinter) {
+      console.error('No se ha seleccionado ninguna impresora.');
+      return;
+    }
+  
+    if (!this.qrCodes.length) {
+      console.error('No hay códigos QR generados para imprimir.');
+      return;
+    }
+  
+    try {
+      // Configurar la impresora seleccionada
+      await this.qzTrayService.setPrinter(this.selectedPrinter);
+  
+      // Crear un lote de datos para impresión
+      const batchData = [];
+  
+      for (const qr of this.qrCodes) {
+        // Generar la imagen QR en base64
+        const imageBase64 = await this.generateQRCodeImage(qr.qr_code);
+  
+        // Agregar texto e imagen al lote
+        batchData.push(
+          {
+            type: 'raw',
+            format: 'plain',
+            data: `${this.entidadName}\nEscanea para sumar 1 punto\nhttps://fidecards.com\n\n\n`,
+          },
+          {
+            type: 'image',
+            format: 'base64',
+            data: imageBase64,
+          }
+        );
+      }
+  
+      // Enviar el lote completo a la impresora
+      await this.qzTrayService.print(batchData);
+  
+      console.log('Lote de QR enviados a la impresora');
+    } catch (error) {
+      console.error('Error al imprimir los códigos QR:', error);
+    }
+  }
   
   
   async printQRMultiplesHtml(): Promise<void> {
