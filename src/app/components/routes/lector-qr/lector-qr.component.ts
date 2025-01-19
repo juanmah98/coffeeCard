@@ -183,6 +183,7 @@ export class LectorQrComponent implements OnInit {
       this.data_cafe.contador = 0;
       this.data_cafe.opcion = 0;
       this.data_cafe.cantidad_gratis = this.data_cafe.cantidad_gratis + 1;
+      
 
       try {
         const responseOpcion: any = (await this._SupabaseService.updateOpcion(this.data_cafe.id, this.entidad.tabla_contador, 0)).data;
@@ -202,6 +203,29 @@ export class LectorQrComponent implements OnInit {
       try {
         const responseContador: any = (await this._SupabaseService.updateContador(this.data_cafe.id, this.entidad.tabla_contador, this.data_cafe.contador + 1)).data;
         console.log("Contador +1 ", responseContador);
+
+        if(this.data_cafe.contador+1 === 10){
+          const payload = {
+            usuario_id: this.data_cafe.usuario_id,
+            contador_id: this.data_cafe.id,
+            contador: this.data_cafe.contador,
+            entidad_id: this.entidad.id
+          };
+    
+          // Enviar petición HTTP a la Edge Function
+          const response = await fetch(
+            'https://rwttebejxwncpurszzld.supabase.co/functions/v1/notifyPrize',
+            {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify(payload),
+            }
+          );
+
+          console.log(response);
+        }
 
         this.reiniciarEscaneo();
       } catch (error) {

@@ -177,17 +177,54 @@ dataUser:Usuarios = {
 
 
   async sumar(): Promise<void> {
-     
-      try {
-        const responseContador: any = (await this._SupabaseService.updateContador(this.data_contador.id, this.entidad.tabla_contador, this.data_contador.contador + 1)).data;
-       /*  console.log("Contador +1 ", responseContador); */
-
-      } catch (error) {
-        console.error('Error al crear cafe', error);
+    try {
+      // Incrementar el contador en la base de datos
+      const nuevoContador = this.data_contador.contador + 1;
+  
+      const responseContador: any = await this._SupabaseService.updateContador(
+        this.data_contador.id,
+        this.entidad.tabla_contador,
+        nuevoContador
+      );
+  
+      console.log('Contador actualizado:', responseContador);
+  
+      // Si el contador llega a 10, enviar el webhook a la Edge Function
+      if (nuevoContador === 10) {
+        const payload = {
+          usuario_id: this.data_contador.usuario_id,
+          contador_id: this.data_contador.id,
+          contador: nuevoContador,
+          entidad_id: this.entidad.id
+        };
+  
+        // Enviar petición HTTP a la Edge Function
+        const response = await fetch(
+          'https://rwttebejxwncpurszzld.supabase.co/functions/v1/notifyPrize',
+          {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(payload),
+          }
+        );
+  
+        if (response.ok) {
+          console.log('Notificación enviada con éxito');
+        } else {
+          console.error('Error al enviar la notificación', await response.json());
+        }
       }
-    
-    this.continueScanning = true;
+  
+      // Continuar con el escaneo
+      this.continueScanning = true;
+  
+    } catch (error) {
+      console.error('Error al incrementar el contador:', error);
+    }
   }
+  
 
 
   back(): void {
