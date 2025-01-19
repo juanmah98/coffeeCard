@@ -182,11 +182,13 @@ export class SupabaseService {
     return this.http.post(this.apiUrlCafes, data, { headers });
   }
 
-  getDataCard(id_card: string, tabla: string): Observable<any> {
-    const headers = this.getHeaders();
-    const api = `${this.apiUrl}/${tabla}`;
-    const queryParams = new HttpParams().set('id', `eq.${id_card}`);
-    return this.http.get(api, { headers, params: queryParams });
+  async getDataCard(id_card: string, tabla: string): Promise<{ data: any[] | null; error: any }> {
+    const { data, error } = await this.supabase
+      .from(tabla)
+      .select('*') // Puedes especificar columnas específicas si es necesario
+      .eq('id', id_card);
+
+    return { data, error };
   }
 
   postOpcion(someValue: string, otherValue: number): Observable<any> {

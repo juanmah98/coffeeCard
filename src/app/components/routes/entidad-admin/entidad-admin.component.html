@@ -128,7 +128,7 @@
                       </div> 
 
                       <div *ngIf="entidad.nombre == 'space burguer' || entidad.nombre == 'lapiazzetta'">
-                        <span class="fs-5 fw-bold">Sumar punto con tickets</span><br>
+                        <span class="fs-5 fw-bold">Sumar punto manualmente</span><br>
                         <span [ngClass]="{'editable': entidad.qr_papel, 'editableFalse': !entidad.qr_papel}" (click)="toggQr_papel(entidad)">
                           {{ entidad.qr_papel ? 'Activado' : 'Desactivado' }}</span>
                       </div>

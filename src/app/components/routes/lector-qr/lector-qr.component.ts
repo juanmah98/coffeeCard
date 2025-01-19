@@ -111,54 +111,76 @@ export class LectorQrComponent implements OnInit {
     }
   }
 
-  async scanQRCode() {
-    const video = this.videoElement?.nativeElement; // Verificar si videoElement está definido
-    if (!video) {
-      console.error('Elemento de video no está definido.');
-      return;
-    }
 
-    const canvas = this.canvasElement?.nativeElement; // Verificar si canvasElement está definido
-    if (!canvas) {
-      console.error('Elemento de lienzo no está definido.');
-      return;
-    }
-
-    const context = canvas.getContext('2d');
-    if (!context) {
-      console.error('No se pudo obtener el contexto 2D del lienzo.');
-      return;
-    }
-
-    context.drawImage(video, 0, 0, canvas.width, canvas.height);
-
-    const imageData = context.getImageData(0, 0, canvas.width, canvas.height);
-    const code = jsQR(imageData.data, imageData.width, imageData.height);
-
-    if (code) {
-      console.log('Código QR escaneado:', code.data);
-      const uuidDescifrado = this.descifrarUUID(code.data, this.clave);
-      console.log('UUID descifrado:', uuidDescifrado);
-
-      this._SupabaseService.getDataCard(uuidDescifrado, this.entidad.tabla_contador).subscribe((data: any) => {
-        if (data[0] === undefined) {
-          console.log("ENTIDAD INEXISTENTE");
+  async scanQRCode(): Promise<void> {
+    try {
+      // Verificar si el elemento de video está definido
+      const video = this.videoElement?.nativeElement;
+      if (!video) {
+        console.error('Elemento de video no está definido.');
+        return;
+      }
+  
+      // Verificar si el elemento canvas está definido
+      const canvas = this.canvasElement?.nativeElement;
+      if (!canvas) {
+        console.error('Elemento de lienzo no está definido.');
+        return;
+      }
+  
+      // Obtener el contexto 2D del canvas
+      const context = canvas.getContext('2d');
+      if (!context) {
+        console.error('No se pudo obtener el contexto 2D del lienzo.');
+        return;
+      }
+  
+      // Dibujar el contenido del video en el canvas
+      context.drawImage(video, 0, 0, canvas.width, canvas.height);
+  
+      // Obtener los datos de la imagen del canvas
+      const imageData = context.getImageData(0, 0, canvas.width, canvas.height);
+  
+      // Intentar leer el código QR con jsQR
+      const code = jsQR(imageData.data, imageData.width, imageData.height);
+  
+      if (code) {
+        /* console.log('Código QR escaneado:', code.data); */
+  
+        // Desencriptar el UUID obtenido del código QR
+        const uuidDescifrado = this.descifrarUUID(code.data, this.clave);
+        /* console.log('UUID descifrado:', uuidDescifrado); */
+  
+        // Obtener datos de Supabase usando el UUID desencriptado
+        const { data, error } = await this._SupabaseService.getDataCard(uuidDescifrado, this.entidad.tabla_contador);
+  
+        if (error) {
+          console.error('Error al consultar Supabase:', error);
+          return;
+        }
+  
+        if (!data || data.length === 0) {
+          console.log('ENTIDAD INEXISTENTE');
           this.entidadDistinta = true;
         } else {
-          this.data_cafe = data[0];
-          console.log(data[0]);
+          this.data_cafe = data[0]; // Actualizar con los datos obtenidos
+         /*  console.log('Datos obtenidos:', this.data_cafe); */
           this.entidadDistinta = false;
         }
-      });
-
-      // Detener el escaneo después de leer un código QR
-      this.detenerEscaneo();
-
-      // Aquí puedes enviar una solicitud HTTP al servidor para incrementar el contador
-    } else {
-      console.error('No se pudo detectar ningún código QR.');
+  
+        // Detener el escaneo después de leer un código QR válido
+        this.detenerEscaneo();
+  
+        // Aquí podrías agregar lógica adicional, como enviar una solicitud HTTP
+        // al servidor para incrementar un contador, si es necesario.
+      } else {
+        console.error('No se pudo detectar ningún código QR.');
+      }
+    } catch (err) {
+      console.error('Error inesperado durante el escaneo del código QR:', err);
     }
   }
+  
 
   detenerEscaneo(): void {
     this.continueScanning = false;

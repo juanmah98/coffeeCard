@@ -162,17 +162,26 @@ export class CardSelectionComponent implements OnInit, OnDestroy  {
     this.toast.showMessage('¡QR leido!');
   }
 
- async actualizarDatos(): Promise<void> {
- /*  console.log("DATOS A VER: ", this.data_contador ) */
-  await  this._SupabaseService.getDataCard(this.data_contador.id, this.entidad.tabla_contador).subscribe((data: any) => {
+async actualizarDatos(): Promise<void> {
+  try {
+    const { data, error } = await this._SupabaseService.getDataCard(this.data_contador.id, this.entidad.tabla_contador);
+
+    if (error) {
+      console.error('Error al obtener datos:', error);
+      return;
+    }
+
+    if (data && data.length > 0) {
       this.data_contador = data[0];
-      /* console.log("data[0]");
-      console.log(data[0]); */
-      {
-        this.upload = true;
-      }
-    });
+      this.upload = true; // Marcar como cargado correctamente
+    } else {
+      console.warn('No se encontraron datos para el ID proporcionado.');
+    }
+  } catch (err) {
+    console.error('Error inesperado:', err);
   }
+}
+
 
  async op1(){
     this.upload = false;
