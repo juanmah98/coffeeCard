@@ -47,9 +47,9 @@
         <div class="bg-secondary p-3 m-1 rounded">
           <h2>{{totalQrsUsados}}</h2>
           <p class="fw-bold">QR USADOS</p>
-          <p class="fs-5 fw-bold">{{hoy | date: 'mediumDate':'':'es'}}</p>
+          <p class="fs-6 fw-bold ">{{hoy | date: 'mediumDate':'':'es'}}</p>
           <div class="text-start" *ngFor="let qrs of usadosHoy">
-            <p class="fs-6">{{qrs}}</p>
+            <p class="fs-6"><b>°</b>{{qrs}}</p>
           </div>
          
         </div>
