@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { PopupInfoService } from 'src/app/services/popup-info.service';
+import { PopupVService } from 'src/app/services/popup-v.service';
 
 @Component({
   selector: 'app-footer',
@@ -7,9 +9,13 @@ import { Component, OnInit } from '@angular/core';
 })
 export class FooterComponent implements OnInit {
 
-  constructor() { }
+  constructor(public popupService: PopupVService) { }
 
   ngOnInit(): void {
+  }
+
+  onInfoTouch() {
+    this.popupService.actualizarMostrar(true)
   }
 
 }

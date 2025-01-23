@@ -1,3 +1,20 @@
 .font{
     font-size: smaller;
 }
+.version-info {
+    cursor: pointer; /* Aparece el puntero para indicar que es clickeable */
+    color: #929292; /* Color base (similar a un enlace) */
+    text-decoration: underline; /* Subrayado para indicar acción */
+  
+    transition: color 0.2s ease-in-out; /* Suavidad en el hover */
+  
+    &:hover {
+      color: #0056b3; /* Cambia a un color más oscuro al pasar el mouse */
+      text-decoration: none; /* Elimina el subrayado temporalmente para mejor efecto */
+    }
+  
+    &:active {
+      color: #003d80; /* Color más oscuro al hacer clic */
+    }
+  }
+  

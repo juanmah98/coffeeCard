@@ -1,0 +1,24 @@
+<div class="container">
+    <div class="container__card">
+      <div class="container__title">
+        Historial de Versiones
+        <img src="../../../../assets/imagenes/cards/info-dark.png" width="20px" alt="">
+      </div>
+  
+      <div class="container__content">
+        <div class="version" *ngFor="let version of versiones">
+          <div class="version__title">
+            <strong>{{ version.nombre }}</strong>
+          </div>
+          <ul class="version__list">
+            <li *ngFor="let cambio of version.cambios">
+             {{ cambio }}
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  
+    <div class="background" (click)="onBackgroundTouched()"></div>
+  </div>
+  

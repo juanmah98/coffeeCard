@@ -10,6 +10,7 @@ import { FooterComponent } from './footer/footer.component';
 import { BannerPolicyComponent } from './banner-policy/banner-policy.component';
 import { PopupScanerqrComponent } from './popup-scanerqr/popup-scanerqr.component';
 import { HeaderComponent } from './header/header.component';
+import { PopupVComponent } from './popup-v/popup-v.component';
 
 
 
@@ -23,7 +24,8 @@ import { HeaderComponent } from './header/header.component';
     FooterComponent,
     BannerPolicyComponent,
     PopupScanerqrComponent,
-    HeaderComponent
+    HeaderComponent,
+    PopupVComponent
   ],
   
   exports: [
