@@ -8,13 +8,14 @@
   
     transition: color 0.2s ease-in-out; /* Suavidad en el hover */
   
-    &:hover {
-      color: #0056b3; /* Cambia a un color más oscuro al pasar el mouse */
-      text-decoration: none; /* Elimina el subrayado temporalmente para mejor efecto */
-    }
+  }
+
+  .version-info:hover {
+    color: #0056b3;
+    text-decoration: none;
+  }
   
-    &:active {
-      color: #003d80; /* Color más oscuro al hacer clic */
-    }
+  .version-info:active {
+    color: #003d80;
   }
   
