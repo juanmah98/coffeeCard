@@ -176,9 +176,9 @@ export class GeneradorQrsComponent implements OnInit {
           {
             type: 'raw',
             format: 'plain',
-            data: `\x1b\x45\x01Entidad: ${this.entidadName}\x1b\x45\x00\n` + // Entidad en negrita
+            data: `\x1b\x45\x01${this.entidadName}\x1b\x45\x00\n` + // Entidad en negrita
           `Entra en la web\n` +
-          `\x1b\x45\x01https://fidecards.com\x1b\x45\x00\n` + // URL en negrita
+          `\x1b\x45\x01fidecards.com\x1b\x45\x00\n` + // URL en negrita
           `y escanea para sumar 1 punto\n\n\n`,
   },
         ];
