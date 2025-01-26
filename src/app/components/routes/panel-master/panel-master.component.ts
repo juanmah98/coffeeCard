@@ -18,17 +18,20 @@ export class PanelMasterComponent implements OnInit {
   entidades: Entidades[] = [];
   i = 0;
   usuariosAdmin:any[] = [
-    {nombre: '', usuarios: '', regalo: ''},
+    {nombre: '', usuarios: '', regalo: '', idEntidad:''},
   ];
   displayedColumns: string[] = ['id', 'email', 'name', 'fecha_creacion', 'pais'];
   regalos: string[] = [];
   totalRegalos = 0;
   totalQrs = 0;
   totalQrsUsados = 0;
+  totalQrsUsadosEntidad = {};
   totalAdmins = 0;
+  qrs: Qrs[] = [];
   usadosPor:string[] = [];
   usadosHoy:string[] = [];
   hoy: Date = new Date()
+await: any;
   constructor(private supabaseService: SupabaseService,
     private router: Router,
     private internoService: InternoService,
@@ -54,6 +57,7 @@ export class PanelMasterComponent implements OnInit {
       this.totalQrs = qrs.length;
       this.totalAdmins = admins.length;
       this.usadosHoy = await this.qrsUsados(qrs);
+      this.qrs = qrs;
     } catch (error) {
       console.error('Error al cargar usuarios:', error);
       throw error;
@@ -83,10 +87,21 @@ export class PanelMasterComponent implements OnInit {
       }
     });
   
-    console.log('Usuarios que usaron hoy:', usadosHoy);
+   /*  console.log('Usuarios que usaron hoy:', usadosHoy); */
     return usadosHoy; // Devuelve el arreglo por si lo necesitas
   }
-  
+
+
+qrsUsadosEntidad(entidaId: string){
+  let total = 0;
+  this.qrs.forEach(element => {
+    if(element.entidad_id == entidaId && element.is_used == true){
+      total++;
+    }
+  });
+  /* console.log(total , entidaId); */
+  return total;
+}
 
   async getEntidades() {
     try {
@@ -100,12 +115,12 @@ export class PanelMasterComponent implements OnInit {
     }
   }
 
-  async getEntidadesUsers(tabla: string, nombre: string, regalos:number) {
+  async getEntidadesUsers(tabla: string, nombre: string, regalos:number, idEntidad: string) {
     try {
       const response = await this.supabaseService.getTablasTotalUsuarios(tabla);
       const entidad:any = response.data;
 /*       console.log(entidad) */
-      this.agregarUsuario(nombre,entidad.length, regalos)
+      this.agregarUsuario(nombre,entidad.length, regalos, idEntidad)
        /* console.log("this.usuariosAdmin") */
     /* console.log(this.usuariosAdmin) */
     } catch (error) {
@@ -119,19 +134,19 @@ export class PanelMasterComponent implements OnInit {
     let regalos = 0;
     this.entidades.forEach(async data => {
     regalos = await this.getRegalosTablas(data.tabla_contador)
-    await this.getEntidadesUsers(data.tabla_contador, data.nombre, regalos)
+    await this.getEntidadesUsers(data.tabla_contador, data.nombre, regalos, data.id)
     
     })
   }
 
-agregarUsuario(nombre: string, usuario: string, regalo:number) {
+agregarUsuario(nombre: string, usuario: string, regalo:number, idEntidad: string) {
     // Verifica si el primer elemento tiene valores vacíos
     if (this.usuariosAdmin.length > 0 && this.usuariosAdmin[0].nombre === '' && this.usuariosAdmin[0].usuarios === '') {
         this.usuariosAdmin.shift(); // Elimina el primer elemento si está vacío
     }
 
     // Agrega el nuevo usuario
-    this.usuariosAdmin.push({ nombre, usuarios: usuario , regalo:regalo});
+    this.usuariosAdmin.push({ nombre, usuarios: usuario , regalo:regalo, idEntidad});
     this.usuariosAdmin.sort((a, b) => {
       return Number(b.usuarios) - Number(a.usuarios);
     });
