@@ -61,14 +61,10 @@
         </div>
       </div>
       
-
-      <div class="pt-2">
-        <button class="btn btn-primary" (click)="borrarQrs()">Borrar qrs sin uso</button>
-      </div>
     </div>
   
     <!-- Top 5 Section -->
-    <div class="row justify-content-center">
+    <div class="row justify-content-center mb-3">
       <div class="col-10 col-sm-6 bg-light p-4 rounded text-black">
       <h3 class="mb-4">TOP <span class="text-green">ENTIDADES</span></h3>
       <ul class="list-unstyled text-start" *ngFor="let entidad of usuariosAdmin, let i = index">
@@ -84,6 +80,13 @@
       </ul>
     </div>
   </div>
+
+  <div class="row justify-content-center">
+    <div class="pt-2 ">
+      <button class="btn btn-danger" (click)="borrarQrs()">Borrar qrs sin uso</button>
+    </div>
+  </div>
+
   </div>
   
 </body>
