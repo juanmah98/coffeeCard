@@ -1,3 +1,4 @@
+<app-popup-qrs-master *ngIf="popupService.mostrar"></app-popup-qrs-master>
 <body class="container-fluid pt-5">
   <div class="col-12">
     <button  class="btn btn m-2" (click)="back()"><img class=" pb-1" src="../../../../assets/imagenes/cards/back2.png" width="18px" alt=""></button>
@@ -43,14 +44,19 @@
         </div>
       </div>
 
-      <div class="col-10 col-sm-6">
+      <div class="col-10 col-sm-4" >
         <div class="bg-secondary p-3 m-1 rounded">
           <h2>{{totalQrsUsados}}</h2>
           <p class="fw-bold">QR USADOS</p>
-          <p class="fs-6 fw-bold ">{{hoy | date: 'mediumDate':'':'es'}}</p>
-          <div class="text-start" *ngFor="let qrs of usadosHoy">
-            <p class="fs-6"><b>°</b>{{qrs}}</p>
           </div>
+      </div>
+
+      <div class="col-10 col-sm-4" >
+        <div class="bg-secondary p-3 m-1 rounded">
+          <h2>{{usadosHoy.length}}</h2>
+          <p class="fw-bold">QR USADOS HOY</p>
+          <!-- <p class="fs-6 fw-bold ">{{hoy | date: 'mediumDate':'':'es'}}</p> -->
+          <button class="btn btn" (click)="onInfoTouch(usadosHoy)"><img src="../../../../assets/imagenes/master/ojo-black.png" width="22px" alt=""></button>
          
         </div>
       </div>

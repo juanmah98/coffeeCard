@@ -1,0 +1,24 @@
+<div class="container">
+    <div class="container__card">
+      <div class="container__title">
+        QR USADOS HOY 
+        <img src="../../../../assets/imagenes/master/check-blue.png" width="20px" alt="">
+      </div>
+  
+      <div class="container__content">
+        <div class="version">
+          <div class="version__title">
+            <strong> {{hoy | date: 'mediumDate':'':'es'}}</strong>
+          </div> 
+          <ul class="version__list" *ngFor="let version of data">
+            <li>
+             {{ version }}
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  
+    <div class="background" (click)="onBackgroundTouched()"></div>
+  </div>
+  

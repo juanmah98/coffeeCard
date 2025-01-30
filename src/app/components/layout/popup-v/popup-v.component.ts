@@ -11,6 +11,7 @@ export class PopupVComponent {
     {
       nombre: 'V-1.3',
       cambios: [
+        'Mejoras de la vista panel maestro informacion',
         'Visibilidad del historial de versiones.',
         'Nuevas Edge Functions para envío de correos electrónicos.',
         'Actualización en la vista principal del panel maestro.',

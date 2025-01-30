@@ -6,6 +6,7 @@ import { Usuarios } from 'src/app/interfaces/usuarios';
 import { Usuarios_admins } from 'src/app/interfaces/usuarios_admin';
 import { AuthService } from 'src/app/services/auth.service.service';
 import { InternoService } from 'src/app/services/interno.service';
+import { PopupQrsMasterService } from 'src/app/services/popup-qrs-master.service';
 import { SupabaseService } from 'src/app/services/supabase.service';
 
 @Component({
@@ -37,7 +38,8 @@ await: any;
     private internoService: InternoService,
     private ngZone: NgZone,
     private authService:AuthService,
-    private cdr: ChangeDetectorRef) {}
+    private cdr: ChangeDetectorRef,
+    public popupService: PopupQrsMasterService) {}
 
   async ngOnInit(): Promise<void> {
     this.getUsuarios();
@@ -193,4 +195,11 @@ borrarQrs() {
     console.error('Error al eliminar filas:', err);
   });
 }
+
+onInfoTouch(usuarios: string[]) {
+  this.popupService.actualizarMostrar(true);
+  this.popupService.setData(usuarios);
+}
+
+
 }
