@@ -1,7 +1,10 @@
 body{
     background-color: #C9BBAB;
     font-family: "OpenSans";
+    overflow-x: hidden; /* Oculta el desbordamiento horizontal */
 }
+
+
 
 .background-cafe{
     padding-top: 0.5rem;
@@ -267,6 +270,7 @@ body{
 
 }
 
+
 .promo-img{
   width: 100%;
   align-content: center;
@@ -274,3 +278,59 @@ body{
    
   }
   
+  .bg-fidelity{
+    background-color: black;
+  }
+
+  .fidelity-section {
+  background-color: rgba(255, 255, 255, 0.9); /* Fondo semi-transparente */
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  text-align: center;
+}
+
+.fidelity-logo {
+  width: 150px;
+  margin-bottom: 10px;
+}
+
+.fidelity-text {
+  font-family: 'OpenSans';
+  font-size: 18px;
+  color: #2B2316;
+  margin-bottom: 15px;
+}
+
+.fidelity-btn {
+  font-family: 'OpenSans';
+  font-size: 16px;
+  padding: 10px 20px;
+  border-radius: 25px;
+  background-color: #213955;
+  color: #fff;
+  transition: background-color 0.3s ease;
+}
+
+.fidelity-btn:hover {
+  background-color: #333;
+}
+
+.fidelity-benefits {
+  list-style: none;
+  padding: 0;
+  font-family: 'OpenSans';
+  font-size: 16px;
+  color: #2B2316;
+}
+
+.fidelity-benefits li {
+  margin-bottom: 10px;
+}
+
+.fidelity-subtext {
+  font-family: 'OpenSans';
+  font-size: 16px;
+  color: #2B2316;
+  margin-bottom: 15px;
+}

@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, NgZone, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { Bebidas } from 'src/app/interfaces/bebidas';
 import { CafeMenus } from 'src/app/interfaces/cafe_menus';
@@ -21,7 +22,7 @@ export class MenuComponent implements OnInit {
   bebidas:Bebidas[]=[]
   extras:Extras[]=[]
   precioMenu: string ='';
-  constructor(private _SupabasMenuServices: MenuService) { }
+  constructor(private _SupabasMenuServices: MenuService, private router: Router, private ngZone: NgZone) { }
 
   async ngOnInit(): Promise<void> {
     this.cafes = await this._SupabasMenuServices.getCafes()
@@ -52,5 +53,9 @@ export class MenuComponent implements OnInit {
 
   }
 
-
+  accion(){
+    this.ngZone.run(() => {   
+      this.router.navigate(['/home'])
+      }); 
+  }
 }
