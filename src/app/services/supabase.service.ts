@@ -528,12 +528,15 @@ async generateQRCodes(entidadId: string, quantity: number): Promise<any[]> {
   }
 
   // Obtener todos los horarios
-  async getSchedules() {
-    const { data, error } = await this.supabase.from('horarios').select('*');
-    if (error) {
-      console.error('Error al obtener horarios:', error);
-    }
-    return data || [];
+  async getSchedules(): Promise<Horarios[]> {
+    const { data, error } = await this.supabase
+      .from('horarios')
+      .select('*')
+      // Eliminar cualquier filtro por "activo"
+      .order('date', { ascending: true });
+  
+    if (error) throw error;
+    return data as Horarios[];
   }
 
   // Guardar o actualizar un horario

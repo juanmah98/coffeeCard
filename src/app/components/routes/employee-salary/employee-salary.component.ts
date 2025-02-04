@@ -1,4 +1,6 @@
 import { ChangeDetectorRef, Component } from '@angular/core';
+import html2canvas from 'html2canvas';
+import jsPDF from 'jspdf';
 import { Empleados } from 'src/app/interfaces/empleados';
 import { Horarios } from 'src/app/interfaces/horarios';
 import { SupabaseService } from 'src/app/services/supabase.service';
@@ -19,10 +21,14 @@ export class EmployeeSalaryComponent {
 
 schedules: Horarios[] = [];
   employees: Empleados[] = [];
+  allEmployees: Empleados[] = [];
   selectedDate: any | null = null;
   selectedDateCalendar: any | null = null;
   currentYear: number = new Date().getFullYear();
   currentMonth: number = new Date().getMonth();
+  // Nuevo calendario mensual
+newCalendarMonth: number = new Date().getMonth();
+newCalendarYear: number = new Date().getFullYear();
   currentMonthName: string = '';
   daysInMonth: any[] = [];
   weekDays: string[] = ['Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb', 'Dom'];
@@ -31,20 +37,107 @@ defaultExit: string = '00:00';
 currentWeekStart: Date = this.getStartOfWeek(new Date());
 newEmployeeName: string = '';
 newEmployeeRate: number = 0;
+monthlySummary: any[] = [];
 
+
+
+  // Propiedades adicionales en la clase
+  months: string[] = [
+    'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 
+    'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'
+  ];
 
 
   constructor(private _supabaseServices: SupabaseService, private cdr: ChangeDetectorRef) {
    
   }
 
-  async ngOnInit(): Promise<void> {
-   await this.loadCurrentMonth();
-   await this.fetchData();
-   await this.generateDaysInMonth();
-   console.log("this.daysInMonth ", this.daysInMonth)
-    this.cdr.detectChanges();
+  // Agregar esta propiedad en la clase
+// Formatear fecha como "dd/mm"
+formatDateES(date: Date): string {
+  return `${date.getDate().toString().padStart(2, '0')}/${(date.getMonth() + 1).toString().padStart(2, '0')}`;
+}
+
+// Método para generar el resumen mensual
+generateMonthlySummary() {
+  this.monthlySummary = [];
+  const weeksInMonth = this.getWeeksInMonth(this.currentYear, this.currentMonth);
+
+  weeksInMonth.forEach(week => {
+    const weekSummary: any = {
+      startDate: this.formatDateES(week.start),
+      endDate: this.formatDateES(week.end),
+      days: []
+    };
+
+    for (let i = 0; i < 5; i++) { // Lunes a Viernes
+      const currentDate = new Date(week.start);
+      currentDate.setDate(week.start.getDate() + i);
+
+      // Ajustar a zona horaria de España
+      const adjustedDate = this.adjustToSpainTimezone(currentDate);
+      const formattedDate = adjustedDate.toISOString().split('T')[0];
+
+      const daySummary: any = {
+        date: formattedDate,
+        schedules: {}
+      };
+
+      // Iterar sobre TODOS los empleados (activos e inactivos)
+      this.allEmployees.forEach(employee => {
+        const schedule = this.getScheduleForDay(employee.id, formattedDate);
+        daySummary.schedules[employee.id] = {
+          entry: schedule.entry,
+          exit: schedule.exit
+        };
+      });
+
+      weekSummary.days.push(daySummary);
+    }
+
+    this.monthlySummary.push(weekSummary);
+  });
+}
+
+// Método para obtener las semanas del mes
+getWeeksInMonth(year: number, month: number) {
+  const weeks = [];
+  const firstDay = new Date(year, month, 1);
+  const lastDay = new Date(year, month + 1, 0);
+
+  // Ajustar el primer día al Lunes de la semana
+  let startOfWeek = this.getStartOfWeek(firstDay);
+
+  while (startOfWeek <= lastDay) {
+    const endOfWeek = new Date(startOfWeek);
+    endOfWeek.setDate(startOfWeek.getDate() + 4); // Lunes + 4 días = Viernes
+
+    weeks.push({
+      start: new Date(startOfWeek),
+      end: new Date(endOfWeek),
+    });
+
+    // Mover al siguiente Lunes
+    startOfWeek.setDate(startOfWeek.getDate() + 7);
   }
+
+  return weeks;
+}
+
+
+// Método para formatear la fecha
+formatDate(date: Date): string {
+  return `${date.getDate()}/${date.getMonth() + 1}`;
+}
+
+// Llamar a generateMonthlySummary en el ngOnInit
+async ngOnInit(): Promise<void> {
+  await this.loadCurrentMonth();
+  await this.fetchData();
+  await this.generateDaysInMonth();
+  this.generateMonthlySummary();
+  this.cdr.detectChanges();
+}
   async generateDaysInMonth() {
     const today = new Date();
     const daysInMonth = new Date(this.currentYear, this.currentMonth + 1, 0).getDate();
@@ -113,21 +206,28 @@ newEmployeeRate: number = 0;
   async fetchData() {
     try {
       this.employees = await this._supabaseServices.getEmployees();
+      this.allEmployees = await this._supabaseServices.getEmployees();
       this.schedules = await this._supabaseServices.getSchedules();
-      /* console.log(this.schedules) */
-      console.log('Empleados:', this.employees);
-      console.log('Horarios:', this.schedules);
+      
+      console.log('Empleados (activos e inactivos):', this.allEmployees);
+      console.log('Horarios (todos):', this.schedules); // Verifica que incluya a Diana
     } catch (error) {
       console.error('Error al cargar datos:', error);
     }
-    console.log("actualizdo")
-    this.cdr.detectChanges(); // Asegúrate de actualizar la vista
+    this.cdr.detectChanges();
   }
 
   loadCurrentMonth() {
     this.currentMonthName = new Date(this.currentYear, this.currentMonth).toLocaleString('es-ES', { month: 'long' });
     this.generateDaysInMonth();
   }
+  
+// Método para ajustar a CET/CEST (España)
+adjustToSpainTimezone(date: Date): Date {
+  const offset = date.getTimezoneOffset();
+  const spainOffset = -120; // UTC+1 (CET) o UTC+2 (CEST)
+  return new Date(date.getTime() + (offset - spainOffset) * 60 * 1000);
+}
   
 
   getScheduleForDay(employeeId: string, date: string): { entry: string; exit: string } {
@@ -256,6 +356,17 @@ newEmployeeRate: number = 0;
    this.loadCurrentMonth()
     this.generateDaysInMonth();
   }
+
+  navigateNewCalendarMonth(step: number) {
+  this.newCalendarMonth += step;
+  if (this.newCalendarMonth < 0) {
+    this.newCalendarMonth = 11;
+    this.newCalendarYear--;
+  } else if (this.newCalendarMonth > 11) {
+    this.newCalendarMonth = 0;
+    this.newCalendarYear++;
+  }
+}
   
 
   async handleTimeChange(event: Event, employeeId: string, date: string, type: 'entry' | 'exit') {
@@ -440,5 +551,80 @@ newEmployeeRate: number = 0;
       return a.activo ? -1 : 1; // Activos primero
     });
   }
+
+
+  async generatePDF() {
+    const doc = new jsPDF('p', 'mm', 'a4');
+    const element = document.getElementById('monthly-summary');
+  
+    if (element) {
+      const weeks = element.getElementsByClassName('week-section');
+  
+      for (let i = 0; i < weeks.length; i++) {
+        const week = weeks[i];
+  
+        // Esperar a que el contenido se renderice completamente
+        await new Promise(resolve => setTimeout(resolve, 500));
+  
+        // Capturar la semana como imagen
+        const canvas = await html2canvas(week as HTMLElement, {
+          scale: 2, // Aumentar la escala para mejor calidad
+          useCORS: true, // Permitir imágenes externas
+          logging: true, // Habilitar logs para depuración
+        });
+  
+        const imgData = canvas.toDataURL('image/png');
+        const imgWidth = 190; // Ancho reducido para márgenes
+        const imgHeight = (canvas.height * imgWidth) / canvas.width;
+  
+        // Añadir la imagen al PDF
+        if (i > 0) {
+          doc.addPage(); // Añadir una nueva página para cada semana
+        }
+        doc.addImage(imgData, 'PNG', 10, 10, imgWidth, imgHeight); // Márgenes de 10mm
+      }
+  
+      // Guardar el PDF
+      doc.save('resumen_mensual.pdf');
+    } else {
+      console.error('No se encontró el elemento para generar el PDF.');
+    }
+  }
+  
+
+
+
+// Método para navegar entre años
+navigateYear(offset: number) {
+  this.currentYear += offset;
+  this.generateMonthlySummary(); // Regenerar el resumen mensual al cambiar de año
+}
+
+// Método para seleccionar un mes
+selectMonth(monthIndex: number) {
+  this.currentMonth = monthIndex;
+  this.loadCurrentMonth();
+  this.generateMonthlySummary();
+}
+
+// Método para verificar si un empleado tiene horarios vacíos en toda la semana
+hasEmptyWeek(employeeId: string, week: any): boolean {
+  const isEmpty = week.days.every((day: any) => {
+    const schedule = day.schedules[employeeId];
+    console.log('Horario de Diana:', schedule); // Verifica esto
+    return (!schedule || (schedule.entry === '00:00' && schedule.exit === '00:00'));
+  });
+  return isEmpty;
+}
+
+// Método para obtener empleados con horarios válidos en la semana
+getFilteredEmployees(week: any): Empleados[] {
+  console.log('Todos los empleados:', this.allEmployees);
+  const filteredEmployees = this.allEmployees.filter(employee => !this.hasEmptyWeek(employee.id, week));
+  console.log('Empleados filtrados:', filteredEmployees);
+  return filteredEmployees;
+}
+
+
   
 }

@@ -150,7 +150,7 @@
   </div>
   
 
-  <div class="mt-4">
+  <div class="mt-4 mb-4">
   <h5>Gestión de Empleados</h5>
 
   <form (submit)="addEmployee()">
@@ -232,6 +232,66 @@
   
 
   </table>
+</div>
+
+<div class="container mt-5 pt-3">
+  <!-- Navegación entre años -->
+  <div class="text-center mb-4">
+    <button class="btn btn-secondary" (click)="navigateYear(-1)">Año Anterior</button>
+    <span class="mx-3">{{ currentYear }}</span>
+    <button class="btn btn-secondary" (click)="navigateYear(1)">Año Siguiente</button>
+  </div>
+
+  <!-- Calendario Anual -->
+  <div class="row">
+    <div class="col-md-3 mb-4" *ngFor="let month of months; let i = index">
+      <div class="card text-center" (click)="selectMonth(i)">
+        <div class="card-body">
+          <h5 class="card-title">{{ month }}</h5>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Resumen Mensual -->
+  <div id="monthly-summary">
+    <h5 class="text-center">Resumen Mensual - {{ currentMonthName }} {{ currentYear }}</h5>
+    <div *ngFor="let week of monthlySummary" class="week-section">
+      <h6 class="mt-3">Semana del {{ week.startDate }} al {{ week.endDate }}</h6>
+      <div *ngIf="getFilteredEmployees(week).length === 0" class="alert alert-info">
+        No hay empleados con horarios registrados en esta semana.
+      </div>
+      <table *ngIf="getFilteredEmployees(week).length > 0" class="table table-striped">
+        <thead>
+          <tr>
+            <th>Nombre</th>
+            <th>Lunes</th>
+            <th>Martes</th>
+            <th>Miércoles</th>
+            <th>Jueves</th>
+            <th>Viernes</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let employee of getFilteredEmployees(week)">
+            <td>{{ employee.name }}</td>
+            <td *ngFor="let day of week.days">
+              <div *ngIf="day.schedules[employee.id] && (day.schedules[employee.id].entry !== '00:00' || day.schedules[employee.id].exit !== '00:00')">
+                <span>ENT: {{ formatTime(day.schedules[employee.id].entry) }}</span><br>
+                <span>SAL: {{ formatTime(day.schedules[employee.id].exit) }}</span>
+              </div>
+              <div *ngIf="!day.schedules[employee.id] || (day.schedules[employee.id].entry === '00:00' && day.schedules[employee.id].exit === '00:00')">
+                <span class="text-muted">-</span>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="text-center mt-3">
+      <button class="btn btn-primary" (click)="generatePDF()">Generar PDF</button>
+    </div>
+  </div>
 </div>
 
   
