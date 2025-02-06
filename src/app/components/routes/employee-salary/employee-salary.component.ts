@@ -555,44 +555,56 @@ adjustToSpainTimezone(date: Date): Date {
 
   async generatePDF() {
     const doc = new jsPDF('p', 'mm', 'a4');
-    const element = document.getElementById('monthly-summary');
-  
-    if (element) {
-      const weeks = element.getElementsByClassName('week-section');
-  
-      for (let i = 0; i < weeks.length; i++) {
-        const week = weeks[i];
-  
-        // Esperar a que el contenido se renderice completamente
-        await new Promise(resolve => setTimeout(resolve, 500));
-  
-        // Capturar la semana como imagen
-        const canvas = await html2canvas(week as HTMLElement, {
-          scale: 2, // Aumentar la escala para mejor calidad
-          useCORS: true, // Permitir imágenes externas
-          logging: true, // Habilitar logs para depuración
-        });
-  
-        const imgData = canvas.toDataURL('image/png');
-        const imgWidth = 190; // Ancho reducido para márgenes
-        const imgHeight = (canvas.height * imgWidth) / canvas.width;
-  
-        // Añadir la imagen al PDF
-        if (i > 0) {
-          doc.addPage(); // Añadir una nueva página para cada semana
-        }
-        doc.addImage(imgData, 'PNG', 10, 10, imgWidth, imgHeight); // Márgenes de 10mm
+    const pdfElement:any = document.getElementById('pdf-template');
+    
+    // Mostrar temporalmente el template
+    pdfElement.style.display = 'block';
+    
+    const options = {
+      scale: 2,
+      useCORS: true,
+      logging: true,
+      width: 210, // Ancho A4 en mm
+      windowWidth: 210 * 3.78, // Convertir a pixels
+      onclone: (clonedDoc:any) => {
+        // Aplicar estilos específicos para impresión
+        clonedDoc.getElementById('pdf-template').style.cssText = `
+          position: absolute;
+          left: 0;
+          top: -9999px;
+          width: 210mm;
+        `;
       }
+    };
   
-      // Guardar el PDF
-      doc.save('resumen_mensual.pdf');
-    } else {
-      console.error('No se encontró el elemento para generar el PDF.');
+    const canvas = await html2canvas(pdfElement, options);
+    pdfElement.style.display = 'none';
+  
+    const imgData = canvas.toDataURL('image/png');
+    const imgWidth = 210; // mm
+    const imgHeight = (canvas.height * imgWidth) / canvas.width;
+  
+    // Añadir páginas según sea necesario
+    let heightLeft = imgHeight;
+    let position = 0;
+    
+    doc.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+    heightLeft -= 297; // Altura A4 en mm
+  
+    while (heightLeft >= 0) {
+      position = heightLeft - imgHeight;
+      doc.addPage();
+      doc.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+      heightLeft -= 297;
     }
+  
+    doc.save('resumen-mensual.pdf');
   }
   
 
-
+  formatTimePDF(time: string): string {
+    return time ? time.slice(0, 5) : '--:--';
+  }
 
 // Método para navegar entre años
 navigateYear(offset: number) {
@@ -625,6 +637,45 @@ getFilteredEmployees(week: any): Empleados[] {
   return filteredEmployees;
 }
 
+// Método de Generación de PDF Optimizado
+async generateHighQualityPDF() {
+  const pdfElement:any = document.getElementById('pdf-template');
+  pdfElement.style.display = 'block';
+  
+  const options = {
+    scale: 3.78, // 1mm = 3.78px
+    width: 794,  // 210mm * 3.78 = 794px
+    height: pdfElement.scrollHeight,
+    useCORS: true,
+    logging: true,
+    backgroundColor: '#ffffff',
+    onclone: (clonedDoc:any) => {
+      clonedDoc.documentElement.style.visibility = 'hidden';
+      clonedDoc.getElementById('pdf-template').style.visibility = 'visible';
+    }
+  };
 
+  const canvas = await html2canvas(pdfElement, options);
+  pdfElement.style.display = 'none';
+
+  const doc = new jsPDF('p', 'mm', 'a4');
+  const imgData = canvas.toDataURL('image/png', 1.0);
+  
+  // Calcular dimensiones exactas
+  const pageHeight = 297; // Altura A4 en mm
+  const imgWidth = 210;   // Ancho A4
+  const imgHeight = (imgWidth * canvas.height) / canvas.width;
+  
+  let position = 0;
+  
+  // Añadir páginas según sea necesario
+  while (position < imgHeight) {
+    if (position > 0) doc.addPage();
+    doc.addImage(imgData, 'PNG', 0, -position, imgWidth, imgHeight);
+    position += pageHeight;
+  }
+
+  doc.save('horarios-profesional.pdf');
+}
   
 }

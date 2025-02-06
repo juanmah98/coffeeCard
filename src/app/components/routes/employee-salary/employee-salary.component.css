@@ -241,3 +241,47 @@
   background-color: #f8f9fa;
   font-weight: bold;
 }
+
+/* Añadir media queries para móviles */
+@media (max-width: 768px) {
+  .container {
+    max-width: 100%;
+    padding: 0 15px;
+  }
+
+  .calendar-grid {
+    grid-template-columns: repeat(7, 1fr);
+    font-size: 0.8rem;
+  }
+
+  .calendar-day {
+    height: 40px;
+  }
+
+  .table-responsive {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .card {
+    margin-bottom: 10px;
+  }
+
+  .btn {
+    padding: 6px 12px;
+    font-size: 14px;
+  }
+
+  #monthly-summary {
+    padding: 10px;
+  }
+
+  .table th, .table td {
+    padding: 6px;
+    font-size: 0.8rem;
+  }
+
+  h4, h5, h6 {
+    font-size: 1.2rem;
+  }
+}
