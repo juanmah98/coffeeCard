@@ -77,7 +77,7 @@ async localStorage():Promise<boolean>{
     
     if(userString != null)
       {
-        console.log('Entro: ',userString );
+        /* console.log('Entro: ',userString ); */
         this.authService.login();  
         this.ngZone.run(() => {
           this.loading = false;

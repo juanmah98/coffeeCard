@@ -37,6 +37,7 @@ dataUser:Usuarios = {
   name: "",
   fecha_creacion: new Date(),
   pais: '',
+  ciudad: ''
 };
 
   bgClass: string = 'bg';

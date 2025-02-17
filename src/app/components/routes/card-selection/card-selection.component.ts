@@ -34,6 +34,7 @@ export class CardSelectionComponent implements OnInit, OnDestroy  {
     name: "",
     fecha_creacion: new Date(),
     pais: '',
+    ciudad: ''
   };
 
   data_contador:CafeData = 
@@ -56,6 +57,7 @@ export class CardSelectionComponent implements OnInit, OnDestroy  {
   bgClass:string='bg';
   entidadOpcion:string='';
   entidad!:Entidades;
+  totalUsuariosTabla = '0';
   private dataSubscription: Subscription = new Subscription();
   constructor(private cdr: ChangeDetectorRef, private _SupabaseService:SupabaseService, private _dataInterna: InternoService, public popupService: PopupQrService, public infopopupService: PopupInfoService, private ngZone: NgZone,  private router: Router,) { }
 
@@ -75,7 +77,8 @@ export class CardSelectionComponent implements OnInit, OnDestroy  {
     this.bgClass = `bg-${this._dataInterna.getEntidad().background}-card`;
     this.entidadOpcion = this._dataInterna.getEntidad().background;
    /*  console.log('background: ', this.bgClass); */
-    await this.getContador()
+    await this.getContador();
+    /* await this.getContadorUsuarios(); */
     this.cdr.detectChanges();
     this.dataUser = this._dataInterna.getUser();
    /*  this.nombre = localStorage.getItem("name"); */
@@ -117,6 +120,19 @@ export class CardSelectionComponent implements OnInit, OnDestroy  {
       const response:any = await this._SupabaseService.getTablaContador(this._dataInterna.getUser().id, this.entidad.tabla_contador)
       /* console.log('contador', response.data); */
       this.data_contador = response.data;
+      // Continúa aquí con lo que necesites hacer con la respuesta
+      return response; // Retorna la respuesta si es necesario
+    } catch (error) {
+      console.error('Error al cargar contador', error);
+      throw error; // Propaga el error si es necesario
+    }
+  }
+
+  async getContadorUsuarios() {
+    try {
+      const response:any = await this._SupabaseService.getTablasTotalUsuarios(this.entidad.tabla_contador)
+       console.log('contador', response.data); 
+      this.totalUsuariosTabla = response.data.length;
       // Continúa aquí con lo que necesites hacer con la respuesta
       return response; // Retorna la respuesta si es necesario
     } catch (error) {
