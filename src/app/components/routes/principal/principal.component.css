@@ -149,7 +149,7 @@ body {
   transition: all 0.3s ease;
 } */
 
-.city-btn {
+/* .city-btn {
   padding: 8px 20px;
   margin: 5px;
   border: 1px solid transparent;
@@ -165,7 +165,7 @@ body {
   &:hover {
       transform: scale(1.05);
   }
-}
+} */
 
 
 .dropdown-ciudades {
