@@ -5,9 +5,27 @@
     </button>
   </div>
 
+  
+
   <div class="container mt-4 text-light p-4 rounded">
     <h2>Generar QR Codes</h2>
 
+    <div class="mt-4 mb-2">
+      <label for="printer">Seleccionar Impresora:</label>
+      <select *ngIf="printers.length >0"
+        [(ngModel)]="selectedPrinter" 
+        id="printer" 
+        class="form-control" 
+        name="printer"
+        required 
+      >
+        <option *ngFor="let printer of printers" [value]="printer">{{ printer }}</option>
+      </select>
+      <div *ngIf="printers.length === 0" class="alert alert-warning mt-3">
+        No se detectaron impresoras. Conecta una impresora válida.
+      </div>
+    </div>
+   
     <!-- Formulario para ingresar la cantidad -->
 
     
@@ -20,6 +38,7 @@
           <button type="button" class="btn btn-lg btn-light mx-1" (click)="setQuantity(4)">4</button>
           <button type="button" class="btn btn-lg btn-light mx-1" (click)="setQuantity(6)">6</button>
           <button type="button" class="btn btn-lg btn-light mx-1" (click)="setQuantity(10)">10</button>
+          <button type="button" class="btn btn-lg btn-light mx-1" (click)="setQuantity(20)">20</button>
           <button type="button" class="btn btn-lg btn-light mx-1" (click)="incrementQuantity()">+</button>
         </div>
         <input
@@ -35,14 +54,23 @@
     
      
     
-      <button type="submit" class="btn btn-primary mt-3">Generar QR</button>
+      <button type="submit" class="btn btn-primary mt-3"  [disabled]="!selectedPrinter || quantity < 1">Generar QR</button>
     </form>
     
 
     <!-- Vista previa de los QR generados -->
     <div *ngIf="qrCodes.length > 0" class="mt-4">
-      <h3>QR Codes Generados</h3>
-      <div class="qr-container row">
+      <div class="d-flex justify-content-between align-items-center">
+        <h3>QR Codes Generados</h3>
+        <button 
+          class="btn btn-danger" 
+          (click)="printQRMultiples()"
+          [disabled]="!selectedPrinter"
+        >
+          Imprimir QRs
+        </button>
+      </div>
+      <div class="qr-container row mt-3">
         <div *ngFor="let qr of qrCodes; let i = index" class="col-3">
           <h3>{{ entidadName }}</h3> <!-- Nombre de la entidad -->
           <qrcode [qrdata]="qr.qr_code" [width]="150" [errorCorrectionLevel]="'L'"></qrcode>
@@ -53,17 +81,14 @@
     </div>
 
     <!-- Selección de impresora -->
-    <div *ngIf="qrCodes.length > 0" class="mt-4">
+  <!--   <div *ngIf="qrCodes.length > 0" class="mt-4">
       <label for="printer">Seleccionar Impresora:</label>
       <select [(ngModel)]="selectedPrinter" id="printer" class="form-control">
         <option *ngFor="let printer of printers" [value]="printer">{{ printer }}</option>
       </select>
     </div>
  
-    <!-- Botón para imprimir los QR -->
-    <!-- <button *ngIf="qrCodes.length > 0 && selectedPrinter" class="btn btn-danger mt-4 mx-1" (click)="printQRCodes()">Imprimir QRs</button> -->
-    <button *ngIf="qrCodes.length > 0 && selectedPrinter" class="btn btn-danger mt-4 mx-1" (click)="printQRMultiples()">Imprimir QRs</button>
-   <!--  <button *ngIf="qrCodes.length > 0 && selectedPrinter" class="btn btn-danger mt-4 mx-1" (click)="printQRMultiplesHtml()">Imprimir QRs Consolidar  2</button>
-    <button *ngIf="qrCodes.length > 0 && selectedPrinter" class="btn btn-danger mt-4 mx-1" (click)="printQRBatch()">Imprimir QRs Piazzetta lote</button>  -->
+    <button *ngIf="qrCodes.length > 0 && selectedPrinter" class="btn btn-danger mt-4 mx-1" (click)="printQRMultiples()">Imprimir QRs</button> -->
+  
   </div>
 </body>
