@@ -31,6 +31,7 @@ export class PanelMasterComponent implements OnInit {
   qrs: Qrs[] = [];
   usadosPor:string[] = [];
   usadosHoy:string[] = [];
+  deleteResult = '';
   hoy: Date = new Date()
 await: any;
   constructor(private supabaseService: SupabaseService,
@@ -191,6 +192,8 @@ async getRegalosTablas(tabla: string) {
 borrarQrs() {
   this.supabaseService.deleteUnusedQrs().then(() => {
     console.log('Operación completada');
+    this.deleteResult = 'QRs antiguos eliminados correctamente';
+    setTimeout(() => this.deleteResult = '', 3000); // Ocultar mensaje después de 3 segundos
   }).catch(err => {
     console.error('Error al eliminar filas:', err);
   });

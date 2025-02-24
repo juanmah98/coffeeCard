@@ -624,19 +624,30 @@ async generateQRCodes(entidadId: string, quantity: number): Promise<any[]> {
   
   async deleteUnusedQrs(): Promise<void> {
     try {
+      const expirationDate = new Date();
+      expirationDate.setUTCMonth(expirationDate.getUTCMonth() - 2);
+      
+      const postgresDate = expirationDate
+        .toISOString()
+        .replace('T', ' ')
+        .replace('Z', '')
+        .split('.')[0] + '.000000';
+  
+      // Modificar la consulta para incluir .select()
       const { data, error } = await this.supabase
-        .from('qrs') // Nombre de la tabla
+        .from('qrs')
         .delete()
-        .eq('is_used', false); // Condición para eliminar
-
-      if (error) {
-        console.error('Error eliminando filas:', error.message);
-        throw new Error('Error al eliminar filas: ' + error.message);
-      }
-
-      console.log('Filas eliminadas:', data);
+        .eq('is_used', false)
+        .lt('created_at', postgresDate)
+        .select('*'); // <- ¡Esto es clave!
+  
+      if (error) throw error;
+      
+      console.log('QRs eliminados:', data.length); // Ahora data es un array
+        
     } catch (err) {
-      console.error('Error ejecutando la operación:', err);
+      console.error('Error:', err);
+      throw new Error('Error eliminando QRs');
     }
   }
 

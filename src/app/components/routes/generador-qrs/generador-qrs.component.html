@@ -67,8 +67,15 @@
           (click)="printQRMultiples()"
           [disabled]="!selectedPrinter"
         >
-          Imprimir QRs
+          Imprimir
         </button>
+        <button *ngIf="entidad.nombre=='space burguer'"
+        class="btn btn-danger" 
+        (click)="printQRMultiplesSpaces()"
+        [disabled]="!selectedPrinter"
+      >
+        Imprimir QRs Spaces
+      </button>
       </div>
       <div class="qr-container row mt-3">
         <div *ngFor="let qr of qrCodes; let i = index" class="col-3">

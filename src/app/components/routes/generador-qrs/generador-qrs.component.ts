@@ -206,6 +206,69 @@ export class GeneradorQrsComponent implements OnInit {
       console.error('Error al imprimir los códigos QR:', error);
     }
   }
+
+  async printQRMultiplesSpaces(): Promise<void> {
+    if (!this.selectedPrinter) {
+      console.error('No se ha seleccionado ninguna impresora.');
+      return;
+    }
+  
+    if (!this.qrCodes.length) {
+      console.error('No hay códigos QR generados para imprimir.');
+      return;
+    }
+  
+    try {
+      // Configurar la impresora seleccionada
+      await this.qzTrayService.setPrinter(this.selectedPrinter);
+  
+      for (const qr of this.qrCodes) {
+        // Enviar texto
+        const textData = [
+          {
+            type: 'raw',
+            format: 'plain',
+            data: `\x1b\x45\x01${this.entidadName}\x1b\x45\x00\n` + // Entidad en negrita
+                  `Entra en la web\n` +
+                  `\x1b\x45\x01fidecards.com\x1b\x45\x00\n` + // URL en negrita
+                  `y escanea para sumar 1 punto\n\n\n`,
+          },
+        ];
+        await this.qzTrayService.print(textData);
+        console.log("datos: " + textData);
+  
+        // Generar la imagen QR en base64
+        const imageBase64 = await this.generateQRCodeImage(qr.qr_code);
+  
+        // Enviar la imagen
+        const imageData = [
+          {
+            type: 'image',
+            format: 'base64',
+            data: imageBase64,
+          },
+        ];
+        await this.qzTrayService.print(imageData);
+        console.log("imagen: " + imageData);
+      }
+  
+      // ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
+      // AGREGADO: CORTE DE PAPEL AL FINAL
+      const cortePapel = [
+        {
+          type: 'raw',
+          format: 'plain',
+          data: new Uint8Array([0x1D, 0x56, 0x41, 0x00]) // Comando ESC/POS para corte total
+        }
+      ];
+      await this.qzTrayService.print(cortePapel);
+      // ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
+  
+      console.log('QRs enviados a la impresora con corte de papel');
+    } catch (error) {
+      console.error('Error al imprimir los códigos QR:', error);
+    }
+  }
   
 
   async printQRMultiples2(): Promise<void> {
