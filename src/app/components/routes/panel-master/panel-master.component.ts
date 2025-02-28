@@ -51,11 +51,14 @@ await: any;
   async getUsuarios() {
     try {
       const response = await this.supabaseService.getUsersTable();
-      const response2 = await this.supabaseService.getTablasTotalUsuarios('qrs');
       const response3 = await this.supabaseService.getTablasTotalUsuarios('usuarios_admin');
-      const users:any = response.data;
-      const qrs:any = response2.data;
-      const admins:any = response3.data;
+      
+      // Obtener todos los QRs sin límite de 1000
+      const qrs = await this.supabaseService.getAllQrs();
+  
+      const users: any = response.data;
+      const admins: any = response3.data;
+  
       this.usuarios = users;
       this.totalQrs = qrs.length;
       this.totalAdmins = admins.length;
@@ -65,8 +68,6 @@ await: any;
       console.error('Error al cargar usuarios:', error);
       throw error;
     }
-
-    
   }
 
   async qrsUsados(qrs: Qrs[]) {

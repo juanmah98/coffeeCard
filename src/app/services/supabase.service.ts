@@ -87,6 +87,36 @@ export class SupabaseService {
       .from(tabla)
       .select('*')
   }
+
+  async getAllQrs(): Promise<any[]> {
+    let allData: any[] = [];
+    let from = 0;
+    let to = 999; // PostgreSQL devuelve filas indexadas desde 0
+    let hasMore = true;
+  
+    while (hasMore) {
+      const { data, error } = await this.supabase
+        .from('qrs')
+        .select('*')
+        .range(from, to); // Obtiene 1000 filas por solicitud
+  
+      if (error) {
+        console.error('Error obteniendo QRs:', error);
+        throw error;
+      }
+  
+      if (data && data.length > 0) {
+        allData = [...allData, ...data]; // Agrega datos al array
+        from += 1000;
+        to += 1000;
+      } else {
+        hasMore = false; // Si no hay más datos, detenemos el bucle
+      }
+    }
+  
+    return allData;
+  }
+  
   
 
   async getUsuariosId(id: string) {
