@@ -209,69 +209,75 @@ export class GeneradorQrsComponent implements OnInit {
 
   async printQRMultiplesSpaces(): Promise<void> {
     if (!this.selectedPrinter) {
-      console.error('No se ha seleccionado ninguna impresora.');
-      return;
+        console.error('No se ha seleccionado ninguna impresora.');
+        return;
     }
-  
+
     if (!this.qrCodes.length) {
-      console.error('No hay códigos QR generados para imprimir.');
-      return;
+        console.error('No hay códigos QR generados para imprimir.');
+        return;
     }
-  
+
     try {
-      const printData = [];
-  
-      // Configurar la impresora seleccionada
-      await this.qzTrayService.setPrinter(this.selectedPrinter);
-  
-      for (const qr of this.qrCodes) {
-        // Texto con formato
+        const printData = [];
+
+        await this.qzTrayService.setPrinter(this.selectedPrinter);
+
+        for (const qr of this.qrCodes) {
+            printData.push({
+                type: 'raw',
+                format: 'plain',
+                data: `\x1B\x45\x01${this.entidadName}\x1B\x45\x00\n` +
+                      `Entra en la web\n` +
+                      `\x1B\x45\x01fidecards.com\x1B\x45\x00\n` +
+                      `y escanea para sumar 1 punto\n\n\n`
+            });
+
+            const imageBase64 = await this.generateQRCodeImage(qr.qr_code);
+            printData.push({
+                type: 'image',
+                format: 'base64',
+                data: imageBase64,
+                density: 150
+            });
+
+            // Espaciado adicional
+            printData.push({
+                type: 'raw',
+                format: 'plain',
+                data: new Uint8Array([0x0A, 0x0A]) // 2 saltos de línea
+            });
+        }
+
+        // Agregar líneas en blanco antes del corte
         printData.push({
-          type: 'raw',
-          format: 'plain',
-          data: `\x1B\x45\x01${this.entidadName}\x1B\x45\x00\n` + // Negrita
-                `Entra en la web\n` +
-                `\x1B\x45\x01fidecards.com\x1B\x45\x00\n` + // Negrita
-                `y escanea para sumar 1 punto\n\n\n`
+            type: 'raw',
+            format: 'plain',
+            data: new Uint8Array([0x1B, 0x64, 0x05]) // Avanza 5 líneas
         });
-  
-        // Generar y agregar QR
-        const imageBase64 = await this.generateQRCodeImage(qr.qr_code);
+
+        // Comando de corte total
         printData.push({
-          type: 'image',
-          format: 'base64',
-          data: imageBase64,
-          density: 150 // Ajuste para mejor calidad
+            type: 'raw',
+            format: 'plain',
+            data: new Uint8Array([0x1D, 0x56, 0x00]) // Corte total
         });
-  
-        // Espaciado adicional (opcional)
+
+        // Forzar vaciado del buffer
         printData.push({
-          type: 'raw',
-          format: 'plain',
-          data: new Uint8Array([0x0A, 0x0A]) // 2 saltos de línea
+            type: 'raw',
+            format: 'plain',
+            data: new Uint8Array([0x1B, 0x40]) // Reset + vaciado de buffer
         });
-      }
-  
-      // ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
-      // CORTE ESPECÍFICO PARA GLOBAL TP-POS80-USB
-      printData.push({
-        type: 'raw',
-        format: 'plain',
-        data: new Uint8Array([
-          0x1B, 0x69, // Comando de avance y corte (alternativo)
-          0x1D, 0x56, 0x42, 0x00 // Corte parcial
-        ])
-      });
-      // ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
-  
-      // Enviar todo en un solo trabajo de impresión
-      await this.qzTrayService.print(printData);
-  
-      console.log('Impresión completada con corte');
+
+        await this.qzTrayService.print(printData);
+
+        console.log('Impresión completada con corte');
     } catch (error) {
-      console.error('Error al imprimir:', error);
+        console.error('Error al imprimir:', error);
     }
-  }
+}
+
   
   async printQRMultiplesSpaces2(): Promise<void> {
     if (!this.selectedPrinter) {
