@@ -1,5 +1,6 @@
 import { ChangeDetectorRef, Component, NgZone, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { CafeData } from 'src/app/interfaces/cafes_data';
 import { Entidades } from 'src/app/interfaces/entdidades';
 import { Qrs } from 'src/app/interfaces/qrs';
 import { Usuarios } from 'src/app/interfaces/usuarios';
@@ -21,6 +22,10 @@ export class PanelMasterComponent implements OnInit {
   usuariosAdmin:any[] = [
     {nombre: '', usuarios: '', regalo: '', idEntidad:''},
   ];
+  usuariosTop:any[] = [
+    {nombre: '',  regalos: '', entidad:''},
+  ];
+  contador_data:CafeData[] = [] ;
   displayedColumns: string[] = ['id', 'email', 'name', 'fecha_creacion', 'pais'];
   regalos: string[] = [];
   totalRegalos = 0;
@@ -33,7 +38,7 @@ export class PanelMasterComponent implements OnInit {
   usadosHoy:string[] = [];
   deleteResult = '';
   hoy: Date = new Date()
-await: any;
+  await: any;
   constructor(private supabaseService: SupabaseService,
     private router: Router,
     private internoService: InternoService,
@@ -123,8 +128,11 @@ qrsUsadosEntidad(entidaId: string){
     try {
       const response = await this.supabaseService.getTablasTotalUsuarios(tabla);
       const entidad:any = response.data;
+      this.contador_data = entidad;
 /*       console.log(entidad) */
       this.agregarUsuario(nombre,entidad.length, regalos, idEntidad)
+      this.agregarUsuarioTop(this.contador_data,idEntidad);
+   /*    console.log(this.contador_data) */
        /* console.log("this.usuariosAdmin") */
     /* console.log(this.usuariosAdmin) */
     } catch (error) {
@@ -154,6 +162,29 @@ agregarUsuario(nombre: string, usuario: string, regalo:number, idEntidad: string
     this.usuariosAdmin.sort((a, b) => {
       return Number(b.usuarios) - Number(a.usuarios);
     });
+}
+
+agregarUsuarioTop(contador_data:CafeData[], entidad: string) {
+
+ 
+  // Verifica si el primer elemento tiene valores vacíos
+  if (this.usuariosTop.length > 0 && this.usuariosTop[0].nombre === '' && this.usuariosTop[0].regalos === '') {
+      this.usuariosTop.shift(); // Elimina el primer elemento si está vacío
+  }
+
+  contador_data.forEach(async element => {
+    if(element.cantidad_gratis>0){
+        // Agrega el nuevo usuario
+        const response = await this.supabaseService.getUsuarioName(element.usuario_id);
+        let nombre = response
+       
+      this.usuariosTop.push({ nombre, regalos:element.cantidad_gratis, entidad });
+      this.usuariosTop.sort((a, b) => {
+        return Number(b.regalos) - Number(a.regalos);
+      });
+    }
+  });
+
 }
 
 async getRegalosTablas(tabla: string) {

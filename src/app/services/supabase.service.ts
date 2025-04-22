@@ -117,7 +117,20 @@ export class SupabaseService {
     return allData;
   }
   
+  async getUsuarioName(usuarioId: string): Promise<string> {
+    const { data, error } = await this.supabase
+      .from('usuarios') // Reemplaza con tu tabla
+      .select('name')  // Asegúrate de que 'name' sea el campo correcto
+      .eq('id', usuarioId)
+      .single();
   
+    if (error) {
+      console.error('Error al obtener nombre de la entidad:', error);
+      throw error;
+    }
+  
+    return data?.name || 'Usuario desconocido';  // Si no se encuentra nombre, retornar uno por defecto
+  }
 
   async getUsuariosId(id: string) {
     return await this.supabase
