@@ -39,6 +39,7 @@ export class PanelMasterComponent implements OnInit {
   deleteResult = '';
   hoy: Date = new Date()
   await: any;
+  loading:boolean = false;
   constructor(private supabaseService: SupabaseService,
     private router: Router,
     private internoService: InternoService,
@@ -48,9 +49,16 @@ export class PanelMasterComponent implements OnInit {
     public popupService: PopupQrsMasterService) {}
 
   async ngOnInit(): Promise<void> {
-    this.getUsuarios();
-    this.getEntidades();
-    this.cdr.detectChanges();
+    this.loading = false;
+    try {
+      await this.getUsuarios();
+      await this.getEntidades(); // Este ya ejecuta `this.for()` internamente
+    } catch (error) {
+      console.error("Error cargando los datos:", error);
+    }
+  
+    this.loading = true; // Mostrar pantalla cuando todo terminó
+    this.cdr.detectChanges(); // Asegura que Angular refresque la vista
   }
 
   async getUsuarios() {

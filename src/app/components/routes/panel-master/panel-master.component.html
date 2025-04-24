@@ -3,7 +3,7 @@
   <div class="col-12">
     <button  class="btn btn m-2" (click)="back()"><img class=" pb-1" src="../../../../assets/imagenes/cards/back2.png" width="18px" alt=""></button>
 </div>
-  <div class="container text-center ">
+  <div *ngIf="loading" class="container text-center ">
     <!-- Header Section -->
     <div class="d-flex justify-content-center align-items-center mb-4">
       <!-- Aquí puedes colocar un icono -->
@@ -107,5 +107,13 @@
   </div>
 
   </div>
+  <div *ngIf="!loading" class="row loading">
+  <div   class="col-12 pb-2  d-flex justify-content-center align-items-center">
+  <div  class="text-center justify-content-center">
+    <img class="mb-2" src="../../../../assets/imagenes/logos/GIFT02.gif" width="40%" alt="">
+     <span class="mt-2"><p class="text-center text-light fs-5 custom-shadow" style="font-family: Fidelity-r;">CARGANDO DATOS</p> </span>
+</div>
+</div>
+</div>
   
 </body>
