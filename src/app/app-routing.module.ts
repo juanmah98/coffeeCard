@@ -18,6 +18,7 @@ import { PanelMasterComponent } from './components/routes/panel-master/panel-mas
 import { ActivateComponent } from './components/routes/activate/activate.component';
 import { GeneradorQrsComponent } from './components/routes/generador-qrs/generador-qrs.component';
 import { LectorQrUsuarioComponent } from './components/routes/lector-qr-usuario/lector-qr-usuario.component';
+import { ChartComponent } from './components/shared/chart/chart.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' }, // Redirigir a '/home' en la ruta raíz
@@ -38,6 +39,7 @@ const routes: Routes = [
   { path: 'activate', component: ActivateComponent },
   { path: 'qrsgenerate', component: GeneradorQrsComponent, canActivate: [AuthGuard] },
   { path: 'qrscanuser', component: LectorQrUsuarioComponent, canActivate: [AuthGuard] },
+  { path: 'chart', component: ChartComponent },
 ];
 
 @NgModule({
