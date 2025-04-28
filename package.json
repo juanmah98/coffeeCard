@@ -31,8 +31,8 @@
     "qz-tray": "^2.2.4",
     "rxjs": "~7.5.0",
     "tslib": "^2.3.0",
-    "zingchart": "^2.9.16-1",
-    "zingchart-angular": "^2.0.2",
+    "zingchart": "^2.9.10",
+    "zingchart-angular": "^1.0.12",
     "zone.js": "~0.11.4"
   },
   "devDependencies": {

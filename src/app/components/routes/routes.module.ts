@@ -20,6 +20,7 @@ import { PanelMasterComponent } from './panel-master/panel-master.component';
 import { ActivateComponent } from './activate/activate.component';
 import { GeneradorQrsComponent } from './generador-qrs/generador-qrs.component';
 import { LectorQrUsuarioComponent } from './lector-qr-usuario/lector-qr-usuario.component';
+import { SharedModule } from "../shared/shared.module";
 
 
 
@@ -49,7 +50,8 @@ import { LectorQrUsuarioComponent } from './lector-qr-usuario/lector-qr-usuario.
     LayoutModule,
     FormsModule,
     ReactiveFormsModule,
-  ],
+    SharedModule
+],
   exports:[
     HomeComponent,
     CardSelectionComponent,

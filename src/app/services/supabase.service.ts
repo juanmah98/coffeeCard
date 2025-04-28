@@ -6,6 +6,7 @@ import { createClient, Session, SupabaseClient } from '@supabase/supabase-js';
 import { CafeData } from '../interfaces/cafes_data';
 import { Horarios } from '../interfaces/horarios';
 import { Empleados } from '../interfaces/empleados';
+import { UsuarioChart } from '../interfaces/usuarios-chart';
 
 export const USERS_TABLE = "usuarios";
 export const CONTADOR_TABLE_CAFE = "contador_cafe";
@@ -15,6 +16,10 @@ export const CONTADOR_TABLE_SPACE = "contador_space";
   providedIn: 'root'
 })
 export class SupabaseService {
+  from //rwttebejxwncpurszzld.supabase.co/rest/v1/usuarios';
+    <T>(arg0: string) {
+      throw new Error('Method not implemented.');
+  }
 
   private apiUrlUsers = 'https://rwttebejxwncpurszzld.supabase.co/rest/v1/usuarios';
   private apiUrlCafes = 'https://rwttebejxwncpurszzld.supabase.co/rest/v1/contador_cafe';
@@ -695,5 +700,18 @@ async generateQRCodes(entidadId: string, quantity: number): Promise<any[]> {
   }
 
 
-  
+  async getUsuariosPorPais(): Promise<UsuarioChart[]> {
+    const { data, error } = await this.supabase
+      .from('usuarios')
+      .select('fecha_creacion, pais')
+      .in('pais', ['españa', 'argentina'])
+      .order('fecha_creacion', { ascending: true });
+
+    if (error) {
+      console.error('Error fetching usuarios:', error);
+      throw error;
+    }
+/*     console.log("data: ", data) */
+    return data;
+  }
 }

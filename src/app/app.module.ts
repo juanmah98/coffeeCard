@@ -15,6 +15,7 @@ import { SplineViewrCardComponent } from './components/routes/spline-viewr-card/
 import { registerLocaleData } from '@angular/common';
 import localeEs from '@angular/common/locales/es';
 import { ZingchartAngularModule } from 'zingchart-angular';
+import { SharedModule } from './components/shared/shared.module';
 
 // Registrar el locale español
 registerLocaleData(localeEs);
@@ -30,6 +31,7 @@ registerLocaleData(localeEs);
     HttpClientModule,
     RouterModule,
     RoutesModule,
+    SharedModule,
     LayoutModule,
     CommonModule,
     QRCodeModule,

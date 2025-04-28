@@ -1,1 +1,33 @@
-<p>chart works!</p>
+<!-- fidelity-stats.component.html -->
+<div class="chart-header">
+  <h2 class="chart-title"><b>{{usuariosTotales}}</b> Usuarios reales</h2>
+  <p class="chart-description">
+    Observa cómo crece mes a mes la incorporación de nuevos usuarios en España y Argentina.
+    <!-- Selecciona otro año si quieres comparar 👉 -->
+  </p>
+</div>
+
+<div class="year-selector">
+  <button class="year-button" (click)="changeYear(-1)">
+    ◀ {{ selectedYear - 1 }}
+  </button>
+  <span class="year-current">{{ selectedYear }}</span>
+  <button class="year-button" (click)="changeYear(1)">
+    {{ selectedYear + 1 }} ▶
+  </button>
+</div>
+
+<div class="chart-container">
+  <zingchart-angular
+    [config]="userGrowthConfig"
+    [height]="400"
+    [width]="'100%'">
+  </zingchart-angular>
+</div>
+
+<div class="chart-footer">
+  <p class="chart-footer-text">
+    Estos datos reflejan el número de usuarios que se han registrado en Fidelity
+    durante el año seleccionado. <br>¡Gracias a todos por confiar en nosotros! 🎉
+  </p>
+</div>
