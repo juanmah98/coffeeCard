@@ -65,7 +65,7 @@
   </div> -->
   
   <!-- Visualización de país seleccionado -->
-  <div class="col-12 mt-1 text-center" *ngIf="usuario.pais">
+  <!-- <div class="col-12 mt-1 text-center" *ngIf="usuario.pais">
     <div class="selected-pais">
       <img [src]="'../../../../assets/imagenes/paises/' + usuario.pais + '.png'" 
            width="35" 
@@ -73,19 +73,20 @@
            alt="{{usuario.pais}}">
       <span class="badge bg-dark text-white">{{usuario.pais | titlecase}}</span>
     </div>
-  </div>
-  <div *ngIf="usuario.ciudad" class="mt-2">
+  </div> -->
+    <!-- Visualización de Ciudad usuario -->
+ <!--  <div *ngIf="usuario.ciudad" class="mt-2">
     <span class="badge bg-primary">
       Ciudad seleccionada: {{usuario.ciudad}}
     </span>
-  </div>
+  </div> -->
   
   <!-- Selector de Ciudades con buscador ACTUALIZADO -->
- /*  <div class="col-12 mt-2" *ngIf="usuario.pais && !cargandoCiudades">
+  <!-- <div class="col-12 mt-2" *ngIf="usuario.pais && !cargandoCiudades">
     <div class="row justify-content-center">
       <div class="col-xl-3 col-md-6 col-10"> 
         <div class="position-relative">
-          <!-- Input con funcionalidad completa -->
+       
           <div class="input-group mb-3">
             <input type="text" 
                    class="form-control" 
@@ -102,7 +103,7 @@
             </button>
           </div>
           
-          <!-- Dropdown con cierre automático -->
+          
           <div class="dropdown-ciudades" 
                [class.show]="ciudadesDesplegadas"
                (clickOutside)="ciudadesDesplegadas = false"
@@ -118,14 +119,14 @@
           </div>
         </div>
         
-        <!-- <div *ngIf="usuario.ciudad" class="mt-2">
+        <div *ngIf="usuario.ciudad" class="mt-2">
           <span class="badge bg-primary">
             Ciudad seleccionada: {{usuario.ciudad}}
           </span>
-        </div> -->
+        </div> -
       </div>
     </div>
-  </div>
+  </div> -->
   
   <!-- Botón de geolocalización actualizado -->
  <!--  <div class="col-12 mt-0 text-center">

@@ -315,6 +315,17 @@ export class EntidadAdminComponent implements OnInit {
   
     }
 
+    // Método que actualiza antidad de puntos al crear tarjetas
+    async updateFirstCardCount(id: string, first_card_count: number) {
+     
+      const response: any = await this.supabaseService.updateFirstCardCount(id, first_card_count);
+      this.entidad.first_card_count = first_card_count;
+    
+      this.internoService.setEntidad(this.entidad);
+      console.log(response);
+  
+    }
+
   async subirLogo(id: string){
  // Si hay un logo nuevo, subirlo al servidor
     if (this.logoFile) {
@@ -346,7 +357,7 @@ export class EntidadAdminComponent implements OnInit {
   
 
   editInfo(){
-    console.log(this.entidad)
+    /* console.log(this.entidad) */
   }
 
   onLogoChange(event: any) {

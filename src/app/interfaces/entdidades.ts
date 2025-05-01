@@ -20,6 +20,7 @@ export interface Entidades {
     qr_papel: boolean;
     rubro: string,
     ciudad: string;
+    first_card_count : number
 }
 
 // Converts JSON strings to/from your types

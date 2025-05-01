@@ -371,6 +371,14 @@ export class SupabaseService {
       .select();
   }
 
+  async updateFirstCardCount(id: string, first_card_count: number) {
+    return await this.supabase
+      .from('entidades')
+      .update({ first_card_count: first_card_count},)
+      .eq('id', id)
+      .select();
+  }
+
   async updateQr_papel(id: string, qr_papel: boolean) {
     return await this.supabase
       .from('entidades')

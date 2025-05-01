@@ -23,16 +23,16 @@ export class PrincipalComponent implements OnInit {
     name: '',
     fecha_creacion: new Date(),
     pais: 'todos',
-    ciudad: 'valencia'
+    ciudad: ''
   };
   selectedRubros: string[] = [];
 
 rubros = [
   { value: 'cafeteria', label: 'Cafetería', icon: '../../../../assets/imagenes/filtros/cafe.png' },
-  { value: 'restaurante', label: 'Peluquería', icon: '../../../../assets/imagenes/filtros/restaurante.png' },
+  { value: 'restaurante', label: 'Restaurante', icon: '../../../../assets/imagenes/filtros/restaurante.png' },
   { value: 'peluqueria', label: 'Peluquería', icon: '../../../../assets/imagenes/filtros/tijeras.png' },
-  { value: 'estetisista', label: 'Peluquería', icon: '../../../../assets/imagenes/filtros/esmalte-de-unas.png' },
-  { value: 'manicurista', label: 'Peluquería', icon: '../../../../assets/imagenes/filtros/unas.png' },
+  { value: 'lavadero', label: 'Lavadero', icon: '../../../../assets/imagenes/filtros/lavado-de-autos.png' },
+  { value: 'manicurista', label: 'Manicurista', icon: '../../../../assets/imagenes/filtros/unas.png' },
   // ... completa con tus rubros
 ];
 detectandoUbicacion = false;
@@ -49,6 +49,7 @@ ciudadesDesplegadas = false;
    await this.getEntidades()
    this.usuario= this._interno.getUser()
    await this.selectPais(this.usuario.pais)
+   this.usuario.ciudad = 'Ciudad de San Juan';
    this.cdr.detectChanges();
   }
 
@@ -65,7 +66,7 @@ ciudadesDesplegadas = false;
     }
   }
 
-  async getContadorTabla(id: string, tabla: string) {
+  async getContadorTabla(id: string, tabla: string, first_card_count:number) {
     try {
         const response: any = await this._supabaseServices.getTablaContador(id, tabla);
        /*  console.log('contador:', response.data);
@@ -75,7 +76,7 @@ ciudadesDesplegadas = false;
             console.log('contador no existe');
             const dataCafe: any = {
                 usuario_id: id,
-                contador: 0,
+                contador: first_card_count,
                 gratis: false,
                 opcion: 0,
                 cantidad_gratis: 0
@@ -97,7 +98,7 @@ ciudadesDesplegadas = false;
 
   async run(valor: Entidades){
     this._interno.setEntidad(valor);
-   await this.getContadorTabla(this.usuario.id, valor.tabla_contador )
+   await this.getContadorTabla(this.usuario.id, valor.tabla_contador, valor.first_card_count )
     
     
      this.router.navigate(['/cardSelection']);

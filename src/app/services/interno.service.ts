@@ -37,7 +37,8 @@ export class InternoService {
       "qr_digital": true,
       "qr_papel": false,
       "rubro": '',
-      "ciudad": ''
+      "ciudad": '',
+      "first_card_count": 0
   });
 
   private userAdmin = new BehaviorSubject<Usuarios_admins>({

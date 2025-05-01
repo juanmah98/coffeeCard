@@ -127,6 +127,15 @@
                           width="22px" alt="" (click)="editInfo()"></a>
                       </div> 
 
+                      <div class="mb-3">
+                        <span class="fs-5 fw-bold">Cantidad de puntos al crear tarjetas</span> 
+                        <p>{{entidad.first_card_count}}</p>
+                        <a class="align-items-center justify-content-center" data-bs-toggle="modal"
+                         data-bs-target="#firstCardModal"><img src="../../../../assets/imagenes/cards/editarNaranja.png"
+                           width="22px" alt="" (click)="editInfo()"></a>
+                           <br> 
+                       </div>  
+
                       <div *ngIf="entidad.nombre == 'space burguer' || entidad.nombre == 'lapiazzetta'">
                         <span class="fs-5 fw-bold">Sumar punto manualmente</span><br>
                         <span [ngClass]="{'editable': entidad.qr_papel, 'editableFalse': !entidad.qr_papel}" (click)="toggQr_papel(entidad)">
@@ -272,6 +281,32 @@
         
           <div class="mt-2 text-end">
             <button type="button" class="btn btn-warning" (click)="updateContadorNumero(entidad.id, entidad.numero_contador)" data-bs-dismiss="modal">Guardar</button>
+          </div>
+        </div>
+        
+      </div>
+    </div>
+  </div>
+
+   <!-- Modal first_card_count -->
+   <div class="modal fade" id="firstCardModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="exampleModalLabel">Editar cantidad de puntos al crear tarjeta</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form>
+            <div class="form-group">
+              <label for="titelInput">Cantidad de puntos al crear tarjetas</label>
+              <input type="number" id="titelInput" class="form-control" [(ngModel)]="entidad.first_card_count" name="titelInput" rows="3" style="resize: both;">
+            </div> 
+
+          </form>
+        
+          <div class="mt-2 text-end">
+            <button type="button" class="btn btn-warning" (click)="updateFirstCardCount(entidad.id, entidad.first_card_count)" data-bs-dismiss="modal">Guardar</button>
           </div>
         </div>
         
