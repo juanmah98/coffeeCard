@@ -3,6 +3,8 @@ import { Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { SupabaseService } from 'src/app/services/supabase.service';
 import { Entidades } from 'src/app/interfaces/entdidades';
+import { transform } from 'html2canvas/dist/types/css/property-descriptors/transform';
+declare var google: any;
 
 @Component({
   selector: 'app-registro-empresas',
@@ -12,7 +14,9 @@ import { Entidades } from 'src/app/interfaces/entdidades';
 export class RegistroEmpresasComponent implements OnInit {
 
   companyForm: FormGroup;
-  status:string = '1';
+  status:string = '0';
+  currentStep = 1;
+  googleUser: any;
   constructor(private router: Router, private fb: FormBuilder, private _supaServices: SupabaseService, private ngZone: NgZone,) {
     // Inicializa el formulario
     this.companyForm = this.fb.group({
@@ -29,9 +33,24 @@ export class RegistroEmpresasComponent implements OnInit {
     });
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    setTimeout(() => {
+      google.accounts.id.initialize({
+        client_id: '1098514169833-k37o1p50kphlrpf10jeftk7d5qumb6sv.apps.googleusercontent.com',
+        callback: this.handleCredentialResponse
+      });
+
+      google.accounts.id.prompt();
+
+      google.accounts.id.renderButton(
+        document.getElementById("buttonDiv"),
+        { theme: "outline", size: "large" }
+      );
+    }, 1000)
+  }
 
   onSubmit() {
+    console.log("estamos aqui")
     if (this.companyForm.valid) {
       this.registerCompany();
     }
@@ -48,7 +67,7 @@ export class RegistroEmpresasComponent implements OnInit {
       pais: this.companyForm.value.pais.toLowerCase(),
       informacion: this.companyForm.value.informacion,
       direccion: this.companyForm.value.direccion.toLowerCase(),
-      /* text_card: this.companyForm.value.titulo.toLowerCase(), */
+      rubro: this.companyForm.value.categoria.toLowerCase(), 
       logo: ''
     }; 
    console.log(entidad)
@@ -91,5 +110,30 @@ export class RegistroEmpresasComponent implements OnInit {
 
   statusChange(dato:string){
     this.status = dato;
+    this.currentStep = Number(dato);
   }
+
+
+
+  handleCredentialResponse = async (response: any) => {
+
+   
+     
+     response.credential;
+   
+     var base64Url = response.credential.split('.')[1];
+     var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+     var jsonPayload = decodeURIComponent(window.atob(base64)
+       .split('').map(function (c) {
+         return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+       }).join(''));
+   
+     this.googleUser = JSON.parse(jsonPayload);
+     localStorage.setItem("email", this.googleUser.email);
+     localStorage.setItem("photo", this.googleUser.picture)
+     localStorage.setItem("name", this.googleUser.name)
+   
+   
+     
+   }
 }
