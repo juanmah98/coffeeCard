@@ -15,7 +15,8 @@ export class PopupVComponent {
         'Visibilidad del historial de versiones.',
         'Nuevas Edge Functions para envío de correos electrónicos.',
         'Actualización en la vista principal del panel maestro.',
-        'Mejoras en la interfaz de la vista de usuarios.'
+        'Mejoras en la interfaz de la vista de usuarios.',
+        'Actualización de registro para empresas.',
       ],
     },
     {
