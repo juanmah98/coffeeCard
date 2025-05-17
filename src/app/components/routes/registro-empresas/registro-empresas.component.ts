@@ -77,7 +77,8 @@ export class RegistroEmpresasComponent implements OnInit {
    const logoUrl: any = await this._supaServices.getPublicImageUrl(this.companyForm.value.nombre)
   entidad.logo = logoUrl;
       const responseUser:any = (await this._supaServices.postNewEntity(entidad)).data;
-      this.redirect()
+      
+      this.statusChange('7')
      // Muestra los datos en consola
     /*  this.router.navigate(['/welcome']); */ 
 

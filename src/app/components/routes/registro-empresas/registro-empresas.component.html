@@ -304,7 +304,7 @@
               <!-- Botones abajo -->
               <div class="pt-5 d-flex justify-content-between">
                 <button type="submit" class="btn btn-outline-warning" (click)="statusChange('4')">Atrás</button>
-                <button type="submit" class="btn btn-warning" [disabled]="companyForm.invalid" (click)="statusChange('7')">Finalizar</button>
+                <button type="submit" class="btn btn-warning" [disabled]="companyForm.invalid"  (click)="onSubmit()">Finalizar</button>
                 
               </div>
           
@@ -318,10 +318,10 @@
               <div class="text-center pt-3">
                 <h4>Registro completado</h4>
                 <p class="mt-3">
-                  Tu cuenta ha sido creada correctamente. Para activarla, revisa tu correo electrónico y sigue el enlace de confirmación.
+                  Tu cuenta ha sido creada correctamente.
                 </p>
-                <p class="text-secondary" style="font-size: 0.9rem;">
-                  Si no encuentras el mensaje en tu bandeja de entrada, revisa la carpeta de spam o promociones.
+                <p class="" style="font-size: 0.9rem;">
+                  Para activarla, revisa tu correo electrónico y sigue el enlace de confirmación.
                 </p>
               </div>
           
