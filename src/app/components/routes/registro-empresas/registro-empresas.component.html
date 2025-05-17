@@ -9,7 +9,7 @@
 
         <div [ngSwitch]="status">
 
-          <div *ngSwitchCase="'9'" class="text-start">
+          <div *ngSwitchCase="'100'" class="text-start">
 
             <div class="form-group pt-1">
               <label for="nombre">Nombre de la empresa</label>
@@ -112,7 +112,7 @@
               </div>
           
               <!-- Botones abajo -->
-              <div class="pt-5 d-flex justify-content-center">
+              <div class="pt-1 d-flex justify-content-center">
                 <button id="buttonDiv" class="googleButton text-center">Iniciar</button>    
                 <!-- <button type="submit" class="btn btn-warning" (click)="statusChange('1')">Comenzar</button>  -->
               </div>
@@ -129,7 +129,7 @@
                   <div 
                     class="progress-bar bg-warning" 
                     role="progressbar" 
-                    [style.width.%]="(currentStep / 6) * 100" 
+                    [style.width.%]="(currentStep / 5) * 100" 
                     aria-valuemin="0" 
                     aria-valuemax="100">
                   </div>
@@ -156,7 +156,7 @@
           
             </div>
           </div>
-
+          
           <div *ngSwitchCase="'2'" class="fade-in text-start row justify-content-center">
             <div class="col-12 col-md-7 loginContainer d-flex flex-column justify-content-between">
           
@@ -166,46 +166,7 @@
                   <div 
                     class="progress-bar bg-warning" 
                     role="progressbar" 
-                    [style.width.%]="(currentStep / 6) * 100" 
-                    aria-valuemin="0" 
-                    aria-valuemax="100">
-                  </div>
-                </div>
-              </div>
-          
-              <!-- Input al centro -->
-              <div class="form-group pt-1">
-                <label for="email">Correo electrónico <img class="google" src="../../../../assets/imagenes/logos/googleLogo.png" width="20px" alt=""></label>
-                <input
-                  type="email"
-                  id="email"
-                  class="form-control"
-                  formControlName="email"
-                  required
-                />
-              </div>
-
-              
-          
-              <!-- Botones abajo -->
-              <div class="pt-5 d-flex justify-content-between">
-                <button type="submit" class="btn btn-outline-warning" (click)="statusChange('1')">Atrás</button>
-                <button type="submit" class="btn btn-warning" (click)="statusChange('3')">Siguiente</button>
-              </div>
-          
-            </div>
-          </div>
-          
-          <div *ngSwitchCase="'3'" class="fade-in text-start row justify-content-center">
-            <div class="col-12 col-md-7 loginContainer d-flex flex-column justify-content-between">
-          
-              <!-- Número arriba -->
-              <div class="mb-3">
-                <div class="progress" style="height: 1rem;">
-                  <div 
-                    class="progress-bar bg-warning" 
-                    role="progressbar" 
-                    [style.width.%]="(currentStep / 6) * 100" 
+                    [style.width.%]="(currentStep / 5) * 100" 
                     aria-valuemin="0" 
                     aria-valuemax="100">
                   </div>
@@ -230,14 +191,14 @@
 
               <!-- Botones abajo -->
               <div class="pt-5 d-flex justify-content-between">
-                <button type="submit" class="btn btn-outline-warning" (click)="statusChange('2')">Atrás</button>
-                <button type="submit" class="btn btn-warning" (click)="statusChange('4')">Siguiente</button>
+                <button type="submit" class="btn btn-outline-warning" (click)="statusChange('1')">Atrás</button>
+                <button type="submit" class="btn btn-warning" (click)="statusChange('3')">Siguiente</button>
               </div>
           
             </div>
           </div>
 
-          <div *ngSwitchCase="'4'" class="fade-in text-start row justify-content-center">
+          <div *ngSwitchCase="'3'" class="fade-in text-start row justify-content-center">
             <div class="col-12 col-md-7 loginContainer d-flex flex-column justify-content-between">
           
               <!-- Número arriba -->
@@ -246,7 +207,7 @@
                   <div 
                     class="progress-bar bg-warning" 
                     role="progressbar" 
-                    [style.width.%]="(currentStep / 6) * 100" 
+                    [style.width.%]="(currentStep / 5) * 100" 
                     aria-valuemin="0" 
                     aria-valuemax="100">
                   </div>
@@ -267,14 +228,14 @@
 
               <!-- Botones abajo -->
               <div class="pt-5 d-flex justify-content-between">
-                <button type="submit" class="btn btn-outline-warning" (click)="statusChange('3')">Atrás</button>
-                <button type="submit" class="btn btn-warning" (click)="statusChange('5')">Siguiente</button>
+                <button type="submit" class="btn btn-outline-warning" (click)="statusChange('2')">Atrás</button>
+                <button type="submit" class="btn btn-warning" (click)="statusChange('4')">Siguiente</button>
               </div>
           
             </div>
           </div>
 
-          <div *ngSwitchCase="'5'" class="fade-in text-start row justify-content-center">
+          <div *ngSwitchCase="'4'" class="fade-in text-start row justify-content-center">
             <div class="col-12 col-md-7 loginContainer d-flex flex-column justify-content-between">
           
               <!-- Número arriba -->
@@ -283,7 +244,7 @@
                   <div 
                     class="progress-bar bg-warning" 
                     role="progressbar" 
-                    [style.width.%]="(currentStep / 6) * 100" 
+                    [style.width.%]="(currentStep / 5) * 100" 
                     aria-valuemin="0" 
                     aria-valuemax="100">
                   </div>
@@ -311,14 +272,14 @@
 
               <!-- Botones abajo -->
               <div class="pt-5 d-flex justify-content-between">
-                <button type="submit" class="btn btn-outline-warning" (click)="statusChange('4')">Atrás</button>
-                <button type="submit" class="btn btn-warning" (click)="statusChange('6')">Siguiente</button>
+                <button type="submit" class="btn btn-outline-warning" (click)="statusChange('3')">Atrás</button>
+                <button type="submit" class="btn btn-warning" (click)="statusChange('5')">Siguiente</button>
               </div>
           
             </div>
           </div>
 
-          <div *ngSwitchCase="'6'" class="fade-in text-start row justify-content-center">
+          <div *ngSwitchCase="'5'" class="fade-in text-start row justify-content-center">
             <div class="col-12 col-md-7 loginContainer d-flex flex-column justify-content-between">
           
               <!-- Número arriba -->
@@ -327,7 +288,7 @@
                   <div 
                     class="progress-bar bg-warning" 
                     role="progressbar" 
-                    [style.width.%]="(currentStep / 6) * 100" 
+                    [style.width.%]="(currentStep / 5) * 100" 
                     aria-valuemin="0" 
                     aria-valuemax="100">
                   </div>
@@ -342,7 +303,7 @@
 
               <!-- Botones abajo -->
               <div class="pt-5 d-flex justify-content-between">
-                <button type="submit" class="btn btn-outline-warning" (click)="statusChange('5')">Atrás</button>
+                <button type="submit" class="btn btn-outline-warning" (click)="statusChange('4')">Atrás</button>
                 <button type="submit" class="btn btn-warning" [disabled]="companyForm.invalid" (click)="statusChange('7')">Finalizar</button>
                 
               </div>
@@ -380,7 +341,7 @@
             </div>
 
             <div class="form-group pt-1">
-              <label for="descripcion">Premio a regalar</label>
+              <label for="descripcion">Premio a regalar (opcional)</label>
               <textarea
                 id="informacion"
                 class="form-control"
@@ -392,6 +353,28 @@
             <div class="text-center pt-3">
               <button type="submit" class="btn btn-outline-warning mx-2" (click)="statusChange('1')">Atras</button>
               <button type="submit" class="btn btn-warning" [disabled]="companyForm.invalid">Registrarse</button>
+            </div>
+
+            
+          </div>
+
+          <div *ngSwitchCase="'9'" class="fade-in text-start row justify-content-center">
+            <div class="col-12 col-md-7 loginContainer d-flex flex-column justify-content-between">
+          
+              <div class="form-group pt-1 text-center">
+                <h4>Entidad ya registrada</h4>
+              </div>
+
+              <!-- Input al centro -->
+              <div class="form-group pt-1 text-center">
+                <p>Al parecer ya se encuentra registrada una entidad <br> con esta cuenta de google</p>
+              </div>
+          
+              <!-- Botones abajo -->
+              <div class="text-center pt-3">
+                <button type="submit" class="btn btn-outline-warning mx-2" (click)="statusChange('0')" (click)="ngOnInit()">Atras</button>            
+              </div>
+          
             </div>
 
             

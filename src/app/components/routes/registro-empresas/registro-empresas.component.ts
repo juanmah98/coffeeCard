@@ -1,4 +1,4 @@
-import { Component, NgZone, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, NgZone, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { SupabaseService } from 'src/app/services/supabase.service';
@@ -17,17 +17,18 @@ export class RegistroEmpresasComponent implements OnInit {
   status:string = '0';
   currentStep = 1;
   googleUser: any;
-  constructor(private router: Router, private fb: FormBuilder, private _supaServices: SupabaseService, private ngZone: NgZone,) {
+  entidadEmail:string = '';
+  constructor(private router: Router, private fb: FormBuilder, private _supaServices: SupabaseService, private ngZone: NgZone,private cdr: ChangeDetectorRef) {
     // Inicializa el formulario
     this.companyForm = this.fb.group({
       nombre: ['', Validators.required],
-      email: ['', [Validators.required, Validators.email]],
+     /*  email: ['', [Validators.required, Validators.email]], */
       pais: ['', Validators.required],
       direccion: ['', Validators.required],
       /* descripcion: ['', Validators.required], */
       categoria: ['', Validators.required],
       logo: [''], // Se usará para almacenar el archivo de logo
-      informacion:['', Validators.required],
+      /* informacion:['', Validators.required], */
       /* titulo:['', Validators.required], */
 
     });
@@ -60,7 +61,7 @@ export class RegistroEmpresasComponent implements OnInit {
     // Muestra los datos en consola
     const entidad: any = {
       nombre: this.companyForm.value.nombre.toLowerCase(),
-      email: this.companyForm.value.email.toLowerCase(),
+      email: this.entidadEmail.toLowerCase(),
       background: '1',
       tabla_contador: '',
       fecha_creacion: new Date(),
@@ -129,11 +130,25 @@ export class RegistroEmpresasComponent implements OnInit {
        }).join(''));
    
      this.googleUser = JSON.parse(jsonPayload);
-     localStorage.setItem("email", this.googleUser.email);
+     this.entidadEmail = this.googleUser.email;
      localStorage.setItem("photo", this.googleUser.picture)
      localStorage.setItem("name", this.googleUser.name)
-   
-   
-     
+     this.entidadEmailConsulta(this.googleUser.email)
+    
+   }
+
+
+   async entidadEmailConsulta(email:string){
+    let responseSupabase = await this._supaServices.getEntidadesEmails(email); 
+
+       if(responseSupabase == 'Entidad no registrada' || responseSupabase == null){
+        this.statusChange('1');
+        console.log(responseSupabase)
+       }else{
+        this.statusChange('9');
+       }
+/*        console.log(responseSupabase)
+       console.log(this.googleUser.email) */
+       this.cdr.detectChanges();
    }
 }

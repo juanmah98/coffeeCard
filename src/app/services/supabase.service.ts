@@ -561,6 +561,23 @@ async generateQRCodes(entidadId: string, quantity: number): Promise<any[]> {
   
     return data?.nombre || 'Entidad desconocida';  // Si no se encuentra nombre, retornar uno por defecto
   }
+
+  async getEntidadesEmails(email: string): Promise<string> {
+    const { data, error } = await this.supabase
+      .from('entidades') // Reemplaza con tu tabla
+      .select('email')  // Asegúrate de que 'name' sea el campo correcto
+      .eq('email', email)
+      .maybeSingle()
+  
+    if (error) {
+      console.error('Error al obtener nombre de la entidad:', error);
+      throw error;
+    }
+    
+    return data?.email || 'Entidad no registrada';  // Si no se encuentra nombre, retornar uno por defecto
+  }
+
+  
   
   async getEmpleados() {
     return await this.supabase
