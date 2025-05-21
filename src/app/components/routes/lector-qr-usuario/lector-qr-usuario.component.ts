@@ -1,27 +1,23 @@
-import { ChangeDetectorRef, Component, ElementRef, NgZone, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, NgZone, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
-import jsQR from 'jsqr';
-import { interval, Subscription, takeWhile } from 'rxjs';
 import { CafeData } from 'src/app/interfaces/cafes_data';
 import { Entidades } from 'src/app/interfaces/entdidades';
 import { Usuarios } from 'src/app/interfaces/usuarios';
 import { AuthService } from 'src/app/services/auth.service.service';
 import { InternoService } from 'src/app/services/interno.service';
 import { SupabaseService } from 'src/app/services/supabase.service';
+import { Html5Qrcode, Html5QrcodeCameraScanConfig, CameraDevice } from 'html5-qrcode';
 
 @Component({
   selector: 'app-lector-qr-usuario',
   templateUrl: './lector-qr-usuario.component.html',
   styleUrls: ['./lector-qr-usuario.component.css']
 })
-export class LectorQrUsuarioComponent implements OnInit {
+export class LectorQrUsuarioComponent implements OnInit, OnDestroy {
 
-  @ViewChild('video') videoElement!: ElementRef;
-  @ViewChild('canvas') canvasElement!: ElementRef;
+  @ViewChild('qrScanner', { static: false }) qrScannerElement!: ElementRef;
 
-/*   video1: boolean = true;
-  video2: boolean = false; */
-  mensaje:string = '';
+  mensaje: string = '';
   data_contador: CafeData = {
     id: "",
     usuario_id: '',
@@ -29,168 +25,163 @@ export class LectorQrUsuarioComponent implements OnInit {
     gratis: false,
     opcion: 0,
     cantidad_gratis: 0
-}
+  }
 
-dataUser:Usuarios = {
-  id: "",
-  email: "",
-  name: "",
-  fecha_creacion: new Date(),
-  pais: '',
-  ciudad: ''
-};
-
+  dataUser: Usuarios = {
+    id: "",
+    email: "",
+    name: "",
+    fecha_creacion: new Date(),
+    pais: '',
+    ciudad: ''
+  };
+isScannerRunning: boolean = false;
   bgClass: string = 'bg';
-  private scanSubscription: Subscription = new Subscription();
-  continueScanning = true;
   entidad!: Entidades;
   entidadDistinta = false;
+  html5QrCode!: Html5Qrcode;
+  continueScanning: boolean = true;
+  cameras: CameraDevice[] = [];
+  currentCameraIndex: number = 0;
 
-  constructor(private cdr: ChangeDetectorRef, private _SupabaseService: SupabaseService, private router: Router, private _InternoServices: InternoService, private ngZone: NgZone, private authService: AuthService) { }
+  constructor(
+    private cdr: ChangeDetectorRef,
+    private _SupabaseService: SupabaseService,
+    private router: Router,
+    private _InternoServices: InternoService,
+    private ngZone: NgZone,
+    private authService: AuthService
+  ) { }
 
   ngOnInit(): void {
-    this.data_contador = this._InternoServices.getDataContador(); // Recupera los datos.
+    this.data_contador = this._InternoServices.getDataContador();
     this.dataUser = this._InternoServices.getUser();
-    /* console.log('Data recibida:', this.data_contador); */
-    this.startCamera();
-    this.initScanInterval();
     this.entidad = this._InternoServices.getEntidad();
-    this.bgClass = `bg-${this._InternoServices.getEntidad().background}-card`;
-    this.cdr.detectChanges();
-    
+    this.bgClass = `bg-${this.entidad.background}-card`;
+
+    setTimeout(() => {
+      this.startScanner();
+    }, 0);
   }
 
   ngOnDestroy(): void {
-    if (this.scanSubscription) {
-      this.scanSubscription.unsubscribe();
+    this.stopScanner();
+  }
+
+  async startScanner(): Promise<void> {
+    const qrRegionId = "reader"; // Debes tener un div con id="reader"
+    this.html5QrCode = new Html5Qrcode(qrRegionId);
+
+    await this.pedirPermisoCamara();
+
+    Html5Qrcode.getCameras().then(devices => {
+      if (devices && devices.length) {
+        this.cameras = devices;
+
+        const backCamera = devices.find(device =>
+          device.label.toLowerCase().includes("back") ||
+          device.label.toLowerCase().includes("rear") ||
+          device.label.toLowerCase().includes("environment")
+        );
+
+        this.currentCameraIndex = backCamera ? devices.indexOf(backCamera) : 0;
+
+        this.iniciarConCamaraActual();
+      } else {
+        console.error("No hay cámaras disponibles");
+      }
+    }).catch(err => {
+      console.error("Error al obtener cámaras:", err);
+    });
+  }
+
+  iniciarConCamaraActual(): void {
+    const cameraId = this.cameras[this.currentCameraIndex].id;
+    const config: Html5QrcodeCameraScanConfig = {
+      fps: 10,
+      qrbox: undefined,
+      aspectRatio: 1.5
+    };
+
+    this.html5QrCode
+  .start(
+    { facingMode: "environment" },
+    config,
+    this.onScanSuccess.bind(this),
+    this.onScanFailure.bind(this)
+  )
+  .then(() => {
+    this.isScannerRunning = true;
+  })
+  .catch(err => {
+    console.error("Error al iniciar cámara:", err);
+  });
+  }
+
+  async pedirPermisoCamara(): Promise<void> {
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+      stream.getTracks().forEach(track => track.stop());
+    } catch (err) {
+      console.error("Permiso de cámara denegado", err);
     }
   }
 
-  startCamera() {
-    if (!!navigator.mediaDevices && !!navigator.mediaDevices.getUserMedia) {
-      const constraints = { video: { facingMode: 'environment' } };
-      navigator.mediaDevices.getUserMedia(constraints)
-        .then(stream => {
-          const video: HTMLVideoElement = this.videoElement.nativeElement;
-          video.setAttribute('playsinline', 'true');
-          video.setAttribute('webkit-playsinline', 'true');
-          video.setAttribute('muted', 'true');
-          video.srcObject = stream;
-          video.play()
-            .catch(err => {
-              console.error('Error al acceder a la cámara en Safari:', err);
-              this.handleError('HTMLMediaElement');
-            });
-        })
-        .catch(err => {
-          console.error('Error al acceder a la cámara en Safari:', err);
-          this.handleError('getUserMedia');
-        });
-    } else {
-      console.error('getUserMedia no está soportado por el navegador.');
-      this.handleError('getUserMedia');
-    }
-  }
-  
-
-  initScanInterval(): void {
-    this.scanSubscription = interval(1000)
-      .pipe(
-        takeWhile(() => this.continueScanning)
-      )
-      .subscribe(async () => {
-        await this.scanQRCode();
+stopScanner(): void {
+  if (this.html5QrCode && this.isScannerRunning) {
+    this.html5QrCode.stop()
+      .then(() => {
+        this.html5QrCode.clear();
+        this.isScannerRunning = false;
+      })
+      .catch(err => {
+        console.warn("Scanner no estaba corriendo:", err);
       });
   }
+}
 
-  handleError(method: string): void {
-    // Manejar errores específicos de métodos
-    switch (method) {
-      case 'getUserMedia':
-        // Implementa acciones específicas para errores de getUserMedia
-        break;
-      case 'HTMLMediaElement':
-        // Implementa acciones específicas para errores de HTMLMediaElement
-        break;
-      default:
-        // Implementa acciones genéricas para otros errores
-        break;
-    }
-  }
+  async onScanSuccess(decodedText: string): Promise<void> {
+    if (!this.continueScanning) return;
+    this.continueScanning = false;
 
-  async scanQRCode() {
-    const video = this.videoElement?.nativeElement; // Verificar si videoElement está definido
-    if (!video) {
-      console.error('Elemento de video no está definido.');
-      return;
-    }
+    try {
+      const qrCodes = await this._SupabaseService.validateQRCode(decodedText, this.entidad.id, this.dataUser.name);
 
-    const canvas = this.canvasElement?.nativeElement; // Verificar si canvasElement está definido
-    if (!canvas) {
-      console.error('Elemento de lienzo no está definido.');
-      return;
-    }
-
-    const context = canvas.getContext('2d');
-    if (!context) {
-      console.error('No se pudo obtener el contexto 2D del lienzo.');
-      return;
-    }
-
-    context.drawImage(video, 0, 0, canvas.width, canvas.height);
-
-    const imageData = context.getImageData(0, 0, canvas.width, canvas.height);
-    const code = jsQR(imageData.data, imageData.width, imageData.height);
-
-    if (code) {
-     /*  console.log('Código QR escaneado:', code.data); */
-
-      const qrCodes = await this._SupabaseService.validateQRCode(code.data, this.entidad.id, this.dataUser.name)
-     /* console.log(qrCodes); */
-     
-      // Detener el escaneo después de leer un código QR
-      this.detenerEscaneo();
-      if(qrCodes.success == true){
-       await this.sumar();
-      this.back();
-      }else{
+      this.stopScanner();
+      if (qrCodes.success) {
+        await this.sumar();
+        this.back();
+      } else {
         this.mensaje = qrCodes.message;
       }
-    /*   console.log(qrCodes.success);  */ 
-      // Aquí puedes enviar una solicitud HTTP al servidor para incrementar el contador
-    } else {
-      console.error('No se pudo detectar ningún código QR.');
+    } catch (error) {
+      console.error('Error al procesar QR:', error);
     }
   }
 
-  detenerEscaneo(): void {
-    this.continueScanning = false;
-    /* this.video1 = false;
-    this.video2 = true; */
+  onScanFailure(error: string): void {
+    // Opcional: manejar errores de escaneo
   }
 
   reiniciarEscaneo(): void {
-    this.continueScanning = true;
-    /* this.video1 = true;
-    this.video2 = false; */
-    this.initScanInterval();
-  }
-
+  this.continueScanning = true;
+  this.isScannerRunning = false;
+  setTimeout(() => {
+    this.startScanner();
+    this.cdr.detectChanges();
+  }, 300);
+}
 
   async sumar(): Promise<void> {
     try {
-      // Incrementar el contador en la base de datos
       const nuevoContador = this.data_contador.contador + 1;
-  
+
       const responseContador: any = await this._SupabaseService.updateContador(
         this.data_contador.id,
         this.entidad.tabla_contador,
         nuevoContador
       );
-  
-      console.log('Contador actualizado:', responseContador);
-  
-      // Si el contador llega a 10, enviar el webhook a la Edge Function
+
       if (nuevoContador === 10) {
         const payload = {
           usuario_id: this.data_contador.usuario_id,
@@ -198,51 +189,45 @@ dataUser:Usuarios = {
           contador: nuevoContador,
           entidad_id: this.entidad.id
         };
-  
-        // Enviar petición HTTP a la Edge Function
+
         const response = await fetch(
           'https://rwttebejxwncpurszzld.supabase.co/functions/v1/notifyPrize',
           {
             method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
+            headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(payload),
           }
         );
-  
+
         if (response.ok) {
           console.log('Notificación enviada con éxito');
         } else {
           console.error('Error al enviar la notificación', await response.json());
         }
       }
-  
-      // Continuar con el escaneo
+
       this.continueScanning = true;
-  
     } catch (error) {
       console.error('Error al incrementar el contador:', error);
     }
   }
-  
 
-
-  back(): void {
-    this.ngZone.run(() => {
+ back(): void {
+  this.ngZone.run(() => {
+    this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
       this.router.navigate(['/cardSelection']);
     });
-  }
+  });
+}
 
   clearStorage(): void {
     const coockies = this._InternoServices.getCoockes();
     localStorage.clear();
     this._InternoServices.setCoockes(coockies);
     this.authService.logout();
-    this.detenerEscaneo()
+    this.stopScanner();
     this.ngZone.run(() => {
       this.router.navigate(['/home']);
     });
   }
-
 }

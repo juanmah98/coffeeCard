@@ -1,54 +1,88 @@
-<body class="text-center" [ngClass]="bgClass"> <!-- Clase text-center aplicada al body para centrar todo el contenido -->
+<body class="text-center" [ngClass]="bgClass">
   <div class="container-fluid">
 
-    <div *ngIf="!lectorOnly" class="row row justify-content-start text-start">
+    <!-- Botón volver -->
+    <div *ngIf="!lectorOnly" class="row justify-content-start text-start">
       <div class="col-12">
-          <button  class="btn btn m-2" (click)="back()"><img class=" pb-1" src="../../../../assets/imagenes/cards/back2.png" width="18px" alt=""></button>
+        <button class="btn btn m-2" (click)="back()">
+          <img class="pb-1" src="../../../../assets/imagenes/cards/back2.png" width="18px" alt="">
+        </button>
       </div>
-  </div>
-
-  <div *ngIf="lectorOnly" class="row row justify-content-end text-end">
-    <div class="col-12">
-        <button class="btn btn-dark m-2" (click)="clearStorage()"><img class=" pb-1" src="../../../../assets/imagenes/cards/out.png" width="18px" alt=""></button>
     </div>
-</div>
 
-    <div class="row justify-content-center pb-3">
-      <div class="col-12 pb-2 pt-0 text-light ">
-        <div class="">
-          <video [ngClass]="{'video':video1,'video2':video2}" #video autoplay playsinline></video>
-          <canvas #canvas style="display: none;"></canvas>
-          <h3 *ngIf="continueScanning==true" class="text-light">ESCANEANDO QR</h3>
-          <h3 *ngIf="continueScanning==false && entidadDistinta==false" class="text-warning">ESCANEO CORRECTO</h3>
-          <h3 *ngIf="continueScanning==false && entidadDistinta==true" class="text-warning">ERROR</h3>
-        </div> 
+    <!-- Botón logout -->
+    <div *ngIf="lectorOnly" class="row justify-content-end text-end">
+      <div class="col-12">
+        <button class="btn btn-dark m-2" (click)="clearStorage()">
+          <img class="pb-1" src="../../../../assets/imagenes/cards/out.png" width="18px" alt="">
+        </button>
       </div>
+    </div>
+
+    <!-- Escáner QR -->
+    <div class="row justify-content-center pb-3">
+      <div class="col-12 pb-2 pt-0 text-light">
+      <div *ngIf="video1">
+      <div id="reader" style="width: 100%; max-width: 500px; margin: auto;"></div>
+    </div>
+
+
+        <!-- Estados -->
+        <h3 *ngIf="continueScanning" class="text-light">ESCANEANDO QR</h3>
+        <h3 *ngIf="!continueScanning && !entidadDistinta" class="text-warning">ESCANEO CORRECTO</h3>
+        <h3 *ngIf="!continueScanning && entidadDistinta" class="text-warning">ERROR</h3>
+      </div>
+
+      <!-- Datos de la tarjeta -->
       <div class="col-12 pb-4 justify-content-center align-items-center">
-        <div  *ngIf="continueScanning==false" class="text-light">                     
-          <div *ngIf="entidadDistinta==false" class="pt-2">
+        <div *ngIf="!continueScanning" class="text-light">
+
+          <!-- Tarjeta válida -->
+          <div *ngIf="!entidadDistinta" class="pt-2">
             <h2>TARJETA</h2>
             <div class="justify-content-center align-items-center pb-4">
-                <!-- <p class="fs-5 me-3">Opcion N°<b>{{data_cafe.opcion}}</b></p> -->
-                <span class="fs-3 pt-1">Contador <b>{{data_cafe.contador}}</b></span><br>
-                <span class="fs-5">Gratis acumulados <b>{{data_cafe.cantidad_gratis}}</b></span>
+              <span class="fs-3 pt-1">Contador <b>{{ data_cafe.contador }}</b></span><br>
+              <span class="fs-5">Gratis acumulados <b>{{ data_cafe.cantidad_gratis }}</b></span>
             </div>
-            <!-- <p>Cantidad de tarjetas gratis <b>{{data_cafe.cantidad_gratis}}</b></p> -->
-            <p *ngIf="data_cafe.gratis==true">Gratis</p>
-            <button *ngIf="data_cafe.gratis==false && data_cafe.contador<entidad.numero_contador" type="button" class="btn btn-warning" (click)="sumar()">Sumar +1</button>
-            <button *ngIf="data_cafe.gratis==true || data_cafe.contador==entidad.numero_contador" type="button" class="btn btn-danger" (click)="sumar()">Canje gratis</button>
-           
+            <p *ngIf="data_cafe.gratis">Gratis</p>
+            <button
+              *ngIf="!data_cafe.gratis && data_cafe.contador < entidad.numero_contador"
+              type="button"
+              class="btn btn-warning"
+              (click)="sumar()">
+              Sumar +1
+            </button>
+            <button
+              *ngIf="data_cafe.gratis || data_cafe.contador === entidad.numero_contador"
+              type="button"
+              class="btn btn-danger"
+              (click)="sumar()">
+              Canje gratis
+            </button>
           </div>
 
-          <div *ngIf="entidadDistinta==true" class="pt-2">
-            <h2>QR no valido</h2>          
+          <!-- QR inválido -->
+          <div *ngIf="entidadDistinta" class="pt-2">
+            <h2>QR no válido</h2>
             <button type="button" class="btn btn-danger" (click)="reiniciarEscaneo()">Escanear</button>
           </div>
-        
+
         </div>
       </div>
     </div>
-    <div *ngIf="entidad.id=='e4180b6c-a43e-4157-86c1-3c134ede2bb8'" class="text-center mt-1">
-         <button class="btn btn-light" (click)="menu()"><b>EDITAR CARTA</b><img src="../../../../assets/imagenes/cards/menus.png" width="35px" alt=""></button>
-   </div> 
+   <!--  <div *ngFor="let camaras of cameras, let i = index">
+      <span class="text-light" (click)="cambiarCamara(i)">{{camaras.label}}</span>
+    </div> -->
+   
+
+    <!-- Botón menú si es entidad específica -->
+    <div *ngIf="entidad.id === 'e4180b6c-a43e-4157-86c1-3c134ede2bb8'" class="text-center mt-1">
+      <button class="btn btn-light" (click)="menu()">
+        <b>EDITAR CARTA</b>
+        <img src="../../../../assets/imagenes/cards/menus.png" width="35px" alt="">
+      </button>
+    </div>
+
   </div>
+  
 </body>

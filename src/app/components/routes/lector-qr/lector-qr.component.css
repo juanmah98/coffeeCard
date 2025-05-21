@@ -26,3 +26,11 @@ body{
     border: 2px solid white; /* Puedes agregar un borde alrededor del video para visualizar el área de escaneo */
 }
 
+.custom-shadow {
+  text-shadow: 3px 2px 4px rgba(0,0,0,0.5); /* Definición personalizada de sombra */
+}
+
+.loading{
+  min-height: 80vh;
+}
+

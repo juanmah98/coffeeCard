@@ -1,27 +1,24 @@
-import { ChangeDetectorRef, Component, ElementRef, NgZone, OnInit, ViewChild } from '@angular/core';
-import jsQR from 'jsqr';
+import { ChangeDetectorRef, Component, ElementRef, NgZone, OnInit, ViewChild, AfterViewInit, OnDestroy } from '@angular/core';
 import * as CryptoJS from 'crypto-js';
 import { SupabaseService } from 'src/app/services/supabase.service';
 import { CafeData } from 'src/app/interfaces/cafes_data';
-import { Subscription, interval } from 'rxjs';
-import { takeWhile } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import { InternoService } from 'src/app/services/interno.service';
 import { Entidades } from 'src/app/interfaces/entdidades';
 import { AuthService } from 'src/app/services/auth.service.service';
+import {  CameraDevice, Html5Qrcode, Html5QrcodeCameraScanConfig, Html5QrcodeScanner, Html5QrcodeScannerState } from 'html5-qrcode';
 
 @Component({
   selector: 'app-lector-qr',
   templateUrl: './lector-qr.component.html',
   styleUrls: ['./lector-qr.component.css']
 })
-export class LectorQrComponent implements OnInit {
-  @ViewChild('video') videoElement!: ElementRef;
-  @ViewChild('canvas') canvasElement!: ElementRef;
+export class LectorQrComponent implements OnInit, OnDestroy {
+  @ViewChild('qrScanner', { static: false }) qrScannerElement!: ElementRef;
 
-  video1: boolean = true;
-  video2: boolean = false;
+  video1: boolean = true;  // controla visibilidad del lector QR
   uuidCifrado: string = '';
+  html5QrCode!: Html5Qrcode;
   data_cafe: CafeData = {
     id: "",
     usuario_id: '',
@@ -33,166 +30,171 @@ export class LectorQrComponent implements OnInit {
 
   bgClass: string = 'bg';
   clave = 'piazzetta';
-  private scanSubscription: Subscription = new Subscription();
   continueScanning = true;
   entidad!: Entidades;
   entidadDistinta = false;
   admin = true;
   lectorOnly = false;
+  
+  html5QrcodeScanner!: Html5QrcodeScanner;
+  cameras: CameraDevice[] = [];
+currentCameraIndex: number = 0;
 
-  constructor(private cdr: ChangeDetectorRef, private _SupabaseService: SupabaseService, private router: Router, private _InternoServices: InternoService, private ngZone: NgZone, private authService: AuthService) { }
+  constructor(
+    private cdr: ChangeDetectorRef,
+    private _SupabaseService: SupabaseService,
+    private router: Router,
+    private _InternoServices: InternoService,
+    private ngZone: NgZone,
+    private authService: AuthService
+  ) {}
 
-  async ngOnInit(): Promise<void> {
-    this.startCamera();
-    this.initScanInterval();
+  ngOnInit(): void {
     this.entidad = this._InternoServices.getEntidad();
     this.admin = this._InternoServices.getUserAdmin().soloLectura;
     this.lectorOnly = this._InternoServices.getOnlyScaner();
-    this.bgClass = `bg-${this._InternoServices.getEntidad().background}-card`;
-    this.cdr.detectChanges();
-    console.log("ONly: ", this.lectorOnly, "- admin. ", this.admin)
+    this.bgClass = `bg-${this.entidad.background}-card`;
+  }
+
+  ngAfterViewInit(): void {
+ 
+      setTimeout(() => {
+      this.startScanner();
+      this.cdr.detectChanges();
+    }, 0);
+    
   }
 
   ngOnDestroy(): void {
-    if (this.scanSubscription) {
-      this.scanSubscription.unsubscribe();
-    }
+    this.stopScanner();
   }
 
-  startCamera() {
-    if (!!navigator.mediaDevices && !!navigator.mediaDevices.getUserMedia) {
-      const constraints = { video: { facingMode: 'environment' } };
-      navigator.mediaDevices.getUserMedia(constraints)
-        .then(stream => {
-          const video: HTMLVideoElement = this.videoElement.nativeElement;
-          video.setAttribute('playsinline', 'true');
-          video.setAttribute('webkit-playsinline', 'true');
-          video.setAttribute('muted', 'true');
-          video.srcObject = stream;
-          video.play()
-            .catch(err => {
-              console.error('Error al acceder a la cámara en Safari:', err);
-              this.handleError('HTMLMediaElement');
-            });
-        })
-        .catch(err => {
-          console.error('Error al acceder a la cámara en Safari:', err);
-          this.handleError('getUserMedia');
-        });
+async startScanner(): Promise<void> {
+  const qrRegionId = "reader";
+  this.html5QrCode = new Html5Qrcode(qrRegionId);
+
+  await this.pedirPermisoCamara();
+
+  Html5Qrcode.getCameras().then(devices => {
+    if (devices && devices.length) {
+      this.cameras = devices;
+
+      // Por defecto, intentar usar trasera si está
+      const backCamera = devices.find(device =>
+        device.label.toLowerCase().includes("back") ||
+        device.label.toLowerCase().includes("rear") ||
+        device.label.toLowerCase().includes("environment")
+      );
+      console.log(backCamera)
+      this.currentCameraIndex = backCamera ? devices.indexOf(backCamera) : 0;
+
+      this.iniciarConCamaraActual();
+
     } else {
-      console.error('getUserMedia no está soportado por el navegador.');
-      this.handleError('getUserMedia');
+      console.error("No hay cámaras disponibles");
     }
+  }).catch(err => {
+    console.error("Error al obtener cámaras:", err);
+  });
+}
+
+iniciarConCamaraActual(): void {
+  const cameraId = this.cameras[this.currentCameraIndex].id;
+  console.log(cameraId)
+  const config: Html5QrcodeCameraScanConfig = {
+    fps: 10,
+    qrbox: undefined,
+    aspectRatio: 1.5
+  };
+
+  this.html5QrCode
+    .start(
+      /* deviceId: { exact: cameraId } si queremos otras camaras */
+      { facingMode: "environment" },
+      config,
+      this.onScanSuccess.bind(this),
+      this.onScanFailure.bind(this)
+    )
+    .catch(err => {
+      console.error("Error al iniciar cámara:", err);
+    });
+     console.log(this.cameras)
+}
+
+
+async pedirPermisoCamara(): Promise<void> {
+  try {
+    // Esto fuerza al navegador a pedir permisos antes de llamar a getCameras()
+    const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+    stream.getTracks().forEach(track => track.stop()); // detener la cámara inmediatamente
+  } catch (err) {
+    console.error("Permiso de cámara denegado", err);
   }
-  
+}
 
-  initScanInterval(): void {
-    this.scanSubscription = interval(1000)
-      .pipe(
-        takeWhile(() => this.continueScanning)
-      )
-      .subscribe(async () => {
-        await this.scanQRCode();
-      });
+cambiarCamara(index:any): void {
+  if (this.html5QrCode) {
+    this.html5QrCode.stop().then(() => {
+      // Cambiar índice
+      this.currentCameraIndex = (index) % this.cameras.length;
+
+      // Reiniciar con nueva cámara
+      this.iniciarConCamaraActual();
+    }).catch(err => {
+      console.error("Error al detener cámara:", err);
+    });
+  }
+}
+
+
+
+ stopScanner(): void {
+  if (this.html5QrCode) {
+    this.html5QrCode.stop()
+      .then(() => this.html5QrCode.clear())
+      .catch(err => console.error('Error al detener el escáner:', err));
+  }
   }
 
-  handleError(method: string): void {
-    // Manejar errores específicos de métodos
-    switch (method) {
-      case 'getUserMedia':
-        // Implementa acciones específicas para errores de getUserMedia
-        break;
-      case 'HTMLMediaElement':
-        // Implementa acciones específicas para errores de HTMLMediaElement
-        break;
-      default:
-        // Implementa acciones genéricas para otros errores
-        break;
-    }
-  }
-
-
-  async scanQRCode(): Promise<void> {
-    try {
-      // Verificar si el elemento de video está definido
-      const video = this.videoElement?.nativeElement;
-      if (!video) {
-        console.error('Elemento de video no está definido.');
-        return;
-      }
-  
-      // Verificar si el elemento canvas está definido
-      const canvas = this.canvasElement?.nativeElement;
-      if (!canvas) {
-        console.error('Elemento de lienzo no está definido.');
-        return;
-      }
-  
-      // Obtener el contexto 2D del canvas
-      const context = canvas.getContext('2d');
-      if (!context) {
-        console.error('No se pudo obtener el contexto 2D del lienzo.');
-        return;
-      }
-  
-      // Dibujar el contenido del video en el canvas
-      context.drawImage(video, 0, 0, canvas.width, canvas.height);
-  
-      // Obtener los datos de la imagen del canvas
-      const imageData = context.getImageData(0, 0, canvas.width, canvas.height);
-  
-      // Intentar leer el código QR con jsQR
-      const code = jsQR(imageData.data, imageData.width, imageData.height);
-  
-      if (code) {
-        /* console.log('Código QR escaneado:', code.data); */
-  
-        // Desencriptar el UUID obtenido del código QR
-        const uuidDescifrado = this.descifrarUUID(code.data, this.clave);
-        /* console.log('UUID descifrado:', uuidDescifrado); */
-  
-        // Obtener datos de Supabase usando el UUID desencriptado
-        const { data, error } = await this._SupabaseService.getDataCard(uuidDescifrado, this.entidad.tabla_contador);
-  
-        if (error) {
-          console.error('Error al consultar Supabase:', error);
-          return;
-        }
-  
-        if (!data || data.length === 0) {
-          console.log('ENTIDAD INEXISTENTE');
-          this.entidadDistinta = true;
-        } else {
-          this.data_cafe = data[0]; // Actualizar con los datos obtenidos
-         /*  console.log('Datos obtenidos:', this.data_cafe); */
-          this.entidadDistinta = false;
-        }
-  
-        // Detener el escaneo después de leer un código QR válido
-        this.detenerEscaneo();
-  
-        // Aquí podrías agregar lógica adicional, como enviar una solicitud HTTP
-        // al servidor para incrementar un contador, si es necesario.
-      } else {
-        console.error('No se pudo detectar ningún código QR.');
-      }
-    } catch (err) {
-      console.error('Error inesperado durante el escaneo del código QR:', err);
-    }
-  }
-  
-
-  detenerEscaneo(): void {
+  async onScanSuccess(decodedText: string): Promise<void> {
+    if (!this.continueScanning) return;
     this.continueScanning = false;
-    this.video1 = false;
-    this.video2 = true;
+
+    try {
+      const uuidDescifrado = this.descifrarUUID(decodedText, this.clave);
+      const { data, error } = await this._SupabaseService.getDataCard(uuidDescifrado, this.entidad.tabla_contador);
+
+      if (error || !data || data.length === 0) {
+        console.log('Entidad inexistente');
+        this.entidadDistinta = true;
+        this.video1 = false;  // ocultamos lector al detectar error
+        this.stopScanner();
+        this.cdr.detectChanges();
+        return;
+      }
+
+      this.data_cafe = data[0];
+      this.entidadDistinta = false;
+      this.video1 = false;  // ocultamos lector tras escaneo exitoso
+      this.stopScanner();
+      this.cdr.detectChanges();
+    } catch (error) {
+      console.error('Error al procesar QR:', error);
+    }
+  }
+
+  onScanFailure(error: string): void {
+    // opcional para manejar errores de escaneo
   }
 
   reiniciarEscaneo(): void {
     this.continueScanning = true;
-    this.video1 = true;
-    this.video2 = false;
-    this.initScanInterval();
+    this.entidadDistinta = false;
+    this.video1 = true;  // mostramos lector nuevamente
+    setTimeout(() => {
+      this.startScanner();
+      this.cdr.detectChanges();
+    }, 300);
   }
 
   descifrarUUID(uuidCifrado: string, clave: string): string {
@@ -209,13 +211,13 @@ export class LectorQrComponent implements OnInit {
 
       try {
         const responseOpcion: any = (await this._SupabaseService.updateOpcion(this.data_cafe.id, this.entidad.tabla_contador, 0)).data;
-        console.log("Opcion set 0", responseOpcion);
+        /* console.log("Opcion set 0", responseOpcion); */
 
         const responseContador: any = (await this._SupabaseService.updateContador(this.data_cafe.id, this.entidad.tabla_contador, 0)).data;
-        console.log("Contador set 0", responseContador);
+        /* console.log("Contador set 0", responseContador); */
 
         const responseContadorGratis: any = (await this._SupabaseService.updateContadorGratis(this.data_cafe.id, this.entidad.tabla_contador, this.data_cafe.cantidad_gratis)).data;
-        console.log("Contador Gratis +1", responseContadorGratis);
+        /* console.log("Contador Gratis +1", responseContadorGratis); */
 
         this.reiniciarEscaneo();
       } catch (error) {
@@ -224,7 +226,7 @@ export class LectorQrComponent implements OnInit {
     } else {
       try {
         const responseContador: any = (await this._SupabaseService.updateContador(this.data_cafe.id, this.entidad.tabla_contador, this.data_cafe.contador + 1)).data;
-        console.log("Contador +1 ", responseContador);
+        /* console.log("Contador +1 ", responseContador); */
 
         if(this.data_cafe.contador+1 === 10){
           const payload = {
@@ -246,7 +248,7 @@ export class LectorQrComponent implements OnInit {
             }
           );
 
-          console.log(response);
+          /* console.log(response); */
         }
 
         this.reiniciarEscaneo();
@@ -275,7 +277,7 @@ export class LectorQrComponent implements OnInit {
     localStorage.clear();
     this._InternoServices.setCoockes(coockies);
     this.authService.logout();
-    this.detenerEscaneo()
+  /*   this.detenerEscaneo() */
     this.ngZone.run(() => {
       this.router.navigate(['/home']);
     });

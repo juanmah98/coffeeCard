@@ -23,6 +23,7 @@
     "angularx-qrcode": "^14.0.0",
     "crypto-js": "^4.2.0",
     "html2canvas": "^1.4.1",
+    "html5-qrcode": "^2.3.8",
     "jspdf": "^2.5.2",
     "jsqr": "^1.4.0",
     "jsrsasign-util": "^1.0.5",
