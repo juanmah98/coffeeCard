@@ -11,12 +11,13 @@ export class PopupVComponent {
     {
       nombre: 'V-1.3',
       cambios: [
+        'Nueva libreria para lector de qrs (más rápido y preciso)',
+        'Actualización de registro para empresas.',
         'Mejoras de la vista panel maestro informacion',
         'Visibilidad del historial de versiones.',
         'Nuevas Edge Functions para envío de correos electrónicos.',
         'Actualización en la vista principal del panel maestro.',
         'Mejoras en la interfaz de la vista de usuarios.',
-        'Actualización de registro para empresas.',
       ],
     },
     {
