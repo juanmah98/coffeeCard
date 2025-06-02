@@ -528,7 +528,9 @@ async generateQRCodes(entidadId: string, quantity: number): Promise<any[]> {
       const { data: updateData, error: updateError } = await this.supabase
         .from('qrs')
         .update({ is_used: true, used_at: new Date(), usuario: usuario })
-        .eq('qr_code', qrCode);
+        .eq('qr_code', qrCode)
+        .select()
+        .single(); 
   
       if (updateError) {
         console.error('Error actualizando el QR:', updateError);
@@ -560,6 +562,14 @@ async generateQRCodes(entidadId: string, quantity: number): Promise<any[]> {
     }
   
     return data?.nombre || 'Entidad desconocida';  // Si no se encuentra nombre, retornar uno por defecto
+  }
+
+   async getEntidadId(entidadId: string){
+    return await this.supabase
+      .from('entidades')
+      .select('*')
+      .match({ id: entidadId })
+      .single();
   }
 
   async getEntidadesEmails(email: string): Promise<string> {

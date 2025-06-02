@@ -8,10 +8,22 @@ import { PopupVService } from 'src/app/services/popup-v.service';
 })
 export class PopupVComponent {
   versiones = [
+      {
+    nombre: 'V-1.4', /* 02-06-2025 */
+    cambios: [
+      'Nuevo sistema de escaneo QR vía cámara utilizando librería más moderna y eficiente.',
+      'Escaneo directo desde ticket físico o digital mediante URL única (sin necesidad de iniciar sesión).',
+      'Validación del QR con respuesta inmediata y segura a través de funciones edge.',
+      'Mejoras en el contador de puntos con sincronización en tiempo real y feedback visual (toast).',
+      'Nuevo sistema de redirección inteligente tras escanear QR, con persistencia de mensajes entre rutas.',
+      'Mejoras en la confiabilidad del escaneo desde dispositivos móviles y cámaras con baja calidad.',
+      'Optimización del flujo de usuario al redirigir desde QR a pantalla de selección con información pre-cargada.',
+    ],
+    },
     {
       nombre: 'V-1.3',
       cambios: [
-        'Nueva libreria para lector de qrs (más rápido y preciso)',
+        'Nueva libreria para lector de qrs (más rápido y preciso)', 
         'Actualización de registro para empresas.',
         'Mejoras de la vista panel maestro informacion',
         'Visibilidad del historial de versiones.',

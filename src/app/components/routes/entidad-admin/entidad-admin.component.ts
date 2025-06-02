@@ -276,7 +276,7 @@ export class EntidadAdminComponent implements OnInit {
    const coockies = this.internoService.getCoockes()
     localStorage.clear();
     this.internoService.setCoockes(coockies)
-    this.authService.login();
+    this.authService.logout();
     this.ngZone.run(() => {   
       this.router.navigate(['/home']);
       }); 

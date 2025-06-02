@@ -78,7 +78,7 @@ async localStorage():Promise<boolean>{
     if(userString != null)
       {
         /* console.log('Entro: ',userString ); */
-        this.authService.login();  
+        this.authService.login('usuario');  
         this.ngZone.run(() => {
           this.loading = false;
           log = false
@@ -87,7 +87,7 @@ async localStorage():Promise<boolean>{
       }else {
         if(userADminString != null){
           
-            this.authService.login();
+            this.authService.login('admin'); 
             if(!userADminString.user_solo_lectura && !onlyScaner){
               this.ngZone.run(() => {
                 this.loading = false;    
@@ -191,7 +191,7 @@ handleCredentialResponse = async (response: any) => {
 
   if(this.userAdmin){
     await this.setAdmin()
-    this.authService.login();
+    this.authService.login('admin'); 
     if(!this.user_solo_lectura){
       this.ngZone.run(() => {
         this.loading = false;      
@@ -228,7 +228,7 @@ handleCredentialResponse = async (response: any) => {
     } 
     if(logg){          
       /* console.log("Registrado") */
-     this.authService.login();  
+     this.authService.login('usuario'); 
        this.ngZone.run(() => {
         this.loading = false;
         this.router.navigate(['/principal']);
@@ -361,7 +361,7 @@ const responseUser:any = (await this._SupabaseService.postNewUser(dataUser)).dat
       this.interno.setLogged(true); 
       this.interno.setUser(responseUser[0]);
        /* console.log("DATA PARA SET INTERNO",responseUser[0])  */
-       this.authService.login();
+       this.authService.login('usuario'); 
 
        setTimeout(() => {
          this.loading = true;

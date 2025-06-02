@@ -54,7 +54,7 @@
     
      
     
-      <button type="submit" class="btn btn-primary mt-3"  [disabled]="!selectedPrinter || quantity < 1">Generar QR</button>
+      <button type="submit" class="btn btn-primary mt-3"  >Generar QR</button> <!-- [disabled]="!selectedPrinter || quantity" -->
     </form>
     
 
@@ -88,7 +88,7 @@
       <div class="qr-container row mt-3">
         <div *ngFor="let qr of qrCodes; let i = index" class="col-3">
           <h3>{{ entidadName }}</h3> <!-- Nombre de la entidad -->
-          <qrcode [qrdata]="qr.qr_code" [width]="150" [errorCorrectionLevel]="'L'"></qrcode>
+          <qrcode [qrdata]="'https://fidecards.com/principal?codigo='+qr.qr_code" [width]="150" [errorCorrectionLevel]="'L'"></qrcode>
           <p>Escanea para sumar 1 punto</p>
           <a href="https://fidecards.com" class="url" target="_blank">fidecards.com</a>
         </div>

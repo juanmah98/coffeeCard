@@ -10,6 +10,7 @@ import { ToastComponent } from '../../layout/toast/toast.component';
 import { PopupInfoService } from 'src/app/services/popup-info.service';
 import { Entidades } from 'src/app/interfaces/entdidades';
 import { Router } from '@angular/router';
+import { ToastService } from 'src/app/services/toast.service';
 
 
 
@@ -59,11 +60,20 @@ export class CardSelectionComponent implements OnInit, OnDestroy  {
   entidad!:Entidades;
   totalUsuariosTabla = '0';
   private dataSubscription: Subscription = new Subscription();
-  constructor(private cdr: ChangeDetectorRef, private _SupabaseService:SupabaseService, private _dataInterna: InternoService, public popupService: PopupQrService, public infopopupService: PopupInfoService, private ngZone: NgZone,  private router: Router,) { }
+  constructor(
+    private cdr: ChangeDetectorRef, 
+    private _SupabaseService:SupabaseService, 
+    private _dataInterna: InternoService, 
+    public popupService: PopupQrService, 
+    public infopopupService: PopupInfoService, 
+    private ngZone: NgZone,  
+    private router: Router, 
+    private toastService: ToastService
+  ) { }
 
   async ngOnInit(): Promise<void> {
 
-
+ const yaMostrado = this.toastService.consumeShowToast();
     /* this._SupabaseService.getUserss().subscribe(message => {
       // Actualiza la lista de usuarios cuando se recibe un mensaje
       console.log("REALTIME")
@@ -111,8 +121,13 @@ export class CardSelectionComponent implements OnInit, OnDestroy  {
       
       this.cifrado();
     }, 2000) */
+    if (yaMostrado) {
+    setTimeout(() => {
+      this.showToast();
+    }, 100);
+  }
 
-    this.handleRealTimeUpdate();
+    this.handleRealTimeUpdate(yaMostrado);
   }
 
   async getContador() {
@@ -153,7 +168,7 @@ export class CardSelectionComponent implements OnInit, OnDestroy  {
     }
   }
 
-  handleRealTimeUpdate(){
+  handleRealTimeUpdate(toastMostrado = false){
     /* console.log("ESTAMSO EN REALTIME") */
     this._SupabaseService.getTablaCafesRealtime(this.data_contador.id, this.entidad.tabla_contador).subscribe(async update => {
       const data:any = update;
@@ -166,7 +181,7 @@ export class CardSelectionComponent implements OnInit, OnDestroy  {
         this.data_contador.gratis = data.new.gratis
        await this.getContador();
         this.popupService.actualizarMostrar(false);
-        if(this.data_contador.contador!=0){
+       if (!toastMostrado && this.data_contador.contador !== 0) {
           this.showToast();
         }
 

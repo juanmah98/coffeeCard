@@ -228,7 +228,7 @@ cambiarCamara(index:any): void {
         const responseContador: any = (await this._SupabaseService.updateContador(this.data_cafe.id, this.entidad.tabla_contador, this.data_cafe.contador + 1)).data;
         /* console.log("Contador +1 ", responseContador); */
 
-        if(this.data_cafe.contador+1 === 10){
+        if(this.data_cafe.contador+1 === this.entidad.numero_contador){
           const payload = {
             usuario_id: this.data_cafe.usuario_id,
             contador_id: this.data_cafe.id,

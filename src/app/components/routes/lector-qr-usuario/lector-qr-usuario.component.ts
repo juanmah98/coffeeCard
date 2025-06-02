@@ -7,6 +7,7 @@ import { AuthService } from 'src/app/services/auth.service.service';
 import { InternoService } from 'src/app/services/interno.service';
 import { SupabaseService } from 'src/app/services/supabase.service';
 import { Html5Qrcode, Html5QrcodeCameraScanConfig, CameraDevice } from 'html5-qrcode';
+import { ToastService } from 'src/app/services/toast.service';
 
 @Component({
   selector: 'app-lector-qr-usuario',
@@ -50,7 +51,8 @@ isScannerRunning: boolean = false;
     private router: Router,
     private _InternoServices: InternoService,
     private ngZone: NgZone,
-    private authService: AuthService
+    private authService: AuthService,
+    private toastService: ToastService
   ) { }
 
   ngOnInit(): void {
@@ -141,11 +143,12 @@ stopScanner(): void {
 }
 
   async onScanSuccess(decodedText: string): Promise<void> {
+    const codigo:any = await this.extraerCodigoQR(decodedText)
     if (!this.continueScanning) return;
     this.continueScanning = false;
-
+    /* console.log("codigo: " + codigo) */
     try {
-      const qrCodes = await this._SupabaseService.validateQRCode(decodedText, this.entidad.id, this.dataUser.name);
+      const qrCodes = await this._SupabaseService.validateQRCode(codigo, this.entidad.id, this.dataUser.name);
 
       this.stopScanner();
       if (qrCodes.success) {
@@ -158,6 +161,19 @@ stopScanner(): void {
       console.error('Error al procesar QR:', error);
     }
   }
+
+ async extraerCodigoQR(qrTexto: string): Promise<string | null> {
+  try {
+    const url = new URL(qrTexto);
+    const codigo = url.searchParams.get("codigo");
+    return codigo;
+  } catch {
+    // No es una URL: validar si el texto tiene pinta de ser un código válido
+    const regex = /^[0-9a-fA-F\-]{36}-[a-z0-9]+$/; // UUID + sufijo (ej: wz54bkifsr)
+    return regex.test(qrTexto) ? qrTexto : null;
+  }
+}
+
 
   onScanFailure(error: string): void {
     // Opcional: manejar errores de escaneo
@@ -182,7 +198,7 @@ stopScanner(): void {
         nuevoContador
       );
 
-      if (nuevoContador === 10) {
+      if (nuevoContador === this.entidad.numero_contador) {
         const payload = {
           usuario_id: this.data_contador.usuario_id,
           contador_id: this.data_contador.id,
@@ -198,7 +214,6 @@ stopScanner(): void {
             body: JSON.stringify(payload),
           }
         );
-
         if (response.ok) {
           console.log('Notificación enviada con éxito');
         } else {
@@ -213,6 +228,7 @@ stopScanner(): void {
   }
 
  back(): void {
+  this.toastService.setShowToast(true);
   this.ngZone.run(() => {
     this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
       this.router.navigate(['/cardSelection']);
