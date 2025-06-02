@@ -209,8 +209,8 @@ async ngOnInit(): Promise<void> {
       this.allEmployees = await this._supabaseServices.getEmployees();
       this.schedules = await this._supabaseServices.getSchedules();
       
-      console.log('Empleados (activos e inactivos):', this.allEmployees);
-      console.log('Horarios (todos):', this.schedules); // Verifica que incluya a Diana
+     /*  console.log('Empleados (activos e inactivos):', this.allEmployees);
+      console.log('Horarios (todos):', this.schedules); */ // Verifica que incluya a Diana
     } catch (error) {
       console.error('Error al cargar datos:', error);
     }
@@ -288,7 +288,7 @@ adjustToSpainTimezone(date: Date): Date {
   selectDate(date: string) {
     this.selectedDate = date; // La fecha ya está en formato ISO
     this.selectedDateCalendar = date; // Usar directamente el mismo formato
-    console.log('Fecha seleccionada (ISO):', this.selectedDate);
+   /*  console.log('Fecha seleccionada (ISO):', this.selectedDate); */
     this.cdr.detectChanges();
   }
   
@@ -384,7 +384,7 @@ adjustToSpainTimezone(date: Date): Date {
         await this.saveSchedule(employeeId, date, schedule.entry, value);
       }
   
-      console.log(`Horario actualizado: ${type} para ${employeeId} en ${date}`);
+     /*  console.log(`Horario actualizado: ${type} para ${employeeId} en ${date}`); */
     } catch (error) {
       console.error("Error al manejar el cambio de horario:", error);
     }
@@ -428,9 +428,9 @@ adjustToSpainTimezone(date: Date): Date {
       // Convertir la fecha a formato ISO (YYYY-MM-DD)
       const formattedDate = selectedDate.toISOString().split('T')[0];
   
-      console.log("Fecha seleccionada (ISO):", formattedDate);
+     /*  console.log("Fecha seleccionada (ISO):", formattedDate);
       console.log("Día seleccionado:", day);
-      console.log("Tipo de horario:", type);
+      console.log("Tipo de horario:", type); */
   
       // Obtener el horario actual del día
       const schedule = this.getScheduleForDay(employeeId, formattedDate);
@@ -442,7 +442,7 @@ adjustToSpainTimezone(date: Date): Date {
         await this.saveSchedule(employeeId, formattedDate, schedule.entry, value);
       }
   
-      console.log("Horario actualizado correctamente para:", { employeeId, day, type, value });
+     /*  console.log("Horario actualizado correctamente para:", { employeeId, day, type, value }); */
     } catch (error) {
       console.error("Error al actualizar el horario semanal:", error);
     }
@@ -505,7 +505,7 @@ adjustToSpainTimezone(date: Date): Date {
       if (response.error) {
         console.error('Error al actualizar empleado:', response.error);
       } else {
-        console.log('Empleado actualizado:', employee);
+     /*    console.log('Empleado actualizado:', employee); */
       }
     } catch (error) {
       console.error('Error inesperado al actualizar empleado:', error);
@@ -623,7 +623,7 @@ selectMonth(monthIndex: number) {
 hasEmptyWeek(employeeId: string, week: any): boolean {
   const isEmpty = week.days.every((day: any) => {
     const schedule = day.schedules[employeeId];
-    console.log('Horario de Diana:', schedule); // Verifica esto
+   /*  console.log('Horario de Diana:', schedule); */ // Verifica esto
     return (!schedule || (schedule.entry === '00:00' && schedule.exit === '00:00'));
   });
   return isEmpty;
@@ -631,9 +631,9 @@ hasEmptyWeek(employeeId: string, week: any): boolean {
 
 // Método para obtener empleados con horarios válidos en la semana
 getFilteredEmployees(week: any): Empleados[] {
-  console.log('Todos los empleados:', this.allEmployees);
+ /*  console.log('Todos los empleados:', this.allEmployees); */
   const filteredEmployees = this.allEmployees.filter(employee => !this.hasEmptyWeek(employee.id, week));
-  console.log('Empleados filtrados:', filteredEmployees);
+/*   console.log('Empleados filtrados:', filteredEmployees); */
   return filteredEmployees;
 }
 
