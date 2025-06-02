@@ -3,7 +3,7 @@
   
       <div  class="row row justify-content-start text-start">
         <div class="col-12">
-            <button  class="btn btn m-2" (click)="back()"><img class=" pb-1" src="../../../../assets/imagenes/cards/back2.png" width="18px" alt=""></button>
+            <button  class="btn btn m-2" (click)="back(false)"><img class=" pb-1" src="../../../../assets/imagenes/cards/back2.png" width="18px" alt=""></button>
         </div>
     </div>
   
@@ -20,7 +20,7 @@
           <div  *ngIf="continueScanning==false" class="text-light">                     
             <div *ngIf="entidadDistinta==false" class="pt-2">
            
-            <button type="button" class="btn btn-light " (click)="back()">Volver</button>
+            <button type="button" class="btn btn-light " (click)="back(false)">Volver</button>
             <button type="button" class="btn btn-warning mx-2" (click)="reiniciarEscaneo()">Escanear de nuevo</button>
              
             </div>

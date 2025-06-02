@@ -153,7 +153,7 @@ stopScanner(): void {
       this.stopScanner();
       if (qrCodes.success) {
         await this.sumar();
-        this.back();
+        this.back(true);
       } else {
         this.mensaje = qrCodes.message;
       }
@@ -227,8 +227,10 @@ stopScanner(): void {
     }
   }
 
- back(): void {
-  this.toastService.setShowToast(true);
+ back(toast:boolean): void {
+  if(toast){
+    this.toastService.setShowToast(true);
+  }
   this.ngZone.run(() => {
     this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
       this.router.navigate(['/cardSelection']);
