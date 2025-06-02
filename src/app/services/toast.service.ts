@@ -1,16 +1,29 @@
 import { Injectable } from '@angular/core';
-
-@Injectable({ providedIn: 'root' })
+@Injectable({
+  providedIn: 'root'
+})
 export class ToastService {
-  private _showToast = false;
+  private showToastFlag = false;
+  private toastMessage = '¡QR leído!';
+  private toastType: 'success' | 'error' = 'success';
 
-  setShowToast(show: boolean) {
-    this._showToast = show;
+  setShowToast(show: boolean, message: string = '¡QR leído!', type: 'success' | 'error' = 'success'): void {
+    this.showToastFlag = show;
+    this.toastMessage = message;
+    this.toastType = type;
   }
 
   consumeShowToast(): boolean {
-    const value = this._showToast;
-    this._showToast = false;
-    return value;
+    const result = this.showToastFlag;
+    this.showToastFlag = false;
+    return result;
+  }
+
+  getToastMessage(): string {
+    return this.toastMessage;
+  }
+
+  getToastType(): 'success' | 'error' {
+    return this.toastType;
   }
 }

@@ -107,24 +107,28 @@ export class SumarQrComponent implements OnInit {
 }
 
 async operacion(codigo:string){
+  let toast = true;
   try {
      /*  console.log("Codigo: ",codigo ) */
       const qrCodes = await this._supabaseService.validateQRCode(codigo, this.entidad.id, this.dataUser.name);
       /* console.log("Codigo: ",qrCodes ) */
       if (qrCodes.success && qrCodes.data) {
         await this.sumar();
+        toast = true;
         /*  console.log("Codigo: ",qrCodes ) */
          /*  console.log("Sumado " ) */
       } else {
         this.mensaje = qrCodes.message;
         console.log("mensaje: ",this.mensaje)
+        this.toastService.setShowToast(true, 'Este QR ya fue usado', 'error');
+        toast = false;
       }
     } catch (error) {
       console.error('Error al procesar QR:', error);
     }
    /*  await this.sumar(); */
 
-   this.back()
+    this.back(toast);
 }
 
   getCodigoDesdeURL(): string | null {
@@ -210,8 +214,12 @@ async operacion(codigo:string){
     }}
   }
 
-  back(): void {
-  this.toastService.setShowToast(true);
+ back(toast:boolean): void {
+  if(toast){
+    this.toastService.setShowToast(true, '¡QR leído con éxito!', 'success');
+}else{
+    this.toastService.setShowToast(true, 'Este QR ya fue usado', 'error');
+}
   this.ngZone.run(() => {
     this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
      this.router.navigate(['/cardSelection']);

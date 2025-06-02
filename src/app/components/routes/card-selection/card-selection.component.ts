@@ -121,9 +121,11 @@ export class CardSelectionComponent implements OnInit, OnDestroy  {
       
       this.cifrado();
     }, 2000) */
-    if (yaMostrado) {
+     if (yaMostrado) {
     setTimeout(() => {
-      this.showToast();
+      const msg = this.toastService.getToastMessage();
+      const type = this.toastService.getToastType();
+      this.toast.showMessage(msg, type);
     }, 100);
   }
 
@@ -182,16 +184,19 @@ export class CardSelectionComponent implements OnInit, OnDestroy  {
        await this.getContador();
         this.popupService.actualizarMostrar(false);
        if (!toastMostrado && this.data_contador.contador !== 0) {
-          this.showToast();
+         this.toastService.setShowToast(true, '¡QR leído con éxito!', 'success');
+         this.showToast();
         }
 
       }
     })
   }
 
-  showToast(): void {
-    this.toast.showMessage('¡QR leido!');
-  }
+ showToast(): void {
+  const msg = this.toastService.getToastMessage();
+  const type = this.toastService.getToastType();
+  this.toast.showMessage(msg, type);
+}
 
 async actualizarDatos(): Promise<void> {
   try {

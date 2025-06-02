@@ -229,8 +229,10 @@ stopScanner(): void {
 
  back(toast:boolean): void {
   if(toast){
-    this.toastService.setShowToast(true);
-  }
+    this.toastService.setShowToast(true, '¡QR leído con éxito!', 'success');
+}else{
+    this.toastService.setShowToast(true, 'Este QR ya fue usado', 'error');
+}
   this.ngZone.run(() => {
     this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
       this.router.navigate(['/cardSelection']);
