@@ -107,6 +107,9 @@ export class SumarQrComponent implements OnInit {
 }
 
 async operacion(codigo:string){
+  if(this.dataUser.id){
+
+
   let toast = true;
   try {
      /*  console.log("Codigo: ",codigo ) */
@@ -129,6 +132,14 @@ async operacion(codigo:string){
    /*  await this.sumar(); */
 
     this.back(toast);
+    }else {
+        console.log("no existe usuario")
+        this.ngZone.run(() => {
+      this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
+      this.router.navigate(['/home']);
+      });
+    });
+    }
 }
 
   getCodigoDesdeURL(): string | null {
