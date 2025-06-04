@@ -186,7 +186,7 @@ export class GeneradorQrsComponent implements OnInit {
         console.log("datos: "+textData)
   
         // Generar la imagen QR en base64
-        const imageBase64 = await this.generateQRCodeImage(qr.qr_code);
+        const imageBase64 = await this.generateQRCodeImage('https://fidecards.com/sumar-qr?codigo='+qr.qr_code);
   
         // Enviar la imagen
         const imageData = [
@@ -233,7 +233,7 @@ export class GeneradorQrsComponent implements OnInit {
                       `y escanea para sumar 1 punto\n\n\n`
             });
 
-            const imageBase64 = await this.generateQRCodeImage(qr.qr_code);
+            const imageBase64 = await this.generateQRCodeImage('https://fidecards.com/sumar-qr?codigo='+qr.qr_code);
             printData.push({
                 type: 'image',
                 format: 'base64',
@@ -308,7 +308,7 @@ export class GeneradorQrsComponent implements OnInit {
         });
   
         // Generar y agregar QR
-        const imageBase64 = await this.generateQRCodeImage(qr.qr_code);
+        const imageBase64 = await this.generateQRCodeImage('https://fidecards.com/sumar-qr?codigo='+qr.qr_code);
         printData.push({
           type: 'image',
           format: 'base64',
