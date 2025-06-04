@@ -116,7 +116,7 @@ body {
   }
 
   /* Filtros Rubros */
-.btn-dark {
+/* .btn-dark {
   background: rgba(34, 34, 34, 0.8);
   border: 1px solid rgba(255, 255, 255, 0.1);
   transition: all 0.3s ease;
@@ -126,7 +126,7 @@ body {
   background: rgba(255, 255, 255, 0.2);
   transform: scale(2.5);
   box-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
-}
+} */
 
 .rounded-circle {
   width: 50px;
