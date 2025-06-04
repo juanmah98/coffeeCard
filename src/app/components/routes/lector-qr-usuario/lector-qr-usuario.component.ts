@@ -240,6 +240,14 @@ stopScanner(): void {
   });
 }
 
+backButton(): void {
+  this.ngZone.run(() => {
+    this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
+      this.router.navigate(['/cardSelection']);
+    });
+  });
+}
+
   clearStorage(): void {
     const coockies = this._InternoServices.getCoockes();
     localStorage.clear();
