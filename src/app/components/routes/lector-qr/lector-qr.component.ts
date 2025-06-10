@@ -35,7 +35,8 @@ export class LectorQrComponent implements OnInit, OnDestroy {
   entidadDistinta = false;
   admin = true;
   lectorOnly = false;
-  
+  isScanning: boolean = false;
+
   html5QrcodeScanner!: Html5QrcodeScanner;
   cameras: CameraDevice[] = [];
 currentCameraIndex: number = 0;
@@ -114,7 +115,9 @@ iniciarConCamaraActual(): void {
       config,
       this.onScanSuccess.bind(this),
       this.onScanFailure.bind(this)
-    )
+    ).then(() => {
+    this.isScanning = true;
+  })
     .catch(err => {
       console.error("Error al iniciar cámara:", err);
     });
@@ -148,13 +151,21 @@ cambiarCamara(index:any): void {
 
 
 
- stopScanner(): void {
-  if (this.html5QrCode) {
-    this.html5QrCode.stop()
-      .then(() => this.html5QrCode.clear())
-      .catch(err => console.error('Error al detener el escáner:', err));
+async stopScanner(): Promise<void> {
+  if (this.html5QrCode && this.isScanning) {
+    try {
+      await this.html5QrCode.stop();
+      await this.html5QrCode.clear();
+      this.isScanning = false;
+      console.log("Escáner detenido correctamente");
+    } catch (err) {
+      console.warn('Error al detener el escáner:', err);
+    }
+  } else {
+    console.log("Escáner no estaba activo, no se detuvo");
   }
-  }
+}
+
 
   async onScanSuccess(decodedText: string): Promise<void> {
     if (!this.continueScanning) return;
@@ -259,11 +270,14 @@ cambiarCamara(index:any): void {
     this.continueScanning = true;
   }
 
-  menu() {
-    this.ngZone.run(() => {
-      this.router.navigate(['/menu-admin']);
-    });
-  }
+async menu() {
+  await this.stopScanner();
+  this.ngZone.run(() => {
+    this.router.navigate(['/menu-admin']);
+  });
+}
+
+
 
   back(): void {
     console.log("back: ")

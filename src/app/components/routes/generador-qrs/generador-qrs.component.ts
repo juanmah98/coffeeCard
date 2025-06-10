@@ -317,12 +317,16 @@ export class GeneradorQrsComponent implements OnInit {
         });
   
         // Espaciado adicional (opcional)
-        printData.push({
+              printData.push({
           type: 'raw',
           format: 'plain',
-          data: new Uint8Array([0x0A, 0x0A]) // 2 saltos de línea
+          data: new Uint8Array([
+            0x1B, 0x64, 0x05,     // Avanza papel
+            0x1D, 0x56, 0x00,     // Corte total
+            0x1D, 0x56, 0x41, 0x00 // Alternativo
+          ])
         });
-      }
+              }
   
       // ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
       // CORTE ESPECÍFICO PARA GLOBAL TP-POS80-USB
