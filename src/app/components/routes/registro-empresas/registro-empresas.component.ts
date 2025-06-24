@@ -51,7 +51,7 @@ export class RegistroEmpresasComponent implements OnInit {
   }
 
   onSubmit() {
-    console.log("estamos aqui")
+    /* console.log("estamos aqui") */
     if (this.companyForm.valid) {
       this.registerCompany();
     }
@@ -71,9 +71,9 @@ export class RegistroEmpresasComponent implements OnInit {
       rubro: this.companyForm.value.categoria.toLowerCase(), 
       logo: ''
     }; 
-   console.log(entidad)
+   /* console.log(entidad) */
    await this.uploadLogo( this.companyForm.value.logo,  this.companyForm.value.nombre)
-   console.log("antes de logo")
+  /*  console.log("antes de logo") */
    const logoUrl: any = await this._supaServices.getPublicImageUrl(this.companyForm.value.nombre)
   entidad.logo = logoUrl;
       const responseUser:any = (await this._supaServices.postNewEntity(entidad)).data;
@@ -86,7 +86,7 @@ export class RegistroEmpresasComponent implements OnInit {
   }
 
   async uploadLogo(file: File, nombre: string) {
-    console.log("en logos")
+    /* console.log("en logos") */
     
       try {
         const response = await this._supaServices.uploadImage(file, "logos_fidelity", nombre);  // Aquí subimos el archivo real
@@ -144,7 +144,7 @@ export class RegistroEmpresasComponent implements OnInit {
 
        if(responseSupabase == 'Entidad no registrada' || responseSupabase == null){
         this.statusChange('1');
-        console.log(responseSupabase)
+       /*  console.log(responseSupabase) */
        }else{
         this.statusChange('9');
        }
