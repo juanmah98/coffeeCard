@@ -18,26 +18,31 @@ import { PanelMasterComponent } from './components/routes/panel-master/panel-mas
 import { ActivateComponent } from './components/routes/activate/activate.component';
 import { GeneradorQrsComponent } from './components/routes/generador-qrs/generador-qrs.component';
 import { LectorQrUsuarioComponent } from './components/routes/lector-qr-usuario/lector-qr-usuario.component';
+import { ChartComponent } from './components/shared/chart/chart.component';
+import { SumarQrComponent } from './components/routes/sumar-qr/sumar-qr.component';
+import { AdminGuard } from './admin.guard';
 
 const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' }, // Redirigir a '/home' en la ruta raíz
   { path: 'home', component: HomeComponent },
   { path: 'view', component: SplineViewerComponent },
   { path: 'principal', component: PrincipalComponent, canActivate: [AuthGuard] },
-  { path: 'qrscan', component: LectorQrComponent, canActivate: [AuthGuard]},
+  { path: 'qrscan', component: LectorQrComponent, canActivate: [AdminGuard]},
   { path: 'cardSelection', component: CardSelectionComponent, canActivate: [AuthGuard] },
   { path: 'menu', component: MenuComponent },
-  { path: 'menu-admin', component: MenuAdminComponent, canActivate: [AuthGuard] },
-  { path: 'admin', component: EntidadAdminComponent, canActivate: [AuthGuard]  },
+  { path: 'menu-admin', component: MenuAdminComponent, canActivate: [AdminGuard] },
+  { path: 'admin', component: EntidadAdminComponent, canActivate: [AdminGuard]  },
   { path: 'privacy-policy', component: PrivacyPolicyComponent },
   { path: 'cookies-policy', component: CookiesPolicyComponent },
   { path: 'landing', component: LandingComponent },
-  { path: 'master', component: PanelMasterComponent, canActivate: [AuthGuard]  },
+  { path: 'master', component: PanelMasterComponent, canActivate: [AdminGuard]  },
   { path: 'pagos', component: EmployeeSalaryComponent },
   { path: 'registro', component: RegistroEmpresasComponent },
   { path: 'activate', component: ActivateComponent },
-  { path: 'qrsgenerate', component: GeneradorQrsComponent, canActivate: [AuthGuard] },
+  { path: 'qrsgenerate', component: GeneradorQrsComponent, canActivate: [AdminGuard] },
   { path: 'qrscanuser', component: LectorQrUsuarioComponent, canActivate: [AuthGuard] },
+  { path: 'chart', component: ChartComponent },
+  { path: 'sumar-qr', component: SumarQrComponent}
 ];
 
 @NgModule({

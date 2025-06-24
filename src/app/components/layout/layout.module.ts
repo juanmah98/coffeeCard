@@ -10,6 +10,8 @@ import { FooterComponent } from './footer/footer.component';
 import { BannerPolicyComponent } from './banner-policy/banner-policy.component';
 import { PopupScanerqrComponent } from './popup-scanerqr/popup-scanerqr.component';
 import { HeaderComponent } from './header/header.component';
+import { PopupVComponent } from './popup-v/popup-v.component';
+import { PopupQrsMasterComponent } from './popup-qrs-master/popup-qrs-master.component';
 
 
 
@@ -23,7 +25,9 @@ import { HeaderComponent } from './header/header.component';
     FooterComponent,
     BannerPolicyComponent,
     PopupScanerqrComponent,
-    HeaderComponent
+    HeaderComponent,
+    PopupVComponent,
+    PopupQrsMasterComponent
   ],
   
   exports: [
@@ -33,7 +37,8 @@ import { HeaderComponent } from './header/header.component';
     BannerPolicyComponent,
     FooterComponent,
     PopupScanerqrComponent,
-    HeaderComponent
+    HeaderComponent,
+    PopupQrsMasterComponent
   ],
   
   imports: [

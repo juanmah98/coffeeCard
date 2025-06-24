@@ -3,25 +3,24 @@
   
       <div  class="row row justify-content-start text-start">
         <div class="col-12">
-            <button  class="btn btn m-2" (click)="back()"><img class=" pb-1" src="../../../../assets/imagenes/cards/back2.png" width="18px" alt=""></button>
+            <button  class="btn btn m-2" (click)="backButton()"><img class=" pb-1" src="../../../../assets/imagenes/cards/back2.png" width="18px" alt=""></button>
         </div>
     </div>
   
   
       <div class="row justify-content-center pb-3">
-        <div class="col-12 pb-2 pt-0 text-light ">
-          <div class="">
-            <video class="video" #video autoplay playsinline></video>
-            <canvas #canvas style="display: none;"></canvas>
-            <h3 *ngIf="continueScanning==true" class="text-light">ESCANEANDO QR</h3>
-            <h3 *ngIf="continueScanning==false" class="text-light mt-2">{{mensaje}}</h3>
-          </div> 
-        </div>
+        <div class="col-12 col-sm-6 pb-2 pt-0 text-light ">
+  <div class="">
+    <div id="reader" style="width: 100%;"></div>
+    <h3 *ngIf="continueScanning" class="text-light">ESCANEANDO QR</h3>
+    <h3 *ngIf="!continueScanning" class="text-light mt-2">{{mensaje}}</h3>
+  </div>
+</div>
         <div class="col-12 pb-4 justify-content-center align-items-center">
           <div  *ngIf="continueScanning==false" class="text-light">                     
             <div *ngIf="entidadDistinta==false" class="pt-2">
            
-            <button type="button" class="btn btn-light " (click)="back()">Volver</button>
+            <button type="button" class="btn btn-light " (click)="backButton()">Volver</button>
             <button type="button" class="btn btn-warning mx-2" (click)="reiniciarEscaneo()">Escanear de nuevo</button>
              
             </div>

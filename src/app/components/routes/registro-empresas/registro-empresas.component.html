@@ -4,12 +4,12 @@
       <h2 class="pt-5 text-light text-center" style="font-family: 'OpenSans';">Registro de empresas</h2>
     </div>
 
-    <div class="col-12 col-md-6 pt-2">
+    <div class="col-11 col-sm-8 col-md-7 col-lg-6 pt-2">
       <form [formGroup]="companyForm" (ngSubmit)="onSubmit()" class="text-light">
 
         <div [ngSwitch]="status">
 
-          <div *ngSwitchCase="'1'" class="text-start">
+          <div *ngSwitchCase="'100'" class="text-start">
 
             <div class="form-group pt-1">
               <label for="nombre">Nombre de la empresa</label>
@@ -78,9 +78,11 @@
                 required
               >
                 <option value="" disabled selected>Seleccione una categoría</option>
-                <option value="restaurant">Restaurante</option>
-                <option value="shop">Tienda</option>
-                <option value="shop">Otro</option>
+                <option value="restaurante">Restaurante</option>
+                <option value="shCafeteriaop">Cafeteria</option>
+                <option value="peluqueria">Peluqueria / Barberia</option>
+                <option value="esteticista">Esteticista / Belleza</option>
+                <option value="lavadero">Lavadero / CarWash</option>
                 <!-- Agrega más categorías según sea necesario -->
               </select>
             </div>
@@ -97,25 +99,249 @@
 
           </div>
 
-          <div *ngSwitchCase="'2'" class="text-start">
+          <div *ngSwitchCase="'0'" class="fade-in text-start row justify-content-center">
+            <div class="col-12 col-md-7 loginContainer d-flex flex-column justify-content-between">
+          
+              <div class="form-group pt-1 text-center">
+                <h3>Bienvenido</h3>
+              </div>
+
+              <!-- Input al centro -->
+              <div class="form-group pt-1 text-center">
+                <p>Registra tu empresa y empieza a disfrutar de Fidelity</p>
+              </div>
+          
+              <!-- Botones abajo -->
+              <div class="pt-1 d-flex justify-content-center">
+                <button id="buttonDiv" class="googleButton text-center">Iniciar</button>    
+                <!-- <button type="submit" class="btn btn-warning" (click)="statusChange('1')">Comenzar</button>  -->
+              </div>
+          
+            </div>
+          </div>
+
+          <div *ngSwitchCase="'1'" class="fade-in text-start row justify-content-center">
+            <div class="col-12 col-md-7 loginContainer d-flex flex-column justify-content-between">
+          
+              <!-- Número arriba -->
+              <div class="mb-3">
+                <div class="progress" style="height: 1rem;">
+                  <div 
+                    class="progress-bar bg-warning" 
+                    role="progressbar" 
+                    [style.width.%]="(currentStep / 5) * 100" 
+                    aria-valuemin="0" 
+                    aria-valuemax="100">
+                  </div>
+                </div>
+              </div>
+          
+              <!-- Input al centro -->
+              <div class="form-group pt-1">
+                <label for="nombre">Nombre de la empresa</label>
+                <input
+                  type="text"
+                  id="nombre"
+                  class="form-control"
+                  formControlName="nombre"
+                  required
+                />
+              </div>
+          
+              <!-- Botones abajo -->
+              <div class="pt-5 d-flex justify-content-end">
+
+                <button type="submit" class="btn btn-warning" (click)="statusChange('2')">Siguiente</button> 
+              </div>
+          
+            </div>
+          </div>
+          
+          <div *ngSwitchCase="'2'" class="fade-in text-start row justify-content-center">
+            <div class="col-12 col-md-7 loginContainer d-flex flex-column justify-content-between">
+          
+              <!-- Número arriba -->
+              <div class="mb-3">
+                <div class="progress" style="height: 1rem;">
+                  <div 
+                    class="progress-bar bg-warning" 
+                    role="progressbar" 
+                    [style.width.%]="(currentStep / 5) * 100" 
+                    aria-valuemin="0" 
+                    aria-valuemax="100">
+                  </div>
+                </div>
+              </div>
+          
+              <!-- Input al centro -->
+              <div class="form-group pt-1">
+                <label for="pais">Seleccióne su país</label>
+                <select
+                  id="pais"
+                  class="form-control"
+                  formControlName="pais"
+                  required
+                >
+                  <option value="" disabled selected>Seleccione un país</option>
+                  <option value="Argentina">Argentina</option>
+                  <option value="España">España</option>
+                  <!-- Agrega más países según sea necesario -->
+                </select>
+              </div>
+
+              <!-- Botones abajo -->
+              <div class="pt-5 d-flex justify-content-between">
+                <button type="submit" class="btn btn-outline-warning" (click)="statusChange('1')">Atrás</button>
+                <button type="submit" class="btn btn-warning" (click)="statusChange('3')">Siguiente</button>
+              </div>
+          
+            </div>
+          </div>
+
+          <div *ngSwitchCase="'3'" class="fade-in text-start row justify-content-center">
+            <div class="col-12 col-md-7 loginContainer d-flex flex-column justify-content-between">
+          
+              <!-- Número arriba -->
+              <div class="mb-3">
+                <div class="progress" style="height: 1rem;">
+                  <div 
+                    class="progress-bar bg-warning" 
+                    role="progressbar" 
+                    [style.width.%]="(currentStep / 5) * 100" 
+                    aria-valuemin="0" 
+                    aria-valuemax="100">
+                  </div>
+                </div>
+              </div>
+          
+              <!-- Input al centro -->
+              <div class="form-group pt-1">
+                <label for="direccion">Dirección de empresa</label>
+                <input
+                  type="text"
+                  id="direccion"
+                  class="form-control"
+                  formControlName="direccion"
+                  required
+                />
+              </div>
+
+              <!-- Botones abajo -->
+              <div class="pt-5 d-flex justify-content-between">
+                <button type="submit" class="btn btn-outline-warning" (click)="statusChange('2')">Atrás</button>
+                <button type="submit" class="btn btn-warning" (click)="statusChange('4')">Siguiente</button>
+              </div>
+          
+            </div>
+          </div>
+
+          <div *ngSwitchCase="'4'" class="fade-in text-start row justify-content-center">
+            <div class="col-12 col-md-7 loginContainer d-flex flex-column justify-content-between">
+          
+              <!-- Número arriba -->
+              <div class="mb-3">
+                <div class="progress" style="height: 1rem;">
+                  <div 
+                    class="progress-bar bg-warning" 
+                    role="progressbar" 
+                    [style.width.%]="(currentStep / 5) * 100" 
+                    aria-valuemin="0" 
+                    aria-valuemax="100">
+                  </div>
+                </div>
+              </div>
+          
+              <!-- Input al centro -->
+              <div class="form-group pt-1">
+                <label for="categoria">Categoría</label>
+                <select
+                  id="categoria"
+                  class="form-control"
+                  formControlName="categoria"
+                  required
+                >
+                  <option value="" disabled selected>Seleccione una categoría</option>
+                  <option value="restaurante">Restaurante</option>
+                  <option value="shCafeteriaop">Cafeteria</option>
+                  <option value="peluqueria">Peluqueria / Barberia</option>
+                  <option value="esteticista">Esteticista / Belleza</option>
+                  <option value="lavadero">Lavadero / CarWash</option>
+                  <!-- Agrega más categorías según sea necesario -->
+                </select>
+              </div>
+
+              <!-- Botones abajo -->
+              <div class="pt-5 d-flex justify-content-between">
+                <button type="submit" class="btn btn-outline-warning" (click)="statusChange('3')">Atrás</button>
+                <button type="submit" class="btn btn-warning" (click)="statusChange('5')">Siguiente</button>
+              </div>
+          
+            </div>
+          </div>
+
+          <div *ngSwitchCase="'5'" class="fade-in text-start row justify-content-center">
+            <div class="col-12 col-md-7 loginContainer d-flex flex-column justify-content-between">
+          
+              <!-- Número arriba -->
+              <div class="mb-3">
+                <div class="progress" style="height: 1rem;">
+                  <div 
+                    class="progress-bar bg-warning" 
+                    role="progressbar" 
+                    [style.width.%]="(currentStep / 5) * 100" 
+                    aria-valuemin="0" 
+                    aria-valuemax="100">
+                  </div>
+                </div>
+              </div>
+          
+              <!-- Input al centro -->
+              <div class="form-group pt-1">
+                <label for="logo">Logo (opcional)</label>
+                <input type="file" id="logo" class="form-control" (change)="onLogoSelected($event)" />
+              </div> 
+
+              <!-- Botones abajo -->
+              <div class="pt-5 d-flex justify-content-between">
+                <button type="submit" class="btn btn-outline-warning" (click)="statusChange('4')">Atrás</button>
+                <button type="submit" class="btn btn-warning" [disabled]="companyForm.invalid"  (click)="onSubmit()">Finalizar</button>
+                
+              </div>
+          
+            </div>
+          </div>
+
+          <div *ngSwitchCase="'7'" class="fade-in text-start row justify-content-center">
+            <div class="col-12 col-md-7 loginContainer d-flex flex-column justify-content-between">
+          
+              <!-- Mensaje central -->
+              <div class="text-center pt-3">
+                <h4>Registro completado</h4>
+                <p class="mt-3">
+                  Tu cuenta ha sido creada correctamente.
+                </p>
+                <p class="" style="font-size: 0.9rem;">
+                  Para activarla, revisa tu correo electrónico y sigue el enlace de confirmación.
+                </p>
+              </div>
+          
+              <!-- Botón al inicio -->
+              <div class="pt-4 d-flex justify-content-center">
+                <a class="btn btn-warning" (click)="redirect()">Ir al inicio</a>
+              </div>
+          
+            </div>
+          </div>
+          
+
+          <div *ngSwitchCase="'8'" class="text-start">
 
             <div class="text-start pt-5">
               <h4>Datos para la tarjeta</h4>
             </div>
 
             <div class="form-group pt-1">
-              <label for="nombre">Titulo</label>
-              <input
-                type="text"
-                id="titulo"
-                class="form-control"
-                formControlName="titulo"
-                required
-              />
-            </div>
-    
-            <div class="form-group pt-1">
-              <label for="descripcion">Premio a regalar</label>
+              <label for="descripcion">Premio a regalar (opcional)</label>
               <textarea
                 id="informacion"
                 class="form-control"
@@ -127,6 +353,28 @@
             <div class="text-center pt-3">
               <button type="submit" class="btn btn-outline-warning mx-2" (click)="statusChange('1')">Atras</button>
               <button type="submit" class="btn btn-warning" [disabled]="companyForm.invalid">Registrarse</button>
+            </div>
+
+            
+          </div>
+
+          <div *ngSwitchCase="'9'" class="fade-in text-start row justify-content-center">
+            <div class="col-12 col-md-7 loginContainer d-flex flex-column justify-content-between">
+          
+              <div class="form-group pt-1 text-center">
+                <h4>Entidad ya registrada</h4>
+              </div>
+
+              <!-- Input al centro -->
+              <div class="form-group pt-1 text-center">
+                <p>Al parecer ya se encuentra registrada una entidad <br> con esta cuenta de google</p>
+              </div>
+          
+              <!-- Botones abajo -->
+              <div class="text-center pt-3">
+                <button type="submit" class="btn btn-outline-warning mx-2" (click)="statusChange('0')" (click)="ngOnInit()">Atras</button>            
+              </div>
+          
             </div>
 
             

@@ -1,8 +1,9 @@
+<app-popup-qrs-master *ngIf="popupService.mostrar"></app-popup-qrs-master>
 <body class="container-fluid pt-5">
   <div class="col-12">
     <button  class="btn btn m-2" (click)="back()"><img class=" pb-1" src="../../../../assets/imagenes/cards/back2.png" width="18px" alt=""></button>
 </div>
-  <div class="container text-center ">
+  <div *ngIf="loading" class="container text-center ">
     <!-- Header Section -->
     <div class="d-flex justify-content-center align-items-center mb-4">
       <!-- Aquí puedes colocar un icono -->
@@ -42,19 +43,77 @@
           <p class="fw-bold">QR GENERADOS</p>
         </div>
       </div>
+
+      <div class="col-10 col-sm-4" >
+        <div class="bg-secondary p-3 m-1 rounded">
+          <h2>{{totalQrsUsados}}</h2>
+          <p class="fw-bold">QR USADOS</p>
+          </div>
+      </div>
+
+      <div class="col-10 col-sm-4" >
+        <div class="bg-secondary p-3 m-1 rounded">
+          <h2>{{usadosHoy.length}}</h2>
+          <p class="fw-bold">QR USADOS HOY</p>
+          <!-- <p class="fs-6 fw-bold ">{{hoy | date: 'mediumDate':'':'es'}}</p> -->
+          <button class="btn btn" (click)="onInfoTouch(usadosHoy)"><img src="../../../../assets/imagenes/master/ojo-black.png" width="22px" alt=""></button>
+         
+        </div>
+      </div>
       
     </div>
   
     <!-- Top 5 Section -->
-    <div class="row justify-content-center">
+    <div class="row justify-content-center mb-3">
       <div class="col-10 col-sm-6 bg-light p-4 rounded text-black">
-      <h3 class="mb-4">TOP <span class="text-green">ENTIDADES</span></h3>
-      <ul class="list-unstyled text-start" *ngFor="let entidad of usuariosAdmin, let i = index">
-        <li>{{i+1}} - {{entidad.nombre}} <img src="../../../../assets/imagenes/landing/usuarios.png" width="20px" alt=""><span class="fw-bold text-green">{{entidad.usuarios}}</span><span class="fw-bold text-green"> - </span><img src="../../../../assets/imagenes/landing/regalo.png" class="" width="20px" alt=""><span class="fw-bold text-green">{{entidad.regalo}}</span></li>
+      <h3 class="mb-4">TOP 5 <span class="text-green">ENTIDADES</span></h3>
+      <ul class="list-unstyled text-start" *ngFor="let entidad of usuariosAdmin.slice(0, 5), let i = index">
+        <li>
+          {{i+1}} - {{entidad.nombre}} 
+          <img src="../../../../assets/imagenes/landing/usuarios.png" width="20px" alt=""><span class="fw-bold text-green">{{entidad.usuarios}}</span>
+          <span class="fw-bold text-green"> - </span>
+          <img src="../../../../assets/imagenes/landing/regalo.png" class="" width="20px" alt=""><span class="fw-bold text-green">{{entidad.regalo}}</span>
+          <span class="fw-bold text-green"> - </span>
+          <img src="../../../../assets/imagenes/cards/tickets-qr.png" class="" width="22px" alt=""><span class="fw-bold text-green">{{qrsUsadosEntidad(entidad.idEntidad)}}</span>
+        </li>
        
       </ul>
     </div>
   </div>
+
+   <!-- Top 5 Section -->
+   <div class="row justify-content-center mb-3">
+    <div class="col-10 col-sm-6 bg-light p-4 rounded text-black">
+    <h3 class="mb-4">TOP 5 <span class="text-green">USUARIOS</span></h3>
+    <ul class="list-unstyled text-start" *ngFor="let usuarios of usuariosTop.slice(0, 5), let i = index ">
+      <li>
+        {{i+1}} - {{usuarios.nombre}} 
+        <img src="../../../../assets/imagenes/master/tarjeta-de-regalo-slim.png" width="24px" alt=""><span class="fw-bold text-green"> {{usuarios.regalos}}</span>
+        <!-- <span class="fw-bold text-green"> - </span> -->
+        <!-- <span class="fw-bold text-green">{{usuarios.entidad}}</span> -->
+      </li>
+     
+    </ul>
   </div>
+</div>
+
+  <div class="row justify-content-center">
+    <div class="pt-2 col-6">
+      <button class="btn btn-danger" (click)="borrarQrs()">Borrar qrs sin uso</button>
+      <div *ngIf="deleteResult" class="mt-2 alert alert-info">
+        {{ deleteResult }}
+      </div>
+    </div>
+  </div>
+
+  </div>
+  <div *ngIf="!loading" class="row loading">
+  <div   class="col-12 pb-2  d-flex justify-content-center align-items-center">
+  <div  class="text-center justify-content-center">
+    <img class="mb-2" src="../../../../assets/imagenes/logos/GIFT02.gif" width="40%" alt="">
+     <span class="mt-2"><p class="text-center text-light fs-5 custom-shadow" style="font-family: Fidelity-r;">CARGANDO DATOS</p> </span>
+</div>
+</div>
+</div>
   
 </body>

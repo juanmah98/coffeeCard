@@ -15,7 +15,12 @@ export interface Entidades {
     informacion: string;
     direccion: string;
     logo: string;
-    text_card: string;
+    numero_contador: number;
+    qr_digital: boolean;
+    qr_papel: boolean;
+    rubro: string,
+    ciudad: string;
+    first_card_count : number
 }
 
 // Converts JSON strings to/from your types

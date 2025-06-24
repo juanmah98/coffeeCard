@@ -4,6 +4,9 @@ import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { createClient, Session, SupabaseClient } from '@supabase/supabase-js';
 import { CafeData } from '../interfaces/cafes_data';
+import { Horarios } from '../interfaces/horarios';
+import { Empleados } from '../interfaces/empleados';
+import { UsuarioChart } from '../interfaces/usuarios-chart';
 
 export const USERS_TABLE = "usuarios";
 export const CONTADOR_TABLE_CAFE = "contador_cafe";
@@ -13,6 +16,10 @@ export const CONTADOR_TABLE_SPACE = "contador_space";
   providedIn: 'root'
 })
 export class SupabaseService {
+  from //rwttebejxwncpurszzld.supabase.co/rest/v1/usuarios';
+    <T>(arg0: string) {
+      throw new Error('Method not implemented.');
+  }
 
   private apiUrlUsers = 'https://rwttebejxwncpurszzld.supabase.co/rest/v1/usuarios';
   private apiUrlCafes = 'https://rwttebejxwncpurszzld.supabase.co/rest/v1/contador_cafe';
@@ -85,7 +92,50 @@ export class SupabaseService {
       .from(tabla)
       .select('*')
   }
+
+  async getAllQrs(): Promise<any[]> {
+    let allData: any[] = [];
+    let from = 0;
+    let to = 999; // PostgreSQL devuelve filas indexadas desde 0
+    let hasMore = true;
   
+    while (hasMore) {
+      const { data, error } = await this.supabase
+        .from('qrs')
+        .select('*')
+        .range(from, to); // Obtiene 1000 filas por solicitud
+  
+      if (error) {
+        console.error('Error obteniendo QRs:', error);
+        throw error;
+      }
+  
+      if (data && data.length > 0) {
+        allData = [...allData, ...data]; // Agrega datos al array
+        from += 1000;
+        to += 1000;
+      } else {
+        hasMore = false; // Si no hay más datos, detenemos el bucle
+      }
+    }
+  
+    return allData;
+  }
+  
+  async getUsuarioName(usuarioId: string): Promise<string> {
+    const { data, error } = await this.supabase
+      .from('usuarios') // Reemplaza con tu tabla
+      .select('name')  // Asegúrate de que 'name' sea el campo correcto
+      .eq('id', usuarioId)
+      .single();
+  
+    if (error) {
+      console.error('Error al obtener nombre de la entidad:', error);
+      throw error;
+    }
+  
+    return data?.name || 'Usuario desconocido';  // Si no se encuentra nombre, retornar uno por defecto
+  }
 
   async getUsuariosId(id: string) {
     return await this.supabase
@@ -180,11 +230,13 @@ export class SupabaseService {
     return this.http.post(this.apiUrlCafes, data, { headers });
   }
 
-  getDataCard(id_card: string, tabla: string): Observable<any> {
-    const headers = this.getHeaders();
-    const api = `${this.apiUrl}/${tabla}`;
-    const queryParams = new HttpParams().set('id', `eq.${id_card}`);
-    return this.http.get(api, { headers, params: queryParams });
+  async getDataCard(id_card: string, tabla: string): Promise<{ data: any[] | null; error: any }> {
+    const { data, error } = await this.supabase
+      .from(tabla)
+      .select('*') // Puedes especificar columnas específicas si es necesario
+      .eq('id', id_card);
+
+    return { data, error };
   }
 
   postOpcion(someValue: string, otherValue: number): Observable<any> {
@@ -303,10 +355,34 @@ export class SupabaseService {
       .select();
   }
 
-  async updateInformacion(id: string, informacion: string, text_card: string) {
+  async updateInformacion(id: string, informacion: string) {
     return await this.supabase
       .from('entidades')
-      .update({ informacion: informacion, text_card: text_card},)
+      .update({ informacion: informacion},)
+      .eq('id', id)
+      .select();
+  }
+
+  async updateContadorNumero(id: string, numero_contador: number) {
+    return await this.supabase
+      .from('entidades')
+      .update({ numero_contador: numero_contador},)
+      .eq('id', id)
+      .select();
+  }
+
+  async updateFirstCardCount(id: string, first_card_count: number) {
+    return await this.supabase
+      .from('entidades')
+      .update({ first_card_count: first_card_count},)
+      .eq('id', id)
+      .select();
+  }
+
+  async updateQr_papel(id: string, qr_papel: boolean) {
+    return await this.supabase
+      .from('entidades')
+      .update({ qr_papel: qr_papel })
       .eq('id', id)
       .select();
   }
@@ -332,6 +408,13 @@ export class SupabaseService {
       .from("usuarios_admin")
       .insert(data)
       .select();
+  }
+
+  async deletedAdmin(id: any) {
+    return await this.supabase
+      .from("usuarios_admin")
+      .delete()
+      .eq('id', id)
   }
 
 
@@ -417,18 +500,19 @@ async generateQRCodes(entidadId: string, quantity: number): Promise<any[]> {
 
 
   // Validar un QR al ser escaneado
-  async validateQRCode(qrCode: string, userId: string, usuario:string): Promise<any> {
+  async validateQRCode(qrCode: string, entidad_id: string, usuario:string): Promise<any> {
     try {
       // Verificar si el QR existe
       const { data: qrData, error: qrError } = await this.supabase
         .from('qrs')
         .select('*')
-        .eq('qr_code', qrCode)
+        .match({ qr_code: qrCode, entidad_id: entidad_id })
+        /* .eq('qr_code', qrCode) */
         .single(); // Obtén un único registro
   
       if (qrError) {
         console.error('Error buscando el QR:', qrError);
-        return { success: false, message: 'Error al buscar el QR.' };
+        return { success: false, message: 'El QR es inválido' };
       }
   
       if (!qrData) {
@@ -444,7 +528,9 @@ async generateQRCodes(entidadId: string, quantity: number): Promise<any[]> {
       const { data: updateData, error: updateError } = await this.supabase
         .from('qrs')
         .update({ is_used: true, used_at: new Date(), usuario: usuario })
-        .eq('qr_code', qrCode);
+        .eq('qr_code', qrCode)
+        .select()
+        .single(); 
   
       if (updateError) {
         console.error('Error actualizando el QR:', updateError);
@@ -477,7 +563,190 @@ async generateQRCodes(entidadId: string, quantity: number): Promise<any[]> {
   
     return data?.nombre || 'Entidad desconocida';  // Si no se encuentra nombre, retornar uno por defecto
   }
+
+   async getEntidadId(entidadId: string){
+    return await this.supabase
+      .from('entidades')
+      .select('*')
+      .match({ id: entidadId })
+      .single();
+  }
+
+  async getEntidadesEmails(email: string): Promise<string> {
+    const { data, error } = await this.supabase
+      .from('entidades') // Reemplaza con tu tabla
+      .select('email')  // Asegúrate de que 'name' sea el campo correcto
+      .eq('email', email)
+      .maybeSingle()
+  
+    if (error) {
+      console.error('Error al obtener nombre de la entidad:', error);
+      throw error;
+    }
+    
+    return data?.email || 'Entidad no registrada';  // Si no se encuentra nombre, retornar uno por defecto
+  }
+
   
   
+  async getEmpleados() {
+    return await this.supabase
+      .from('empleados')
+      .select('*');
+  }
+
+  async getHoras() {
+    return await this.supabase
+      .from('horarios')
+      .select('*');
+  }
+
+  // Obtener todos los empleados
+  async getEmployees() {
+    const { data, error } = await this.supabase.from('empleados').select('*');
+    if (error) {
+      console.error('Error al obtener empleados:', error);
+    }
+    return data || [];
+  }
+
+  // Obtener todos los horarios
+  async getSchedules(): Promise<Horarios[]> {
+    const { data, error } = await this.supabase
+      .from('horarios')
+      .select('*')
+      // Eliminar cualquier filtro por "activo"
+      .order('date', { ascending: true });
   
+    if (error) throw error;
+    return data as Horarios[];
+  }
+
+  // Guardar o actualizar un horario
+  // Guardar o actualizar un horario
+  async saveSchedule(schedule: any): Promise<{ error: any | null; data: any | null }> {
+    try {
+      // Buscar si ya existe un horario para el empleado y la fecha
+      const { data: existingSchedules, error: fetchError } = await this.supabase
+        .from('horarios')
+        .select('*')
+        .eq('empleado_id', schedule.empleado_id)
+        .eq('date', schedule.date);
+  
+      if (fetchError) {
+        console.error('Error al verificar horarios existentes:', fetchError);
+        return { error: fetchError, data: null };
+      }
+  
+      if (existingSchedules && existingSchedules.length > 0) {
+        // Si existe un registro, verificar si hay diferencias en entry o exit
+        const existingSchedule = existingSchedules[0];
+  
+        const shouldUpdate =
+          existingSchedule.entry !== schedule.entry ||
+          existingSchedule.exit !== schedule.exit;
+  
+        if (shouldUpdate) {
+          // Actualizar si hay diferencias
+          const { error: updateError } = await this.supabase
+            .from('horarios')
+            .update({
+              entry: schedule.entry,
+              exit: schedule.exit,
+            })
+            .eq('id', existingSchedule.id);
+          if (updateError) {
+            console.error('Error al actualizar horario:', updateError);
+            return { error: updateError, data: null };
+          } else {
+            console.log('Horario actualizado:', existingSchedule.id);
+            return { error: null, data: { id: existingSchedule.id, ...schedule } };
+          }
+        } else {
+          console.log('No se realizaron cambios, el horario es el mismo.');
+          return { error: null, data: existingSchedule };
+        }
+      } else {
+        // Si no existe un registro, crear uno nuevo
+        const { data, error: insertError } = await this.supabase.from('horarios').insert(schedule).single();
+        if (insertError) {
+          console.error('Error al insertar nuevo horario:', insertError);
+          return { error: insertError, data: null };
+        } else {
+          console.log('Horario creado para empleado:', schedule.empleado_id);
+          return { error: null, data };
+        }
+      }
+    } catch (error) {
+      console.error('Error al guardar o actualizar horario:', error);
+      return { error, data: null };
+    }
+  }
+  
+  async addEmployee(employee: Empleados) {
+    return await this.supabase.from('empleados').insert(employee);
+  }
+  
+  async updateEmployee(employee: Empleados) {
+    return await this.supabase
+      .from('empleados')
+      .update({ name: employee.name, hourlyRate: employee.hourlyRate, activo: employee.activo })
+      .eq('id', employee.id);
+  }
+
+  async deleteEmployeeById(employeeId: string): Promise<void> {
+    const { error } = await this.supabase
+      .from('empleados')
+      .delete()
+      .eq('id', employeeId);
+
+    if (error) {
+      throw new Error(error.message);
+    }
+  }
+  
+  async deleteUnusedQrs(): Promise<void> {
+    try {
+      const expirationDate = new Date();
+      expirationDate.setUTCMonth(expirationDate.getUTCMonth() - 2);
+      
+      const postgresDate = expirationDate
+        .toISOString()
+        .replace('T', ' ')
+        .replace('Z', '')
+        .split('.')[0] + '.000000';
+  
+      // Modificar la consulta para incluir .select()
+      const { data, error } = await this.supabase
+        .from('qrs')
+        .delete()
+        .eq('is_used', false)
+        .lt('created_at', postgresDate)
+        .select('*'); // <- ¡Esto es clave!
+  
+      if (error) throw error;
+      
+      console.log('QRs eliminados:', data.length); // Ahora data es un array
+        
+    } catch (err) {
+      console.error('Error:', err);
+      throw new Error('Error eliminando QRs');
+    }
+  }
+
+
+  async getUsuariosPorPais(): Promise<UsuarioChart[]> {
+    const { data, error } = await this.supabase
+      .from('usuarios')
+      .select('fecha_creacion, pais')
+      .in('pais', ['españa', 'argentina'])
+      .order('fecha_creacion', { ascending: true });
+
+    if (error) {
+      console.error('Error fetching usuarios:', error);
+      throw error;
+    }
+/*     console.log("data: ", data) */
+    return data;
+  }
 }

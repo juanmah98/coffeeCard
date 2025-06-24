@@ -17,6 +17,7 @@ export class InternoService {
       "name":"",
       "fecha_creacion": new Date(),
       "pais": '',
+      "ciudad": ''
     }
   );
   
@@ -32,7 +33,12 @@ export class InternoService {
       "informacion":'',
       "direccion":'',
       "logo":'',
-      "text_card":''
+      "numero_contador":0,
+      "qr_digital": true,
+      "qr_papel": false,
+      "rubro": '',
+      "ciudad": '',
+      "first_card_count": 0
   });
 
   private userAdmin = new BehaviorSubject<Usuarios_admins>({

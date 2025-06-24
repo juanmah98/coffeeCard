@@ -24,6 +24,10 @@
         </div>
       </section>
 
+      <div>
+        <app-chart></app-chart>
+      </div>
+
       <section class="bg-black container-fluid text-white py-5">
         <div class="">
           <h2 class="text-center">¿Cómo Funciona?</h2>
@@ -54,6 +58,7 @@
           <button class="btn btn-primary btn-md mt-3" (click)="accion()">Regístrate Gratis</button>
         </div>
       </section>
+
       
 
       <section class="bg-light container-fluid text-dark text-center pt-5">
@@ -91,6 +96,17 @@
             <h4>Ejemplo facil de uso</h4>
             <img src="../../../../assets/imagenes/landing/qr.png" alt="Registro" class="img-fluid mb-3 qr">
           </div>
+        </div>
+
+        <div class="row mt-5">
+          <h4>Vistazo rapido de la app</h4>
+          <div class="d-flex overflow-auto mt-2 mb-5 pb-2">
+            <div *ngFor="let image of images" class="flex-shrink-0 me-3">
+                <span [innerHTML]="image.titulo"></span><br>
+                <img src="{{image.url}}" class="img-fluid" style="max-width: 200px;" alt="...">
+            </div>
+        </div>
+        
         </div>
       </section>
 

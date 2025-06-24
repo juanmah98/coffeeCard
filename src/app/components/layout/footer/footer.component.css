@@ -1,3 +1,21 @@
 .font{
     font-size: smaller;
 }
+.version-info {
+    cursor: pointer; /* Aparece el puntero para indicar que es clickeable */
+    color: #929292; /* Color base (similar a un enlace) */
+    text-decoration: underline; /* Subrayado para indicar acción */
+  
+    transition: color 0.2s ease-in-out; /* Suavidad en el hover */
+  
+  }
+
+  .version-info:hover {
+    color: #0056b3;
+    text-decoration: none;
+  }
+  
+  .version-info:active {
+    color: #003d80;
+  }
+  

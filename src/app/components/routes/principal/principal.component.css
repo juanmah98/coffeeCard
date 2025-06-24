@@ -1,6 +1,6 @@
 body {
   background: rgb(0, 0, 0);
-  background-image: linear-gradient(60deg, rgba(0, 0, 0, 0.421) 0%, rgba(0, 0, 0, 0.947) 35%, rgba(0, 0, 0, 0.903) 100%), url("../../../../assets/imagenes/logos/FidelityCardBackgroundBLANCO.png");
+  background-image: linear-gradient(60deg, rgba(0, 0, 0, 0.637) 0%, rgba(0, 0, 0, 0.947) 35%, rgba(0, 0, 0, 0.903) 100%), url("../../../../assets/imagenes/logos/FidelityCardBackgroundBLANCO.png");
   min-height: 100vh;
   margin: 0;
   padding-top: 1rem;
@@ -58,7 +58,7 @@ body {
   justify-content: center; /* Centra verticalmente el contenido */
   height: 200px; /* Establece una altura uniforme para todas las tarjetas */
   margin: 1rem; /* Espacio entre tarjetas */
-  background: transparent; /* Fondo transparente para la tarjeta */
+  background: #222222ab; /* Fondo transparente para la tarjeta */
   transition: all 0.4s;
   border-radius: 10px;
   box-shadow: 0px 0px 10px 5px rgba(46, 46, 46, 0);
@@ -74,13 +74,39 @@ body {
   background: rgba(13, 13, 13, 0.584);
 }
 
-.text-center {
-  margin-bottom: 20px; /* Espacio para los elementos centrados */
+/* .text-center {
+  margin-bottom: 20px; 
+} */
+
+
+.paises{
+  width: 45px;
+}
+
+.paises:hover{
+  cursor: pointer;
+  transform: scale(1.05);
+}
+
+.gift{
+  width: 210px;
 }
 
 @media (max-width: 596px) {
   body {
       padding-bottom: 3rem;
+  }
+
+  .paises{
+    width: 45px;
+  }
+
+  .gift{
+    width: 160px;
+  }
+  
+  .titulo{
+    font-size: 18px;
   }
 }
 
@@ -88,4 +114,131 @@ body {
   body {
       padding-bottom: 3rem;
   }
+
+  /* Filtros Rubros */
+/* .btn-dark {
+  background: rgba(34, 34, 34, 0.8);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: all 0.3s ease;
 }
+
+.btn-dark.active {
+  background: rgba(255, 255, 255, 0.2);
+  transform: scale(2.5);
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
+} */
+
+.rounded-circle {
+  width: 50px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@media (max-width: 576px) {
+  .rounded-circle {
+      width: 45px;
+      height: 45px;
+  }
+}
+
+/* .active-pais {
+  transform: scale(1.1);
+  filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.8));
+  transition: all 0.3s ease;
+} */
+
+/* .city-btn {
+  padding: 8px 20px;
+  margin: 5px;
+  border: 1px solid transparent;
+  transition: all 0.3s ease;
+  
+  &.active {
+      background-color: #fff !important;
+      color: #000 !important;
+      border-color: #fff;
+      transform: scale(1.05);
+  }
+  
+  &:hover {
+      transform: scale(1.05);
+  }
+} */
+
+
+.dropdown-ciudades {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease-out;
+  position: absolute;
+  width: 100%;
+  z-index: 1000;
+  background: white;
+  border-radius: 0 0 0.375rem 0.375rem;
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+}
+
+.dropdown-ciudades.show {
+  max-height: 300px;
+  border: 1px solid #dee2e6;
+}
+
+.list-group {
+  margin-top: -1px; /* Para unir visualmente con el input */
+}
+
+.input-group button {
+  border-left: none;
+}
+
+.input-group input {
+  cursor: pointer;
+}
+
+.list-group-item {
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: none;
+  border-bottom: 1px solid #dee2e6;
+}
+
+.list-group-item:hover {
+  background-color: #f8f9fa;
+}
+
+.list-group-item.active {
+  background-color: #0d6efd;
+  color: white;
+}
+
+.badge {
+  font-size: 0.9rem;
+  font-family: 'Courier New', Courier, monospace;
+  letter-spacing: 1px;
+  padding: 0.5em 0.75em;
+}
+
+.paises {
+  transition: all 0.3s ease;
+  border: 2px solid transparent;
+  cursor: pointer;
+}
+
+/* .paises.active-pais {
+  border-color: #fff;
+  box-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
+  transform: scale(1.1);
+} */
+
+/* .selected-pais {
+  background: rgba(255, 255, 255, 0.1);
+  padding: 8px 15px;
+  border-radius: 25px;
+  display: inline-flex;
+  align-items: center;
+  margin-top: 15px;
+} */
+}
+

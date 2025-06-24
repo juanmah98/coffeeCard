@@ -49,7 +49,7 @@
         <div [ngSwitch]="status">
 
           <div *ngSwitchCase="'1'" class="text-center">
-
+            <h5 class="text-center pb-1">Lista de administradores</h5>
             <table class="table table-dark table-striped">
               <thead>
                 <tr>
@@ -74,11 +74,12 @@
             </table>
 
 
-            <div [formGroup]="adminForm" class="input-group mb-3">
-              <input type="text" class="form-control" formControlName="nombre" placeholder="Nombre">
-              <input type="email" class="form-control mx-1" formControlName="email" placeholder="Correo electrónico">
-              <div class="input-group-append mx-2">
-                <button class="btn btn-primary" type="button" (click)="agregarAdmin()">Agregar</button>
+            <div class="d-flex justify-content-center mb-4"> 
+              <div class=" mx-2">
+                <button class="btn btn-primary" type="button" data-bs-toggle="modal"  data-bs-target="#adminModal">Agregar</button>
+              </div>
+              <div class="mx-2">
+                <button class="btn btn-danger" type="button" data-bs-toggle="modal"  data-bs-target="#adminDeletedModal">Eliminar</button>
               </div>
             </div>
 
@@ -110,13 +111,36 @@
 
                   <div class="row" *ngIf="activeTab === 'informacion'">
                     <div class="col-12">
-                      <span class="fs-5 fw-bold">Titulo</span>
-                      <p>{{entidad.text_card}}</p>                      
-                      <span class="fs-5 fw-bold">Información</span>
+                      <div class="mb-3">
+                       <span class="fs-5 fw-bold">Contador de tarjeta</span> 
+                       <p>{{entidad.numero_contador}}</p>
+                       <a class="align-items-center justify-content-center" data-bs-toggle="modal"
+                        data-bs-target="#contadorModal"><img src="../../../../assets/imagenes/cards/editarNaranja.png"
+                          width="22px" alt="" (click)="editInfo()"></a>
+                          <br> 
+                      </div>  
+                      <div class="mb-3">                  
+                      <span class="fs-5 fw-bold">Información</span> 
                       <p [innerHTML]="formatText(entidad.informacion)"></p>
-                      <button class="btn btn-black align-items-center justify-content-center" data-bs-toggle="modal"
+                      <a class="align-items-center justify-content-center" data-bs-toggle="modal"
                         data-bs-target="#exampleModal"><img src="../../../../assets/imagenes/cards/editarNaranja.png"
-                          width="22px" alt="" (click)="editInfo()"></button>
+                          width="22px" alt="" (click)="editInfo()"></a>
+                      </div> 
+
+                      <div class="mb-3">
+                        <span class="fs-5 fw-bold">Cantidad de puntos al crear tarjetas</span> 
+                        <p>{{entidad.first_card_count}}</p>
+                        <a class="align-items-center justify-content-center" data-bs-toggle="modal"
+                         data-bs-target="#firstCardModal"><img src="../../../../assets/imagenes/cards/editarNaranja.png"
+                           width="22px" alt="" (click)="editInfo()"></a>
+                           <br> 
+                       </div>  
+
+                      <div *ngIf="entidad.nombre == 'space burguer' || entidad.nombre == 'lapiazzetta'">
+                        <span class="fs-5 fw-bold">Sumar punto manualmente</span><br>
+                        <span [ngClass]="{'editable': entidad.qr_papel, 'editableFalse': !entidad.qr_papel}" (click)="toggQr_papel(entidad)">
+                          {{ entidad.qr_papel ? 'Activado' : 'Desactivado' }}</span>
+                      </div>
                     </div>
                   </div>
 
@@ -133,27 +157,11 @@
                       <label>No existe logo</label>                      
                     </div> 
         
-                    <button class="btn btn-black align-items-center justify-content-center" data-bs-toggle="modal"
+                    <a class=" align-items-center justify-content-center" data-bs-toggle="modal"
                         data-bs-target="#logoModal"><img src="../../../../assets/imagenes/cards/editarNaranja.png"
-                          width="22px" alt="" (click)="editInfo()"></button>
+                          width="22px" alt="" (click)="editInfo()"></a>
                     
-                    <!-- <div id="backgroundCarousel" class="carousel slide" data-bs-ride="carousel">
-                      <div class="carousel-inner">
-                        <div *ngFor="let background of backgrounds; let i = index" class="carousel-item" [ngClass]="{'active': i === 0}">
-                          <img [src]="background.imageUrl" class="d-block w-100" alt="Background {{i}}">
-                        </div>
-                      </div>
-                      <button class="carousel-control-prev" type="button" data-bs-target="#backgroundCarousel" data-bs-slide="prev">
-                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                        <span class="visually-hidden">Previous</span>
-                      </button>
-                      <button class="carousel-control-next" type="button" data-bs-target="#backgroundCarousel" data-bs-slide="next">
-                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                        <span class="visually-hidden">Next</span>
-                      </button>
-                    </div> -->
                     
-                    <!-- contenido de configuración -->
                   </div>
                   </div>
                   <div class="row" *ngIf="activeTab === 'diseño'">
@@ -225,10 +233,10 @@
         </div>
         <div class="modal-body">
           <form>
-            <div class="form-group">
+            <!-- <div class="form-group">
               <label for="titelInput">Titulo</label>
               <input id="titelInput" class="form-control" [(ngModel)]="entidad.text_card" name="titelInput" rows="3" style="resize: both;">
-            </div>
+            </div> -->
         
             <div class="form-group">
               <label for="textInput">Información</label>
@@ -243,16 +251,65 @@
           </form>
         
           <div class="mt-2 text-end">
-            <button type="button" class="btn btn-warning" (click)="updateInfo(entidad.id, entidad.informacion, entidad.text_card)" data-bs-dismiss="modal">Guardar</button>
+            <button type="button" class="btn btn-warning" (click)="updateInfo(entidad.id, entidad.informacion)" data-bs-dismiss="modal">Guardar</button>
           </div>
         </div>
         
         
         
-        <!-- <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-          <button type="button" class="btn btn-primary">Guardar</button>
-        </div> -->
+       
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Contador -->
+  <div class="modal fade" id="contadorModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="exampleModalLabel">Editar contador</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form>
+            <div class="form-group">
+              <label for="titelInput">Contador de tarjeta</label>
+              <input type="number" id="titelInput" class="form-control" [(ngModel)]="entidad.numero_contador" name="titelInput" rows="3" style="resize: both;">
+            </div> 
+
+          </form>
+        
+          <div class="mt-2 text-end">
+            <button type="button" class="btn btn-warning" (click)="updateContadorNumero(entidad.id, entidad.numero_contador)" data-bs-dismiss="modal">Guardar</button>
+          </div>
+        </div>
+        
+      </div>
+    </div>
+  </div>
+
+   <!-- Modal first_card_count -->
+   <div class="modal fade" id="firstCardModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="exampleModalLabel">Editar cantidad de puntos al crear tarjeta</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form>
+            <div class="form-group">
+              <label for="titelInput">Cantidad de puntos al crear tarjetas</label>
+              <input type="number" id="titelInput" class="form-control" [(ngModel)]="entidad.first_card_count" name="titelInput" rows="3" style="resize: both;">
+            </div> 
+
+          </form>
+        
+          <div class="mt-2 text-end">
+            <button type="button" class="btn btn-warning" (click)="updateFirstCardCount(entidad.id, entidad.first_card_count)" data-bs-dismiss="modal">Guardar</button>
+          </div>
+        </div>
+        
       </div>
     </div>
   </div>
@@ -295,10 +352,7 @@
         
         
         
-        <!-- <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-          <button type="button" class="btn btn-primary">Guardar</button>
-        </div> -->
+        
       </div>
     </div>
   </div>
@@ -319,6 +373,85 @@
       <div class="modal-footer">       
         <button type="button" class="btn btn-warning" (click)="guardarBackground(entidad.id, previewBackground)" data-bs-dismiss="modal">Guardar</button>
       </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Agregar Admins -->
+<div class="modal fade" id="adminModal" tabindex="-1" aria-labelledby="adminModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="adminModalLabel">Agregar administrador</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div [formGroup]="adminForm" class="input-group mb-3 form-group">
+          <div class="mt-1">
+            <label for="titelInput">Nombre</label>
+            <input type="text" class="form-control" formControlName="nombre" placeholder="Nombre">
+          </div>
+          <div class="mt-1">
+            <label for="titelInput">Email de google</label>
+            <input type="email" class="form-control mx-1" formControlName="email" placeholder="ejemplo@gmail.com">
+          </div>
+           <!--  <div class="input-group-append mx-2">
+              <button class="btn btn-primary" type="button" (click)="agregarAdmin()">Agregar</button>
+            </div> -->
+          </div>
+
+        </form>
+      
+        <div class="mt-2 text-end input-group-append">
+          <button class="btn btn-primary" type="button" (click)="agregarAdmin()" data-bs-dismiss="modal">Agregar</button>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+</div>
+
+<!-- Modal Eliminar Admin -->
+<div class="modal fade" id="adminDeletedModal" tabindex="-1" aria-labelledby="adminDeletedModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="adminDeletedModalLabel">Agregar administrador</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="input-group mb-3 form-group">
+
+            <table class="table table table-striped">
+              <thead>
+                <tr>
+                 
+                  <th scope="col">Nombre</th>
+                  <th scope="col">Correo</th>
+                  <th scope="col">Eliminar</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let admin of rolesAdmins; let index = index">
+                 
+                  <td>{{ admin.nombre }}</td>
+                  <td>{{ admin.email }}</td>
+                  <td class="" (click)="eliminarAdmin(admin)"><button class="btn btn-sm btn-danger" data-bs-dismiss="modal"><img src="../../../../assets/imagenes/cards/basura.png" width="18px" alt=""></button></td>
+                </tr>
+              </tbody>
+
+            </table>
+          
+            
+          
+          </div>
+
+        </form>
+       
+      </div>
+      
     </div>
   </div>
 </div>

@@ -1,0 +1,10 @@
+<div class="text-center mt-5">
+  <div *ngIf="cargando">
+    <p class="text-light">Procesando código...</p>
+    <img src="../../../../assets/imagenes/logos/GIFT02.gif" alt="Cargando..." />
+  </div>
+
+  <div *ngIf="!cargando">
+    <p class="text-warning">{{ mensaje }}</p>
+  </div>
+</div>

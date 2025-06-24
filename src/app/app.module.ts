@@ -12,7 +12,13 @@ import { LayoutModule } from './components/layout/layout.module';
 import { FormsModule } from '@angular/forms';
 import { SplineViewerComponent } from './components/routes/spline-viewer/spline-viewer.component';
 import { SplineViewrCardComponent } from './components/routes/spline-viewr-card/spline-viewr-card.component';
+import { registerLocaleData } from '@angular/common';
+import localeEs from '@angular/common/locales/es';
+import { ZingchartAngularModule } from 'zingchart-angular';
+import { SharedModule } from './components/shared/shared.module';
 
+// Registrar el locale español
+registerLocaleData(localeEs);
 @NgModule({
   declarations: [
     AppComponent,
@@ -25,10 +31,12 @@ import { SplineViewrCardComponent } from './components/routes/spline-viewr-card/
     HttpClientModule,
     RouterModule,
     RoutesModule,
+    SharedModule,
     LayoutModule,
     CommonModule,
     QRCodeModule,
     FormsModule,
+    ZingchartAngularModule
       
   ],
   providers: [],

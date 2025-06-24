@@ -44,3 +44,11 @@
     }
   }
 
+  .snap-scroll {
+    scroll-snap-type: x mandatory;
+}
+
+.snap-item {
+    scroll-snap-align: start;
+}
+

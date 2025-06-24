@@ -55,3 +55,11 @@ ul li {
 .bg-secondary {
   background-color: #f8f8f8 !important;
 }
+
+.custom-shadow {
+  text-shadow: 3px 2px 4px rgba(0,0,0,0.5); /* Definición personalizada de sombra */
+}
+
+.loading{
+  min-height: 80vh;
+}

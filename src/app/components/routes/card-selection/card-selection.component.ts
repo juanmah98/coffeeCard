@@ -10,6 +10,7 @@ import { ToastComponent } from '../../layout/toast/toast.component';
 import { PopupInfoService } from 'src/app/services/popup-info.service';
 import { Entidades } from 'src/app/interfaces/entdidades';
 import { Router } from '@angular/router';
+import { ToastService } from 'src/app/services/toast.service';
 
 
 
@@ -25,7 +26,7 @@ export class CardSelectionComponent implements OnInit, OnDestroy  {
   upload:boolean = false;
   nombre:any = '';
   foto:any='';
-  contadorArray: number[] = Array(10).fill(0).map((x, i) => i);
+  contadorArray: number[] = Array(0).fill(0).map((x, i) => i);
   @ViewChild('toast') toast!: ToastComponent; // ViewChild está aquí
 
   dataUser:Usuarios = {
@@ -34,6 +35,7 @@ export class CardSelectionComponent implements OnInit, OnDestroy  {
     name: "",
     fecha_creacion: new Date(),
     pais: '',
+    ciudad: ''
   };
 
   data_contador:CafeData = 
@@ -56,12 +58,22 @@ export class CardSelectionComponent implements OnInit, OnDestroy  {
   bgClass:string='bg';
   entidadOpcion:string='';
   entidad!:Entidades;
+  totalUsuariosTabla = '0';
   private dataSubscription: Subscription = new Subscription();
-  constructor(private cdr: ChangeDetectorRef, private _SupabaseService:SupabaseService, private _dataInterna: InternoService, public popupService: PopupQrService, public infopopupService: PopupInfoService, private ngZone: NgZone,  private router: Router,) { }
+  constructor(
+    private cdr: ChangeDetectorRef, 
+    private _SupabaseService:SupabaseService, 
+    private _dataInterna: InternoService, 
+    public popupService: PopupQrService, 
+    public infopopupService: PopupInfoService, 
+    private ngZone: NgZone,  
+    private router: Router, 
+    private toastService: ToastService
+  ) { }
 
   async ngOnInit(): Promise<void> {
 
-
+ const yaMostrado = this.toastService.consumeShowToast();
     /* this._SupabaseService.getUserss().subscribe(message => {
       // Actualiza la lista de usuarios cuando se recibe un mensaje
       console.log("REALTIME")
@@ -70,11 +82,13 @@ export class CardSelectionComponent implements OnInit, OnDestroy  {
     }); */
     
     this.entidad= this._dataInterna.getEntidad()
+    this.contadorArray = Array(this.entidad.numero_contador).fill(0).map((x, i) => i);
    /*  console.log("USUARIOS US:", this.users);  */
     this.bgClass = `bg-${this._dataInterna.getEntidad().background}-card`;
     this.entidadOpcion = this._dataInterna.getEntidad().background;
    /*  console.log('background: ', this.bgClass); */
-    await this.getContador()
+    await this.getContador();
+    /* await this.getContadorUsuarios(); */
     this.cdr.detectChanges();
     this.dataUser = this._dataInterna.getUser();
    /*  this.nombre = localStorage.getItem("name"); */
@@ -107,8 +121,15 @@ export class CardSelectionComponent implements OnInit, OnDestroy  {
       
       this.cifrado();
     }, 2000) */
+     if (yaMostrado) {
+    setTimeout(() => {
+      const msg = this.toastService.getToastMessage();
+      const type = this.toastService.getToastType();
+      this.toast.showMessage(msg, type);
+    }, 100);
+  }
 
-    this.handleRealTimeUpdate();
+    this.handleRealTimeUpdate(yaMostrado);
   }
 
   async getContador() {
@@ -116,6 +137,19 @@ export class CardSelectionComponent implements OnInit, OnDestroy  {
       const response:any = await this._SupabaseService.getTablaContador(this._dataInterna.getUser().id, this.entidad.tabla_contador)
       /* console.log('contador', response.data); */
       this.data_contador = response.data;
+      // Continúa aquí con lo que necesites hacer con la respuesta
+      return response; // Retorna la respuesta si es necesario
+    } catch (error) {
+      console.error('Error al cargar contador', error);
+      throw error; // Propaga el error si es necesario
+    }
+  }
+
+  async getContadorUsuarios() {
+    try {
+      const response:any = await this._SupabaseService.getTablasTotalUsuarios(this.entidad.tabla_contador)
+       console.log('contador', response.data); 
+      this.totalUsuariosTabla = response.data.length;
       // Continúa aquí con lo que necesites hacer con la respuesta
       return response; // Retorna la respuesta si es necesario
     } catch (error) {
@@ -136,7 +170,7 @@ export class CardSelectionComponent implements OnInit, OnDestroy  {
     }
   }
 
-  handleRealTimeUpdate(){
+  handleRealTimeUpdate(toastMostrado = false){
     /* console.log("ESTAMSO EN REALTIME") */
     this._SupabaseService.getTablaCafesRealtime(this.data_contador.id, this.entidad.tabla_contador).subscribe(async update => {
       const data:any = update;
@@ -149,29 +183,41 @@ export class CardSelectionComponent implements OnInit, OnDestroy  {
         this.data_contador.gratis = data.new.gratis
        await this.getContador();
         this.popupService.actualizarMostrar(false);
-        if(this.data_contador.contador!=0){
-          this.showToast();
+       if (!toastMostrado && this.data_contador.contador !== 0) {
+         this.toastService.setShowToast(true, '¡QR leído con éxito!', 'success');
+         this.showToast();
         }
 
       }
     })
   }
 
-  showToast(): void {
-    this.toast.showMessage('¡QR leido!');
-  }
+ showToast(): void {
+  const msg = this.toastService.getToastMessage();
+  const type = this.toastService.getToastType();
+  this.toast.showMessage(msg, type);
+}
 
- async actualizarDatos(): Promise<void> {
- /*  console.log("DATOS A VER: ", this.data_contador ) */
-  await  this._SupabaseService.getDataCard(this.data_contador.id, this.entidad.tabla_contador).subscribe((data: any) => {
+async actualizarDatos(): Promise<void> {
+  try {
+    const { data, error } = await this._SupabaseService.getDataCard(this.data_contador.id, this.entidad.tabla_contador);
+
+    if (error) {
+      console.error('Error al obtener datos:', error);
+      return;
+    }
+
+    if (data && data.length > 0) {
       this.data_contador = data[0];
-      /* console.log("data[0]");
-      console.log(data[0]); */
-      {
-        this.upload = true;
-      }
-    });
+      this.upload = true; // Marcar como cargado correctamente
+    } else {
+      console.warn('No se encontraron datos para el ID proporcionado.');
+    }
+  } catch (err) {
+    console.error('Error inesperado:', err);
   }
+}
+
 
  async op1(){
     this.upload = false;
@@ -200,7 +246,7 @@ export class CardSelectionComponent implements OnInit, OnDestroy  {
   }
 
   async sumar(){
-    if(this.data_contador.contador==10){
+    if(this.data_contador.contador==this.entidad.numero_contador){
 
       this.data_contador.contador=0;
       this.data_contador.opcion=0;
@@ -287,7 +333,7 @@ onPopupTouch() {
 
   this.popupService.setData(this.uuidCifrado);
   this.popupService.actualizarMostrar(true)
-  if(this.data_contador.contador==10){
+  if(this.data_contador.contador==this.entidad.numero_contador){
     this.popupService.setGratis(true)
   }else{
     this.popupService.setGratis(false)
