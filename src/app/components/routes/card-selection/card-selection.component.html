@@ -1,5 +1,6 @@
 <app-popup-qr *ngIf="popupService.mostrar"></app-popup-qr>
 <app-info *ngIf="infopopupService.mostrar"></app-info>
+<app-popup-scanerqr *ngIf="popupServiceScanQrNew.mostrar"></app-popup-scanerqr>
 <app-toast #toast></app-toast>
 <body class="d-flex align-items-center" [ngClass]="bgClass">
     <div *ngIf="upload == false" class="container-fluid d-flex justify-content-center align-items-center vh-100">
@@ -90,19 +91,20 @@
                             <img *ngIf="entidadOpcion=='2'" src="../../../../assets/imagenes/cards/cafe.png" width="70px" class="mr-3" alt=""> -->
                             <span class="text-center" (click)="onInfoTouch()"><img src="../../../../assets/imagenes/cards/info.png" width="30px" alt=""></span>
                         </div>
-                        <p *ngIf="data_contador.contador!=entidad.numero_contador" class="text-center fs-5 pt-3 mb-1">Puntos: <b>{{data_contador.contador}}</b></p>
-                        <p *ngIf="data_contador.contador==entidad.numero_contador" class="text-center fs-5 pt-3 mb-1">¡Reclama! <img src="../../../../assets/imagenes/cards/flecha-correcta.png" class="flecha-parpadeo" width="20px" alt=""></p>
+                        <p *ngIf="data_contador.contador<entidad.numero_contador" class="text-center fs-5 pt-3 mb-1">Puntos: <b>{{data_contador.contador}}</b></p>
+                        <p *ngIf="data_contador.contador===entidad.numero_contador || data_contador.contador>entidad.numero_contador" class="text-center fs-5 pt-3 mb-1">¡Reclama! <img src="../../../../assets/imagenes/cards/flecha-correcta.png" class="flecha-parpadeo" width="20px" alt=""></p>
                        <!--  <p *ngIf="entidadOpcion=='2'" class="text-center fs-5 pt-3 mb-1">Total puntos: <b>{{data_contador.contador}}</b></p> -->
                        
                        <div *ngIf="entidad.nombre === 'lapiazzetta' || entidad.nombre === 'space burguer' ">
-                         <button  *ngIf="entidad.qr_papel == true && data_contador.contador!=entidad.numero_contador" class="btn btn-outline-secondary mt-2 mx-2"(click)="cifrado()"><img src="../../../../assets/imagenes/cards/codigo-qr-scan.png" width="28px" alt=""></button>
-                         <button *ngIf="data_contador.contador!=entidad.numero_contador" class="btn btn-light mt-2" (click)="qrscanuser()"><img src="../../../../assets/imagenes/cards/ticketmas.png" width="28px" alt=""></button>
-                         <button *ngIf="data_contador.contador==entidad.numero_contador" class="btn btn-light mt-2" (click)="cifrado()"><img src="../../../../assets/imagenes/cards/free.png" width="30px" alt=""></button>
+                         <button  *ngIf="entidad.qr_papel == true && data_contador.contador<entidad.numero_contador" class="btn btn-outline-secondary mt-2 mx-2"(click)="cifrado()"><img src="../../../../assets/imagenes/cards/codigo-qr-scan.png" width="28px" alt=""></button>
+                         <button *ngIf="data_contador.contador<entidad.numero_contador" class="btn btn-light mt-2" (click)="qrscanuser()"><img src="../../../../assets/imagenes/cards/ticketmas.png" width="28px" alt=""></button>
+                         <button *ngIf="data_contador.contador===entidad.numero_contador || data_contador.contador>entidad.numero_contador" class="btn btn-light mt-2" (click)="cifrado()"><img src="../../../../assets/imagenes/cards/free.png" width="30px" alt=""></button>
+                          <button *ngIf="data_contador.contador===5 && entidad.nombre === 'space burguer'" class="btn btn-light mt-2" (click)="cifrado()"><img src="../../../../assets/imagenes/cards/free.png" width="30px" alt=""></button>
                        </div>
 
                        <div *ngIf="entidad.nombre !== 'lapiazzetta' &&  entidad.nombre !== 'space burguer'">
                         <button class="btn btn-light mt-2"(click)="cifrado()"><img src="../../../../assets/imagenes/cards/ticketmas.png" width="28px" alt=""></button>
-                        <button *ngIf="data_contador.contador==entidad.numero_contador" class="btn btn-light mt-2" (click)="cifrado()"><img src="../../../../assets/imagenes/cards/free.png" width="30px" alt=""></button>
+                        <button *ngIf="data_contador.contador===entidad.numero_contador || data_contador.contador>entidad.numero_contador" class="btn btn-light mt-2" (click)="cifrado()"><img src="../../../../assets/imagenes/cards/free.png" width="30px" alt=""></button>
                        </div>
 
                           
