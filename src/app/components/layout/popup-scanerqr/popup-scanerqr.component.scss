@@ -19,7 +19,7 @@
   transform: translate(-50%, -50%);
   width: calc(100% - 40px); /* Asumiendo un padding de 20px a cada lado */
   max-width: 700px; /* O cualquier máximo que desees */
-  height: 40%; /* Altura auto para manejar el contenido dinámicamente */
+  height: 30%; /* Altura auto para manejar el contenido dinámicamente */
   padding: 20px;
   z-index: 10;
 
@@ -46,24 +46,25 @@
       font-family: "OpenSans";
       font-size: 22px;
       text-align: center;
+      padding-bottom: 0.5rem;
     }
   
     &__subtitle {
-      font-family: montserrat;
-      font-size: 10px;
-      line-height: 0.8;
+      font-size: 18x;
+      
   
-      padding-left: 0.25rem;
+      text-align: center;
     }
   
     &__maps {
       
  /*  padding-top: 50%; */
-  margin-top: 1rem;
+  margin-top: 0.5rem;
  /*  height: 300px; */  // Ajusta la altura según el tamaño del QR
 
   justify-content: center;
   align-items: center;
+  text-align: center;
     }
   
     &__scheduler {

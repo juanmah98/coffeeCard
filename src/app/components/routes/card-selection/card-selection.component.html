@@ -1,5 +1,6 @@
 <app-popup-qr *ngIf="popupService.mostrar"></app-popup-qr>
 <app-info *ngIf="infopopupService.mostrar"></app-info>
+<app-popup-scanerqr *ngIf="popupServiceScanQrNew.mostrar"></app-popup-scanerqr>
 <app-toast #toast></app-toast>
 <body class="d-flex align-items-center" [ngClass]="bgClass">
     <div *ngIf="upload == false" class="container-fluid d-flex justify-content-center align-items-center vh-100">
@@ -98,6 +99,7 @@
                          <button  *ngIf="entidad.qr_papel == true && data_contador.contador<entidad.numero_contador" class="btn btn-outline-secondary mt-2 mx-2"(click)="cifrado()"><img src="../../../../assets/imagenes/cards/codigo-qr-scan.png" width="28px" alt=""></button>
                          <button *ngIf="data_contador.contador<entidad.numero_contador" class="btn btn-light mt-2" (click)="qrscanuser()"><img src="../../../../assets/imagenes/cards/ticketmas.png" width="28px" alt=""></button>
                          <button *ngIf="data_contador.contador===entidad.numero_contador || data_contador.contador>entidad.numero_contador" class="btn btn-light mt-2" (click)="cifrado()"><img src="../../../../assets/imagenes/cards/free.png" width="30px" alt=""></button>
+                          <button *ngIf="data_contador.contador===5 && entidad.nombre === 'space burguer'" class="btn btn-light mt-2" (click)="cifrado()"><img src="../../../../assets/imagenes/cards/free.png" width="30px" alt=""></button>
                        </div>
 
                        <div *ngIf="entidad.nombre !== 'lapiazzetta' &&  entidad.nombre !== 'space burguer'">

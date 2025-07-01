@@ -11,6 +11,7 @@ import { PopupInfoService } from 'src/app/services/popup-info.service';
 import { Entidades } from 'src/app/interfaces/entdidades';
 import { Router } from '@angular/router';
 import { ToastService } from 'src/app/services/toast.service';
+import { PopupScanerqrService } from 'src/app/services/popup-scanerqr.service';
 
 
 
@@ -68,7 +69,8 @@ export class CardSelectionComponent implements OnInit, OnDestroy  {
     public infopopupService: PopupInfoService, 
     private ngZone: NgZone,  
     private router: Router, 
-    private toastService: ToastService
+    private toastService: ToastService,
+    public popupServiceScanQrNew: PopupScanerqrService
   ) { }
 
   async ngOnInit(): Promise<void> {
@@ -128,6 +130,10 @@ export class CardSelectionComponent implements OnInit, OnDestroy  {
       this.toast.showMessage(msg, type);
     }, 100);
   }
+
+    if(this.data_contador.contador == 5 && this.entidad.nombre == 'lapiazzetta'){
+      this.onPopupTouch5()
+    }
 
     this.handleRealTimeUpdate(yaMostrado);
   }
@@ -312,6 +318,12 @@ async actualizarDatos(): Promise<void> {
     this.onPopupTouch()
   }
 
+  cifrado5(){
+    this.uuidCifrado = this.cifrarUUID(this.data_contador.id, this.clave);
+    /* console.log('UUID cifrado:', this.uuidCifrado); */
+    this.onPopupTouch()
+  }
+
   decifrado(){
     const uuidDescifrado = this.descifrarUUID(this.uuidCifrado, this.clave);
    /*  console.log('UUID descifrado:', uuidDescifrado); */
@@ -333,10 +345,22 @@ onPopupTouch() {
 
   this.popupService.setData(this.uuidCifrado);
   this.popupService.actualizarMostrar(true)
-  if(this.data_contador.contador==this.entidad.numero_contador){
+  if(this.data_contador.contador>=this.entidad.numero_contador){
     this.popupService.setGratis(true)
   }else{
     this.popupService.setGratis(false)
+  }
+}
+
+onPopupTouch5() {
+
+  this.popupServiceScanQrNew.setDataContador(this.data_contador);
+  
+  this.popupServiceScanQrNew.actualizarMostrar(true)
+  if(this.data_contador.contador=5){
+    /* this.popupService.setGratis(true) */
+  }else{
+   /*  this.popupService.setGratis(false) */
   }
 }
 
